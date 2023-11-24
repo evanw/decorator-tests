@@ -2456,6 +2456,46 @@ const tests = {
     wrapper.call(ctx);
     assertEq(() => "" + log, "0,1,2,3,4,5,6,7,8,9,10");
   },
+  'Decorator list evaluation: "await"': async () => {
+    const log = [];
+    const dummy = () => {
+    };
+    async function wrapper() {
+      @(log.push(await Promise.resolve(0)), dummy)
+      class Foo {
+        @(log.push(await Promise.resolve(1)), dummy)
+        method() {
+        }
+        @(log.push(await Promise.resolve(2)), dummy)
+        static method() {
+        }
+        @(log.push(await Promise.resolve(3)), dummy)
+        field;
+        @(log.push(await Promise.resolve(4)), dummy)
+        static field;
+        @(log.push(await Promise.resolve(5)), dummy)
+        get getter() {
+          return;
+        }
+        @(log.push(await Promise.resolve(6)), dummy)
+        static get getter() {
+          return;
+        }
+        @(log.push(await Promise.resolve(7)), dummy)
+        set setter(x) {
+        }
+        @(log.push(await Promise.resolve(8)), dummy)
+        static set setter(x) {
+        }
+        @(log.push(await Promise.resolve(9)), dummy)
+        accessor accessor;
+        @(log.push(await Promise.resolve(10)), dummy)
+        static accessor accessor;
+      }
+    }
+    await wrapper();
+    assertEq(() => "" + log, "0,1,2,3,4,5,6,7,8,9,10");
+  },
   "Decorator list evaluation: Outer private name": () => {
     const log = [];
     class Dummy {
@@ -2886,19 +2926,22 @@ ${details}
 }
 let testName;
 let failures = 0;
-for (const [name, test] of Object.entries(tests)) {
-  testName = name;
-  try {
-    test();
-  } catch (err) {
-    console.log(`\u274C ${name}
+async function run() {
+  for (const [name, test] of Object.entries(tests)) {
+    testName = name;
+    try {
+      await test();
+    } catch (err) {
+      console.log(`\u274C ${name}
   Throws: ${err}
 `);
-    failures++;
+      failures++;
+    }
+  }
+  if (failures > 0) {
+    console.log(`\u274C ${failures} checks failed`);
+  } else {
+    console.log(`\u2705 all checks passed`);
   }
 }
-if (failures > 0) {
-  console.log(`\u274C ${failures} checks failed`);
-} else {
-  console.log(`\u2705 all checks passed`);
-}
+const promise = run();
