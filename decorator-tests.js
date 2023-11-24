@@ -2456,7 +2456,7 @@ const tests = {
     wrapper.call(ctx);
     assertEq(() => "" + log, "0,1,2,3,4,5,6,7,8,9,10");
   },
-  "Decorator list evaluation: Private name": () => {
+  "Decorator list evaluation: Outer private name": () => {
     const log = [];
     class Dummy {
       static #foo(n) {
@@ -2500,6 +2500,66 @@ const tests = {
       }
     }
     assertEq(() => "" + log, "0,1,2,3,4,5,6,7,8,9,10");
+  },
+  "Decorator list evaluation: Inner private name": () => {
+    const fns = [];
+    const capture = (fn) => {
+      fns.push(fn);
+      return () => {
+      };
+    };
+    class Dummy {
+      static #foo = NaN;
+      static {
+        @capture(() => new Foo().#foo + 0)
+        class Foo {
+          #foo2 = 10;
+          @capture(() => new Foo().#foo2 + 1)
+          method() {
+          }
+          @capture(() => new Foo().#foo2 + 2)
+          static method() {
+          }
+          @capture(() => new Foo().#foo2 + 3)
+          field;
+          @capture(() => new Foo().#foo2 + 4)
+          static field;
+          @capture(() => new Foo().#foo2 + 5)
+          get getter() {
+            return;
+          }
+          @capture(() => new Foo().#foo2 + 6)
+          static get getter() {
+            return;
+          }
+          @capture(() => new Foo().#foo2 + 7)
+          set setter(x) {
+          }
+          @capture(() => new Foo().#foo2 + 8)
+          static set setter(x) {
+          }
+          @capture(() => new Foo().#foo2 + 9)
+          accessor accessor;
+          @capture(() => new Foo().#foo2 + 10)
+          static accessor accessor;
+        }
+      }
+    }
+    const firstFn = fns.shift();
+    assertEq(() => {
+      try {
+        firstFn();
+        throw new Error("Expected a TypeError to be thrown");
+      } catch (err) {
+        if (err instanceof TypeError)
+          return true;
+        throw err;
+      }
+    }, true);
+    const log = [];
+    for (const fn of fns)
+      log.push(fn());
+    assertEq(() => "" + log, "11,12,13,14,15,16,17,18,19,20");
   },
   "Decorator list evaluation: Class binding": () => {
     const fns = [];
@@ -2546,12 +2606,15 @@ const tests = {
       @capture(() => Foo)
       static accessor accessor;
     }
+    const originalFoo = Foo;
     for (const fn of fns) {
-      assertEq(() => fn(), Foo);
+      assertEq(() => fn(), originalFoo);
     }
     Foo = null;
+    const firstFn = fns.shift();
+    assertEq(() => firstFn(), null);
     for (const fn of fns) {
-      assertEq(() => fn(), null);
+      assertEq(() => fn(), originalFoo);
     }
   },
   // Initializer order
@@ -2764,8 +2827,12 @@ const tests = {
     assertEq(() => log + "", "start,M1,M2,G1,G2,S1,S2,A1,A2,m1,m2,g1,g2,s1,s2,a1,a2,F1,F2,f1,f2,c1,c2,M3,M4,M5,M6,G3,G4,G5,G6,S3,S4,S5,S6,A3,A4,A5,A6,F3,F4,F5,F6,static,c3,c4,c5,c6,after,m3,m4,m5,m6,g3,g4,g5,g6,s3,s4,s5,s6,a3,a4,a5,a6,f3,f4,f5,f6,ctor,end");
   }
 };
-function quoteString(x) {
-  return typeof x === "string" ? JSON.stringify(x) : x;
+function prettyPrint(x) {
+  if (x && x.prototype && x.prototype.constructor === x)
+    return "class";
+  if (typeof x === "string")
+    return JSON.stringify(x);
+  return x;
 }
 function assertEq(callback, expected) {
   let details;
@@ -2773,12 +2840,8 @@ function assertEq(callback, expected) {
     let x = callback();
     if (x === expected)
       return true;
-    if (x && x.prototype && x.prototype.constructor === x)
-      x = "class";
-    else
-      x = quoteString(x);
-    details = `  Expected: ${quoteString(expected)}
-  Observed: ${x}`;
+    details = `  Expected: ${prettyPrint(expected)}
+  Observed: ${prettyPrint(x)}`;
   } catch (error) {
     details = `  Throws: ${error}`;
   }

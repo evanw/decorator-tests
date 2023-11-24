@@ -2015,7 +2015,7 @@ const tests: Record<string, () => void> = {
     wrapper.call(ctx)
     assertEq(() => '' + log, '0,1,2,3,4,5,6,7,8,9,10')
   },
-  'Decorator list evaluation: Private name': () => {
+  'Decorator list evaluation: Outer private name': () => {
     const log: number[] = []
 
     class Dummy {
@@ -2047,6 +2047,58 @@ const tests: Record<string, () => void> = {
 
     assertEq(() => '' + log, '0,1,2,3,4,5,6,7,8,9,10')
   },
+  'Decorator list evaluation: Inner private name': () => {
+    const fns: (() => number)[] = []
+    const capture = (fn: () => number): Function => {
+      fns.push(fn)
+      return () => { }
+    }
+
+    class Dummy {
+      static #foo = NaN
+
+      static {
+        @(capture(() => (new Foo() as any).#foo + 0))
+        class Foo {
+          #foo = 10
+
+          @(capture(() => new Foo().#foo + 1)) method() { }
+          @(capture(() => new Foo().#foo + 2)) static method() { }
+
+          @(capture(() => new Foo().#foo + 3)) field: undefined
+          @(capture(() => new Foo().#foo + 4)) static field: undefined
+
+          @(capture(() => new Foo().#foo + 5)) get getter(): undefined { return }
+          @(capture(() => new Foo().#foo + 6)) static get getter(): undefined { return }
+
+          @(capture(() => new Foo().#foo + 7)) set setter(x: undefined) { }
+          @(capture(() => new Foo().#foo + 8)) static set setter(x: undefined) { }
+
+          @(capture(() => new Foo().#foo + 9)) accessor accessor: undefined
+          @(capture(() => new Foo().#foo + 10)) static accessor accessor: undefined
+        }
+      }
+    }
+
+    // Accessing "#foo" in the class decorator should fail. The "#foo" should
+    // refer to the outer "#foo", not the inner "#foo".
+    const firstFn = fns.shift()!
+    assertEq(() => {
+      try {
+        firstFn()
+        throw new Error('Expected a TypeError to be thrown')
+      } catch (err) {
+        if (err instanceof TypeError) return true
+        throw err
+      }
+    }, true)
+
+    // Accessing "#foo" from any of the class element decorators should succeed.
+    // Each "#foo" should refer to the inner "#foo", not the outer "#foo".
+    const log: number[] = []
+    for (const fn of fns) log.push(fn())
+    assertEq(() => '' + log, '11,12,13,14,15,16,17,18,19,20')
+  },
   'Decorator list evaluation: Class binding': () => {
     const fns: (() => typeof Foo)[] = []
 
@@ -2060,28 +2112,14 @@ const tests: Record<string, () => void> = {
       }
 
       // Note: As far as I can tell, early reference to the class name should
-      // throw a reference error. Class declaration evaluation first runs
-      // DecoratorListEvaluation followed by BindingClassDeclarationEvaluation,
-      // and BindingClassDeclarationEvaluation rusn  InitializeBoundName:
+      // throw a reference error because:
       //
-      //   15.8.21 Runtime Semantics: Evaluation
-      //   ClassDeclaration : DecoratorListopt class BindingIdentifier ClassTail
+      // 1. Class decorators run first in the top-level scope before entering
+      //    BindingClassDeclarationEvaluation.
       //
-      //       1. If DecoratorListopt is present, then
-      //           a. Let decorators be ? DecoratorListEvaluation of DecoratorList.
-      //       2. Else, let decorators be a new empty List.
-      //       3. Perform ? BindingClassDeclarationEvaluation of this ClassDeclaration with argument decorators.
-      //       4. Return empty.
-      //
-      //   15.8.20 Runtime Semantics: BindingClassDeclarationEvaluation
-      //   ClassDeclaration : DecoratorListopt class BindingIdentifier ClassTail
-      //
-      //       1. Let className be StringValue of BindingIdentifier.
-      //       2. Let value be ? ClassDefinitionEvaluation of ClassTail with arguments className, className, and decorators.
-      //       3. Set value.[[SourceText]] to the source text matched by ClassDeclaration.
-      //       4. Let env be the running execution context's LexicalEnvironment.
-      //       5. Perform ? InitializeBoundName(className, value, env).
-      //       6. Return value.
+      // 2. Class element decorators run in ClassDefinitionEvaluation, which
+      //    runs ClassElementEvaluation for each class element before eventually
+      //    running classEnv.InitializeBinding(classBinding, F).
       //
       assertEq(() => error instanceof ReferenceError, true)
       return () => { }
@@ -2104,17 +2142,29 @@ const tests: Record<string, () => void> = {
       @(capture(() => Foo)) static accessor accessor: undefined
     }
 
+    const originalFoo = Foo
+
+    // Once we get here, these should all reference the now-initialized class,
+    // either through classBinding (for class element decorators) or through
+    // className (for decorators on the class itself).
     for (const fn of fns) {
-      assertEq(() => fn(), Foo)
+      assertEq(() => fn(), originalFoo)
     }
 
-    // Note: As far as I can tell, mutating the class binding (which is allowed
-    // in JavaScript) mutates the same binding that the decorators observe,
-    // since decorators are observed in the outer scope (see the spec above).
+    // Mutating a class binding is allowed in JavaScript. Let's test what
+    // happens when we do this.
     (Foo as any) = null as any
 
+    // As far as I can tell, class decorators should observe this change because
+    // they are evaluated in the top-level scope.
+    const firstFn = fns.shift()!
+    assertEq(() => firstFn(), null)
+
+    // But I believe class element decorators should not observe this change
+    // because they are evaluated in the environment that exists for the
+    // duration of ClassDefinitionEvaluation (i.e. classEnv, not env).
     for (const fn of fns) {
-      assertEq(() => fn(), null)
+      assertEq(() => fn(), originalFoo)
     }
   },
 
@@ -2297,8 +2347,10 @@ const tests: Record<string, () => void> = {
   },
 }
 
-function quoteString(x: any): any {
-  return typeof x === 'string' ? JSON.stringify(x) : x
+function prettyPrint(x: any): any {
+  if (x && x.prototype && x.prototype.constructor === x) return 'class'
+  if (typeof x === 'string') return JSON.stringify(x)
+  return x
 }
 
 function assertEq<T>(callback: () => T, expected: T): boolean {
@@ -2306,9 +2358,7 @@ function assertEq<T>(callback: () => T, expected: T): boolean {
   try {
     let x: any = callback()
     if (x === expected) return true
-    if (x && x.prototype && x.prototype.constructor === x) x = 'class'
-    else x = quoteString(x)
-    details = `  Expected: ${quoteString(expected)}\n  Observed: ${x}`
+    details = `  Expected: ${prettyPrint(expected)}\n  Observed: ${prettyPrint(x)}`
   } catch (error) {
     details = `  Throws: ${error}`
   }

@@ -17,10 +17,10 @@ You can use `node run.js` after `npm install` to run and update the tests below.
 Known issues:
 
 * In decorators of static fields and static accessors, the value of `this` appears to be incorrect.
-* References to the class name within a decorator return `undefined` instead of throwing a `ReferenceError`.
+* References to the uninitialized class name within a decorator return `undefined` instead of throwing a `ReferenceError`.
 
 <details>
-<summary>❌ 25 checks failed (click for details)</summary>
+<summary>❌ 15 checks failed (click for details)</summary>
 
 ```
 ❌ Decorator list evaluation: "this"
@@ -92,61 +92,11 @@ Known issues:
   Observed: false
 
 ❌ Decorator list evaluation: Class binding
-  Code: fn()
+  Code: firstFn()
   Expected: null
   Observed: class
 
-❌ Decorator list evaluation: Class binding
-  Code: fn()
-  Expected: null
-  Observed: class
-
-❌ Decorator list evaluation: Class binding
-  Code: fn()
-  Expected: null
-  Observed: class
-
-❌ Decorator list evaluation: Class binding
-  Code: fn()
-  Expected: null
-  Observed: class
-
-❌ Decorator list evaluation: Class binding
-  Code: fn()
-  Expected: null
-  Observed: class
-
-❌ Decorator list evaluation: Class binding
-  Code: fn()
-  Expected: null
-  Observed: class
-
-❌ Decorator list evaluation: Class binding
-  Code: fn()
-  Expected: null
-  Observed: class
-
-❌ Decorator list evaluation: Class binding
-  Code: fn()
-  Expected: null
-  Observed: class
-
-❌ Decorator list evaluation: Class binding
-  Code: fn()
-  Expected: null
-  Observed: class
-
-❌ Decorator list evaluation: Class binding
-  Code: fn()
-  Expected: null
-  Observed: class
-
-❌ Decorator list evaluation: Class binding
-  Code: fn()
-  Expected: null
-  Observed: class
-
-❌ 25 checks failed
+❌ 15 checks failed
 ```
 
 </details>
@@ -159,10 +109,11 @@ Known issues:
 * The name provided to decorators on private methods (both static and non-static) is empty.
 * The context object property `access` exposes the underlying getter and setter instead of the `Get` and `Set` abstract operations.
 * The context object for fields (both static and non-static) is missing the `addInitializer` method.
-* References to the class name within a decorator return `undefined` instead of throwing a `ReferenceError`.
+* Using a private name within a decorator can cause Babel to emit invalid code containing a syntax error.
+* References to the uninitialized class name within a decorator return `undefined` instead of throwing a `ReferenceError`.
 
 <details>
-<summary>❌ 54 checks failed (click for details)</summary>
+<summary>❌ 65 checks failed (click for details)</summary>
 
 ```
 ❌ Class decorators: Basic expression: Property value
@@ -345,10 +296,8 @@ Known issues:
   Code: get$foo(Foo)
   Throws: TypeError: Receiver must be an instance of class Foo
 
-❌ Decorator list evaluation: Class binding
-  Code: error instanceof ReferenceError
-  Expected: true
-  Observed: false
+❌ Decorator list evaluation: Inner private name
+  Throws: SyntaxError: Private name "#foo2" must be declared in an enclosing class
 
 ❌ Decorator list evaluation: Class binding
   Code: error instanceof ReferenceError
@@ -399,6 +348,61 @@ Known issues:
   Code: error instanceof ReferenceError
   Expected: true
   Observed: false
+
+❌ Decorator list evaluation: Class binding
+  Code: error instanceof ReferenceError
+  Expected: true
+  Observed: false
+
+❌ Decorator list evaluation: Class binding
+  Code: fn()
+  Expected: class
+  Observed: null
+
+❌ Decorator list evaluation: Class binding
+  Code: fn()
+  Expected: class
+  Observed: null
+
+❌ Decorator list evaluation: Class binding
+  Code: fn()
+  Expected: class
+  Observed: null
+
+❌ Decorator list evaluation: Class binding
+  Code: fn()
+  Expected: class
+  Observed: null
+
+❌ Decorator list evaluation: Class binding
+  Code: fn()
+  Expected: class
+  Observed: null
+
+❌ Decorator list evaluation: Class binding
+  Code: fn()
+  Expected: class
+  Observed: null
+
+❌ Decorator list evaluation: Class binding
+  Code: fn()
+  Expected: class
+  Observed: null
+
+❌ Decorator list evaluation: Class binding
+  Code: fn()
+  Expected: class
+  Observed: null
+
+❌ Decorator list evaluation: Class binding
+  Code: fn()
+  Expected: class
+  Observed: null
+
+❌ Decorator list evaluation: Class binding
+  Code: fn()
+  Expected: class
+  Observed: null
 
 ❌ Initializer order
   Code: typeof ctxStaticField.addInitializer
@@ -425,7 +429,7 @@ Known issues:
   Expected: "start,M1,M2,G1,G2,S1,S2,A1,A2,m1,m2,g1,g2,s1,s2,a1,a2,F1,F2,f1,f2,c1,c2,M3,M4,M5,M6,G3,G4,G5,G6,S3,S4,S5,S6,A3,A4,A5,A6,F3,F4,F5,F6,static,c3,c4,c5,c6,after,m3,m4,m5,m6,g3,g4,g5,g6,s3,s4,s5,s6,a3,a4,a5,a6,f3,f4,f5,f6,ctor,end"
   Observed: "start,M1,M2,G1,G2,S1,S2,A1,A2,m1,m2,g1,g2,s1,s2,a1,a2,F1,F2,f1,f2,c1,c2,M3,M4,M5,M6,G3,G4,G5,G6,S3,S4,S5,S6,A3,A4,A5,A6,static,c3,c4,c5,c6,after,m3,m4,m5,m6,g3,g4,g5,g6,s3,s4,s5,s6,a3,a4,a5,a6,ctor,end"
 
-❌ 54 checks failed
+❌ 65 checks failed
 ```
 
 </details>
