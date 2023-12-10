@@ -12,11 +12,12 @@ You can use `node run.mjs` after `npm install` to run and update the tests below
 
 ## Test Results
 
-### TypeScript (`typescript@5.3.2`)
+### TypeScript (`typescript@5.3.3`)
 
 Known issues:
 
 * In decorators of static fields and static accessors, the value of `this` appears to be incorrect.
+* Using `await` within a decorator can cause TypeScript to emit invalid code containing a syntax error.
 * References to the uninitialized class name within a decorator return `undefined` instead of throwing a `ReferenceError`.
 
 <details>
@@ -104,19 +105,17 @@ Known issues:
 
 </details>
 
-### Babel (`@babel/plugin-proposal-decorators@7.23.3`)
+### Babel (`@babel/plugin-proposal-decorators@7.23.5`)
 
 Known issues:
 
 * Decorators on class expressions do not yet use the correct name: [https://github.com/babel/babel/pull/15122](https://github.com/babel/babel/pull/15122).
 * The name provided to decorators on private methods (both static and non-static) is empty.
 * The context object property `access` exposes the underlying getter and setter instead of the `Get` and `Set` abstract operations.
-* The context object for fields (both static and non-static) is missing the `addInitializer` method.
 * Using a private name within a decorator can cause Babel to emit invalid code containing a syntax error.
-* References to the uninitialized class name within a decorator return `undefined` instead of throwing a `ReferenceError`.
 
 <details>
-<summary>❌ 65 checks failed (click for details)</summary>
+<summary>❌ 49 checks failed (click for details)</summary>
 
 ```
 ❌ Class decorators: Basic expression: Property value
@@ -303,61 +302,6 @@ Known issues:
   Throws: SyntaxError: Private name "#foo2" must be declared in an enclosing class
 
 ❌ Decorator list evaluation: Class binding
-  Code: error instanceof ReferenceError
-  Expected: true
-  Observed: false
-
-❌ Decorator list evaluation: Class binding
-  Code: error instanceof ReferenceError
-  Expected: true
-  Observed: false
-
-❌ Decorator list evaluation: Class binding
-  Code: error instanceof ReferenceError
-  Expected: true
-  Observed: false
-
-❌ Decorator list evaluation: Class binding
-  Code: error instanceof ReferenceError
-  Expected: true
-  Observed: false
-
-❌ Decorator list evaluation: Class binding
-  Code: error instanceof ReferenceError
-  Expected: true
-  Observed: false
-
-❌ Decorator list evaluation: Class binding
-  Code: error instanceof ReferenceError
-  Expected: true
-  Observed: false
-
-❌ Decorator list evaluation: Class binding
-  Code: error instanceof ReferenceError
-  Expected: true
-  Observed: false
-
-❌ Decorator list evaluation: Class binding
-  Code: error instanceof ReferenceError
-  Expected: true
-  Observed: false
-
-❌ Decorator list evaluation: Class binding
-  Code: error instanceof ReferenceError
-  Expected: true
-  Observed: false
-
-❌ Decorator list evaluation: Class binding
-  Code: error instanceof ReferenceError
-  Expected: true
-  Observed: false
-
-❌ Decorator list evaluation: Class binding
-  Code: error instanceof ReferenceError
-  Expected: true
-  Observed: false
-
-❌ Decorator list evaluation: Class binding
   Code: fn()
   Expected: class
   Observed: null
@@ -407,32 +351,7 @@ Known issues:
   Expected: class
   Observed: null
 
-❌ Initializer order
-  Code: typeof ctxStaticField.addInitializer
-  Expected: "function"
-  Observed: "undefined"
-
-❌ Initializer order
-  Code: typeof ctxStaticField.addInitializer
-  Expected: "function"
-  Observed: "undefined"
-
-❌ Initializer order
-  Code: typeof ctxField.addInitializer
-  Expected: "function"
-  Observed: "undefined"
-
-❌ Initializer order
-  Code: typeof ctxField.addInitializer
-  Expected: "function"
-  Observed: "undefined"
-
-❌ Initializer order
-  Code: log + ""
-  Expected: "start,extends,M1,M2,G1,G2,S1,S2,A1,A2,m1,m2,g1,g2,s1,s2,a1,a2,F1,F2,f1,f2,c1,c2,M3,M4,M5,M6,G3,G4,G5,G6,S3,S4,S5,S6,A3,A4,A5,A6,F3,F4,F5,F6,static:start,F7,F8,A7,A8,static:end,c3,c4,c5,c6,after,ctor:start,m3,m4,m5,m6,g3,g4,g5,g6,s3,s4,s5,s6,a3,a4,a5,a6,f3,f4,f5,f6,f7,f8,a7,a8,ctor:end,end"
-  Observed: "start,extends,M1,M2,G1,G2,S1,S2,A1,A2,m1,m2,g1,g2,s1,s2,a1,a2,F1,F2,f1,f2,c1,c2,M3,M4,M5,M6,G3,G4,G5,G6,S3,S4,S5,S6,A3,A4,A5,A6,static:start,A7,A8,static:end,c3,c4,c5,c6,after,ctor:start,m3,m4,m5,m6,g3,g4,g5,g6,s3,s4,s5,s6,a3,a4,a5,a6,a7,a8,ctor:end,end"
-
-❌ 65 checks failed
+❌ 49 checks failed
 ```
 
 </details>

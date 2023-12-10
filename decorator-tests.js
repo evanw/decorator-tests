@@ -10,8 +10,7 @@ const tests = {
       assertEq(() => ctx.name, "Foo");
       old = cls;
     };
-    @dec
-    class Foo {
+    @dec class Foo {
     }
     assertEq(() => Foo, old);
   },
@@ -207,9 +206,7 @@ const tests = {
       return Baz;
     };
     log.push(0);
-    @dec1
-    @dec2
-    class Foo {
+    @dec1 @dec2 class Foo {
       constructor() {
         log.push(6);
       }
@@ -226,8 +223,7 @@ const tests = {
       const dec = (cls, ctx) => {
         return null;
       };
-      @dec
-      class Foo {
+      @dec class Foo {
       }
     } catch (err) {
       error = err;
@@ -240,8 +236,7 @@ const tests = {
       const dec = (cls, ctx) => {
         return {};
       };
-      @dec
-      class Foo {
+      @dec class Foo {
       }
     } catch (err) {
       error = err;
@@ -265,8 +260,7 @@ const tests = {
       old = fn;
     };
     class Foo {
-      @dec
-      foo() {
+      @dec foo() {
       }
     }
     assertEq(() => Foo.prototype.foo, old);
@@ -287,8 +281,7 @@ const tests = {
       old = fn;
     };
     class Foo {
-      @dec
-      static foo() {
+      @dec static foo() {
       }
     }
     assertEq(() => Foo.foo, old);
@@ -313,8 +306,7 @@ const tests = {
     };
     let $foo;
     class Foo {
-      @dec
-      #foo() {
+      @dec #foo() {
       }
       static {
         $foo = new Foo().#foo;
@@ -343,8 +335,7 @@ const tests = {
     };
     let $foo;
     class Foo {
-      @dec
-      static #foo() {
+      @dec static #foo() {
       }
       static {
         $foo = this.#foo;
@@ -363,8 +354,7 @@ const tests = {
     };
     class Foo {
       bar = 123;
-      @dec
-      foo() {
+      @dec foo() {
         return this.bar;
       }
     }
@@ -381,8 +371,7 @@ const tests = {
     };
     class Foo {
       static bar = 123;
-      @dec
-      static foo() {
+      @dec static foo() {
         return this.bar;
       }
     }
@@ -400,8 +389,7 @@ const tests = {
     let $foo;
     class Foo {
       bar = 123;
-      @dec
-      #foo() {
+      @dec #foo() {
         return this.bar;
       }
       static {
@@ -422,8 +410,7 @@ const tests = {
     let $foo;
     class Foo {
       static bar = 123;
-      @dec
-      static #foo() {
+      @dec static #foo() {
         return this.bar;
       }
       static {
@@ -455,9 +442,7 @@ const tests = {
     };
     log.push(0);
     class Foo {
-      @dec1
-      @dec2
-      foo() {
+      @dec1 @dec2 foo() {
         return log.push(6);
       }
     }
@@ -489,9 +474,7 @@ const tests = {
     };
     log.push(0);
     class Foo {
-      @dec1
-      @dec2
-      static foo() {
+      @dec1 @dec2 static foo() {
         return log.push(6);
       }
     }
@@ -524,9 +507,7 @@ const tests = {
     log.push(0);
     let $foo;
     class Foo {
-      @dec1
-      @dec2
-      #foo() {
+      @dec1 @dec2 #foo() {
         return log.push(6);
       }
       static {
@@ -562,9 +543,7 @@ const tests = {
     log.push(0);
     let $foo;
     class Foo {
-      @dec1
-      @dec2
-      static #foo() {
+      @dec1 @dec2 static #foo() {
         return log.push(6);
       }
       static {
@@ -584,8 +563,7 @@ const tests = {
         return null;
       };
       class Foo {
-        @dec
-        foo() {
+        @dec foo() {
         }
       }
     } catch (err) {
@@ -600,8 +578,7 @@ const tests = {
         return null;
       };
       class Foo {
-        @dec
-        static foo() {
+        @dec static foo() {
         }
       }
     } catch (err) {
@@ -616,8 +593,7 @@ const tests = {
         return null;
       };
       class Foo {
-        @dec
-        #foo() {
+        @dec #foo() {
         }
       }
     } catch (err) {
@@ -632,8 +608,7 @@ const tests = {
         return null;
       };
       class Foo {
-        @dec
-        static #foo() {
+        @dec static #foo() {
         }
       }
     } catch (err) {
@@ -648,8 +623,7 @@ const tests = {
         return {};
       };
       class Foo {
-        @dec
-        foo() {
+        @dec foo() {
         }
       }
     } catch (err) {
@@ -664,8 +638,7 @@ const tests = {
         return {};
       };
       class Foo {
-        @dec
-        static foo() {
+        @dec static foo() {
         }
       }
     } catch (err) {
@@ -680,8 +653,7 @@ const tests = {
         return {};
       };
       class Foo {
-        @dec
-        #foo() {
+        @dec #foo() {
         }
       }
     } catch (err) {
@@ -696,8 +668,7 @@ const tests = {
         return {};
       };
       class Foo {
-        @dec
-        static #foo() {
+        @dec static #foo() {
         }
       }
     } catch (err) {
@@ -723,8 +694,7 @@ const tests = {
       }, 321);
     };
     class Foo {
-      @dec
-      foo = 123;
+      @dec foo = 123;
     }
     assertEq(() => new Foo().foo, 123);
   },
@@ -745,8 +715,7 @@ const tests = {
       }, 321);
     };
     class Foo {
-      @dec
-      static foo = 123;
+      @dec static foo = 123;
     }
     assertEq(() => Foo.foo, 123);
   },
@@ -771,8 +740,7 @@ const tests = {
     };
     let get$foo;
     class Foo {
-      @dec
-      #foo = 123;
+      @dec #foo = 123;
       static {
         get$foo = (x) => x.#foo;
       }
@@ -800,8 +768,7 @@ const tests = {
     };
     let get$foo;
     class Foo {
-      @dec
-      static #foo = 123;
+      @dec static #foo = 123;
       static {
         get$foo = (x) => x.#foo;
       }
@@ -815,10 +782,8 @@ const tests = {
       return (x) => log.push(x);
     };
     class Foo {
-      @dec
-      foo = 123;
-      @dec
-      bar;
+      @dec foo = 123;
+      @dec bar;
     }
     assertEq(() => log + "", "");
     var obj = new Foo();
@@ -837,10 +802,8 @@ const tests = {
     };
     const fn = (foo, bar) => {
       class Foo {
-        @dec
-        static foo = 123;
-        @dec
-        static bar;
+        @dec static foo = 123;
+        @dec static bar;
       }
       assertEq(() => Foo.foo, foo);
       assertEq(() => Foo.bar, bar);
@@ -859,10 +822,8 @@ const tests = {
     let get$foo;
     let get$bar;
     class Foo {
-      @dec
-      #foo = 123;
-      @dec
-      #bar;
+      @dec #foo = 123;
+      @dec #bar;
       static {
         get$foo = (x) => x.#foo;
         get$bar = (x) => x.#bar;
@@ -887,10 +848,8 @@ const tests = {
       let get$foo;
       let get$bar;
       class Foo {
-        @dec
-        static #foo = 123;
-        @dec
-        static #bar;
+        @dec static #foo = 123;
+        @dec static #bar;
         static {
           get$foo = (x) => x.#foo;
           get$bar = (x) => x.#bar;
@@ -917,9 +876,7 @@ const tests = {
     };
     log.push(0);
     class Foo {
-      @dec1
-      @dec2
-      foo = 123;
+      @dec1 @dec2 foo = 123;
     }
     log.push(3);
     var obj = new Foo();
@@ -939,9 +896,7 @@ const tests = {
     };
     log.push(0);
     class Foo {
-      @dec1
-      @dec2
-      static foo = 123;
+      @dec1 @dec2 static foo = 123;
     }
     log.push(5);
     assertEq(() => Foo.foo, 5);
@@ -960,9 +915,7 @@ const tests = {
     log.push(0);
     let get$foo;
     class Foo {
-      @dec1
-      @dec2
-      #foo = 123;
+      @dec1 @dec2 #foo = 123;
       static {
         get$foo = (x) => x.#foo;
       }
@@ -986,9 +939,7 @@ const tests = {
     log.push(0);
     let get$foo;
     class Foo {
-      @dec1
-      @dec2
-      static #foo = 123;
+      @dec1 @dec2 static #foo = 123;
       static {
         get$foo = (x) => x.#foo;
       }
@@ -1004,8 +955,7 @@ const tests = {
         return null;
       };
       class Foo {
-        @dec
-        foo;
+        @dec foo;
       }
     } catch (err) {
       error = err;
@@ -1019,8 +969,7 @@ const tests = {
         return null;
       };
       class Foo {
-        @dec
-        static foo;
+        @dec static foo;
       }
     } catch (err) {
       error = err;
@@ -1034,8 +983,7 @@ const tests = {
         return null;
       };
       class Foo {
-        @dec
-        #foo;
+        @dec #foo;
       }
     } catch (err) {
       error = err;
@@ -1049,8 +997,7 @@ const tests = {
         return null;
       };
       class Foo {
-        @dec
-        static #foo;
+        @dec static #foo;
       }
     } catch (err) {
       error = err;
@@ -1064,8 +1011,7 @@ const tests = {
         return {};
       };
       class Foo {
-        @dec
-        foo;
+        @dec foo;
       }
     } catch (err) {
       error = err;
@@ -1079,8 +1025,7 @@ const tests = {
         return {};
       };
       class Foo {
-        @dec
-        static foo;
+        @dec static foo;
       }
     } catch (err) {
       error = err;
@@ -1094,8 +1039,7 @@ const tests = {
         return {};
       };
       class Foo {
-        @dec
-        #foo;
+        @dec #foo;
       }
     } catch (err) {
       error = err;
@@ -1109,8 +1053,7 @@ const tests = {
         return {};
       };
       class Foo {
-        @dec
-        static #foo;
+        @dec static #foo;
       }
     } catch (err) {
       error = err;
@@ -1132,8 +1075,7 @@ const tests = {
     };
     class Foo {
       bar = 123;
-      @dec
-      get foo() {
+      @dec get foo() {
         return this.bar;
       }
     }
@@ -1153,8 +1095,7 @@ const tests = {
     };
     class Foo {
       static bar = 123;
-      @dec
-      static get foo() {
+      @dec static get foo() {
         return this.bar;
       }
     }
@@ -1178,8 +1119,7 @@ const tests = {
     let get$foo;
     class Foo {
       #bar = 123;
-      @dec
-      get #foo() {
+      @dec get #foo() {
         return this.#bar;
       }
       static {
@@ -1207,8 +1147,7 @@ const tests = {
     let get$foo;
     class Foo {
       static #bar = 123;
-      @dec
-      static get #foo() {
+      @dec static get #foo() {
         return this.#bar;
       }
       static {
@@ -1228,8 +1167,7 @@ const tests = {
     };
     class Foo {
       bar = 123;
-      @dec
-      get foo() {
+      @dec get foo() {
         return this.bar;
       }
     }
@@ -1246,8 +1184,7 @@ const tests = {
     };
     class Foo {
       static bar = 123;
-      @dec
-      static get foo() {
+      @dec static get foo() {
         return this.bar;
       }
     }
@@ -1265,8 +1202,7 @@ const tests = {
     let get$foo;
     class Foo {
       #bar = 123;
-      @dec
-      get #foo() {
+      @dec get #foo() {
         return this.#bar;
       }
       static {
@@ -1286,8 +1222,7 @@ const tests = {
     let get$foo;
     class Foo {
       static #bar = 123;
-      @dec
-      static get #foo() {
+      @dec static get #foo() {
         return this.#bar;
       }
       static {
@@ -1318,9 +1253,7 @@ const tests = {
     };
     log.push(0);
     class Foo {
-      @dec1
-      @dec2
-      get foo() {
+      @dec1 @dec2 get foo() {
         return log.push(6);
       }
     }
@@ -1352,9 +1285,7 @@ const tests = {
     };
     log.push(0);
     class Foo {
-      @dec1
-      @dec2
-      static get foo() {
+      @dec1 @dec2 static get foo() {
         return log.push(6);
       }
     }
@@ -1387,9 +1318,7 @@ const tests = {
     log.push(0);
     let get$foo;
     class Foo {
-      @dec1
-      @dec2
-      get #foo() {
+      @dec1 @dec2 get #foo() {
         return log.push(6);
       }
       static {
@@ -1424,9 +1353,7 @@ const tests = {
     log.push(0);
     let get$foo;
     class Foo {
-      @dec1
-      @dec2
-      static get #foo() {
+      @dec1 @dec2 static get #foo() {
         return log.push(6);
       }
       static {
@@ -1445,8 +1372,7 @@ const tests = {
         return null;
       };
       class Foo {
-        @dec
-        get foo() {
+        @dec get foo() {
           return;
         }
       }
@@ -1462,8 +1388,7 @@ const tests = {
         return null;
       };
       class Foo {
-        @dec
-        static get foo() {
+        @dec static get foo() {
           return;
         }
       }
@@ -1479,8 +1404,7 @@ const tests = {
         return null;
       };
       class Foo {
-        @dec
-        get #foo() {
+        @dec get #foo() {
           return;
         }
       }
@@ -1496,8 +1420,7 @@ const tests = {
         return null;
       };
       class Foo {
-        @dec
-        static get #foo() {
+        @dec static get #foo() {
           return;
         }
       }
@@ -1513,8 +1436,7 @@ const tests = {
         return {};
       };
       class Foo {
-        @dec
-        get foo() {
+        @dec get foo() {
           return;
         }
       }
@@ -1530,8 +1452,7 @@ const tests = {
         return {};
       };
       class Foo {
-        @dec
-        static get foo() {
+        @dec static get foo() {
           return;
         }
       }
@@ -1547,8 +1468,7 @@ const tests = {
         return {};
       };
       class Foo {
-        @dec
-        get #foo() {
+        @dec get #foo() {
           return;
         }
       }
@@ -1564,8 +1484,7 @@ const tests = {
         return {};
       };
       class Foo {
-        @dec
-        static get #foo() {
+        @dec static get #foo() {
           return;
         }
       }
@@ -1592,8 +1511,7 @@ const tests = {
     };
     class Foo {
       bar = 0;
-      @dec
-      set foo(x) {
+      @dec set foo(x) {
         this.bar = x;
       }
     }
@@ -1618,8 +1536,7 @@ const tests = {
     };
     class Foo {
       static bar = 0;
-      @dec
-      static set foo(x) {
+      @dec static set foo(x) {
         this.bar = x;
       }
     }
@@ -1648,8 +1565,7 @@ const tests = {
     let set$foo;
     class Foo {
       bar = 0;
-      @dec
-      set #foo(x) {
+      @dec set #foo(x) {
         this.bar = x;
       }
       static {
@@ -1684,8 +1600,7 @@ const tests = {
     let set$foo;
     class Foo {
       static bar = 0;
-      @dec
-      static set #foo(x) {
+      @dec static set #foo(x) {
         this.bar = x;
       }
       static {
@@ -1708,8 +1623,7 @@ const tests = {
     };
     class Foo {
       bar = 123;
-      @dec
-      set foo(x) {
+      @dec set foo(x) {
         this.bar = x;
       }
     }
@@ -1728,8 +1642,7 @@ const tests = {
     };
     class Foo {
       static bar = 123;
-      @dec
-      static set foo(x) {
+      @dec static set foo(x) {
         this.bar = x;
       }
     }
@@ -1748,8 +1661,7 @@ const tests = {
     let set$foo;
     class Foo {
       bar = 123;
-      @dec
-      set #foo(x) {
+      @dec set #foo(x) {
         this.bar = x;
       }
       static {
@@ -1773,8 +1685,7 @@ const tests = {
     let set$foo;
     class Foo {
       static bar = 123;
-      @dec
-      static set #foo(x) {
+      @dec static set #foo(x) {
         this.bar = x;
       }
       static {
@@ -1808,9 +1719,7 @@ const tests = {
     };
     log.push(0);
     class Foo {
-      @dec1
-      @dec2
-      set foo(x) {
+      @dec1 @dec2 set foo(x) {
         log.push(6);
       }
     }
@@ -1842,9 +1751,7 @@ const tests = {
     };
     log.push(0);
     class Foo {
-      @dec1
-      @dec2
-      static set foo(x) {
+      @dec1 @dec2 static set foo(x) {
         log.push(6);
       }
     }
@@ -1877,9 +1784,7 @@ const tests = {
     log.push(0);
     let set$foo;
     class Foo {
-      @dec1
-      @dec2
-      set #foo(x) {
+      @dec1 @dec2 set #foo(x) {
         log.push(6);
       }
       static {
@@ -1916,9 +1821,7 @@ const tests = {
     log.push(0);
     let set$foo;
     class Foo {
-      @dec1
-      @dec2
-      static set #foo(x) {
+      @dec1 @dec2 static set #foo(x) {
         log.push(6);
       }
       static {
@@ -1939,8 +1842,7 @@ const tests = {
         return null;
       };
       class Foo {
-        @dec
-        set foo(x) {
+        @dec set foo(x) {
         }
       }
     } catch (err) {
@@ -1955,8 +1857,7 @@ const tests = {
         return null;
       };
       class Foo {
-        @dec
-        static set foo(x) {
+        @dec static set foo(x) {
         }
       }
     } catch (err) {
@@ -1971,8 +1872,7 @@ const tests = {
         return null;
       };
       class Foo {
-        @dec
-        set #foo(x) {
+        @dec set #foo(x) {
         }
       }
     } catch (err) {
@@ -1987,8 +1887,7 @@ const tests = {
         return null;
       };
       class Foo {
-        @dec
-        static set #foo(x) {
+        @dec static set #foo(x) {
         }
       }
     } catch (err) {
@@ -2003,8 +1902,7 @@ const tests = {
         return {};
       };
       class Foo {
-        @dec
-        set foo(x) {
+        @dec set foo(x) {
         }
       }
     } catch (err) {
@@ -2019,8 +1917,7 @@ const tests = {
         return {};
       };
       class Foo {
-        @dec
-        static set foo(x) {
+        @dec static set foo(x) {
         }
       }
     } catch (err) {
@@ -2035,8 +1932,7 @@ const tests = {
         return {};
       };
       class Foo {
-        @dec
-        set #foo(x) {
+        @dec set #foo(x) {
         }
       }
     } catch (err) {
@@ -2051,8 +1947,7 @@ const tests = {
         return {};
       };
       class Foo {
-        @dec
-        static set #foo(x) {
+        @dec static set #foo(x) {
         }
       }
     } catch (err) {
@@ -2079,8 +1974,7 @@ const tests = {
       }, 123);
     };
     class Foo {
-      @dec
-      accessor foo = 0;
+      @dec accessor foo = 0;
     }
     var obj = new Foo();
     obj.foo = 321;
@@ -2104,8 +1998,7 @@ const tests = {
       }, 123);
     };
     class Foo {
-      @dec
-      static accessor foo = 0;
+      @dec static accessor foo = 0;
     }
     Foo.foo = 321;
     assertEq(() => Foo.foo, 321);
@@ -2133,8 +2026,7 @@ const tests = {
     let get$foo;
     let set$foo;
     class Foo {
-      @dec
-      accessor #foo = 0;
+      @dec accessor #foo = 0;
       static {
         get$foo = (x) => x.#foo;
         set$foo = (x, y) => {
@@ -2169,8 +2061,7 @@ const tests = {
     let get$foo;
     let set$foo;
     class Foo {
-      @dec
-      static accessor #foo = 0;
+      @dec static accessor #foo = 0;
       static {
         get$foo = (x) => x.#foo;
         set$foo = (x, y) => {
@@ -2196,8 +2087,7 @@ const tests = {
       return { get, set, init };
     };
     class Foo {
-      @dec
-      accessor foo = 123;
+      @dec accessor foo = 123;
     }
     assertEq(() => Object.getOwnPropertyDescriptor(Foo.prototype, "foo").get, get);
     assertEq(() => Object.getOwnPropertyDescriptor(Foo.prototype, "foo").set, set);
@@ -2220,8 +2110,7 @@ const tests = {
       return { get, set, init };
     };
     class Foo {
-      @dec
-      static accessor foo = 123;
+      @dec static accessor foo = 123;
     }
     assertEq(() => Object.getOwnPropertyDescriptor(Foo, "foo").get, get);
     assertEq(() => Object.getOwnPropertyDescriptor(Foo, "foo").set, set);
@@ -2245,8 +2134,7 @@ const tests = {
     let get$foo;
     let set$foo;
     class Foo {
-      @dec
-      accessor #foo = 123;
+      @dec accessor #foo = 123;
       static {
         get$foo = (x) => x.#foo;
         set$foo = (x, y) => {
@@ -2275,8 +2163,7 @@ const tests = {
     let get$foo;
     let set$foo;
     class Foo {
-      @dec
-      static accessor #foo = 123;
+      @dec static accessor #foo = 123;
       static {
         get$foo = (x) => x.#foo;
         set$foo = (x, y) => {
@@ -2295,8 +2182,7 @@ const tests = {
         return null;
       };
       class Foo {
-        @dec
-        accessor foo;
+        @dec accessor foo;
       }
     } catch (err) {
       error = err;
@@ -2310,8 +2196,7 @@ const tests = {
         return null;
       };
       class Foo {
-        @dec
-        static accessor foo;
+        @dec static accessor foo;
       }
     } catch (err) {
       error = err;
@@ -2325,8 +2210,7 @@ const tests = {
         return null;
       };
       class Foo {
-        @dec
-        accessor #foo;
+        @dec accessor #foo;
       }
     } catch (err) {
       error = err;
@@ -2340,8 +2224,7 @@ const tests = {
         return null;
       };
       class Foo {
-        @dec
-        static accessor #foo;
+        @dec static accessor #foo;
       }
     } catch (err) {
       error = err;
@@ -2378,36 +2261,25 @@ const tests = {
         return Symbol("accessor");
       }
     };
-    @foo(0)
-    class Foo {
-      @foo(1)
-      [computed.method]() {
+    @foo(0) class Foo {
+      @foo(1) [computed.method]() {
       }
-      @foo(3)
-      static [computed.method]() {
+      @foo(3) static [computed.method]() {
       }
-      @foo(5)
-      [computed.field];
-      @foo(7)
-      static [computed.field];
-      @foo(9)
-      get [computed.getter]() {
+      @foo(5) [computed.field];
+      @foo(7) static [computed.field];
+      @foo(9) get [computed.getter]() {
         return;
       }
-      @foo(11)
-      static get [computed.getter]() {
+      @foo(11) static get [computed.getter]() {
         return;
       }
-      @foo(13)
-      set [computed.setter](x) {
+      @foo(13) set [computed.setter](x) {
       }
-      @foo(15)
-      static set [computed.setter](x) {
+      @foo(15) static set [computed.setter](x) {
       }
-      @foo(17)
-      accessor [computed.accessor];
-      @foo(19)
-      static accessor [computed.accessor];
+      @foo(17) accessor [computed.accessor];
+      @foo(19) static accessor [computed.accessor];
     }
     assertEq(() => "" + log, "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20");
   },
@@ -2421,36 +2293,25 @@ const tests = {
       }
     };
     function wrapper() {
-      @(assertEq(() => this.foo(0), void 0), dummy)
-      class Foo {
-        @(assertEq(() => this.foo(1), void 0), dummy)
-        method() {
+      @(assertEq(() => this.foo(0), void 0), dummy) class Foo {
+        @(assertEq(() => this.foo(1), void 0), dummy) method() {
         }
-        @(assertEq(() => this.foo(2), void 0), dummy)
-        static method() {
+        @(assertEq(() => this.foo(2), void 0), dummy) static method() {
         }
-        @(assertEq(() => this.foo(3), void 0), dummy)
-        field;
-        @(assertEq(() => this.foo(4), void 0), dummy)
-        static field;
-        @(assertEq(() => this.foo(5), void 0), dummy)
-        get getter() {
+        @(assertEq(() => this.foo(3), void 0), dummy) field;
+        @(assertEq(() => this.foo(4), void 0), dummy) static field;
+        @(assertEq(() => this.foo(5), void 0), dummy) get getter() {
           return;
         }
-        @(assertEq(() => this.foo(6), void 0), dummy)
-        static get getter() {
+        @(assertEq(() => this.foo(6), void 0), dummy) static get getter() {
           return;
         }
-        @(assertEq(() => this.foo(7), void 0), dummy)
-        set setter(x) {
+        @(assertEq(() => this.foo(7), void 0), dummy) set setter(x) {
         }
-        @(assertEq(() => this.foo(8), void 0), dummy)
-        static set setter(x) {
+        @(assertEq(() => this.foo(8), void 0), dummy) static set setter(x) {
         }
-        @(assertEq(() => this.foo(9), void 0), dummy)
-        accessor accessor;
-        @(assertEq(() => this.foo(10), void 0), dummy)
-        static accessor accessor;
+        @(assertEq(() => this.foo(9), void 0), dummy) accessor accessor;
+        @(assertEq(() => this.foo(10), void 0), dummy) static accessor accessor;
       }
     }
     wrapper.call(ctx);
@@ -2461,36 +2322,25 @@ const tests = {
     const dummy = () => {
     };
     async function wrapper() {
-      @(log.push(await Promise.resolve(0)), dummy)
-      class Foo {
-        @(log.push(await Promise.resolve(1)), dummy)
-        method() {
+      @(log.push(await Promise.resolve(0)), dummy) class Foo {
+        @(log.push(await Promise.resolve(1)), dummy) method() {
         }
-        @(log.push(await Promise.resolve(2)), dummy)
-        static method() {
+        @(log.push(await Promise.resolve(2)), dummy) static method() {
         }
-        @(log.push(await Promise.resolve(3)), dummy)
-        field;
-        @(log.push(await Promise.resolve(4)), dummy)
-        static field;
-        @(log.push(await Promise.resolve(5)), dummy)
-        get getter() {
+        @(log.push(await Promise.resolve(3)), dummy) field;
+        @(log.push(await Promise.resolve(4)), dummy) static field;
+        @(log.push(await Promise.resolve(5)), dummy) get getter() {
           return;
         }
-        @(log.push(await Promise.resolve(6)), dummy)
-        static get getter() {
+        @(log.push(await Promise.resolve(6)), dummy) static get getter() {
           return;
         }
-        @(log.push(await Promise.resolve(7)), dummy)
-        set setter(x) {
+        @(log.push(await Promise.resolve(7)), dummy) set setter(x) {
         }
-        @(log.push(await Promise.resolve(8)), dummy)
-        static set setter(x) {
+        @(log.push(await Promise.resolve(8)), dummy) static set setter(x) {
         }
-        @(log.push(await Promise.resolve(9)), dummy)
-        accessor accessor;
-        @(log.push(await Promise.resolve(10)), dummy)
-        static accessor accessor;
+        @(log.push(await Promise.resolve(9)), dummy) accessor accessor;
+        @(log.push(await Promise.resolve(10)), dummy) static accessor accessor;
       }
     }
     await wrapper();
@@ -2506,36 +2356,25 @@ const tests = {
       }
       static {
         const dummy = this;
-        @dummy.#foo(0)
-        class Foo {
-          @dummy.#foo(1)
-          method() {
+        @dummy.#foo(0) class Foo {
+          @dummy.#foo(1) method() {
           }
-          @dummy.#foo(2)
-          static method() {
+          @dummy.#foo(2) static method() {
           }
-          @dummy.#foo(3)
-          field;
-          @dummy.#foo(4)
-          static field;
-          @dummy.#foo(5)
-          get getter() {
+          @dummy.#foo(3) field;
+          @dummy.#foo(4) static field;
+          @dummy.#foo(5) get getter() {
             return;
           }
-          @dummy.#foo(6)
-          static get getter() {
+          @dummy.#foo(6) static get getter() {
             return;
           }
-          @dummy.#foo(7)
-          set setter(x) {
+          @dummy.#foo(7) set setter(x) {
           }
-          @dummy.#foo(8)
-          static set setter(x) {
+          @dummy.#foo(8) static set setter(x) {
           }
-          @dummy.#foo(9)
-          accessor accessor;
-          @dummy.#foo(10)
-          static accessor accessor;
+          @dummy.#foo(9) accessor accessor;
+          @dummy.#foo(10) static accessor accessor;
         }
       }
     }
@@ -2554,34 +2393,24 @@ const tests = {
         @capture(() => new Foo().#foo + 0)
         class Foo {
           #foo2 = 10;
-          @capture(() => new Foo().#foo2 + 1)
-          method() {
+          @capture(() => new Foo().#foo2 + 1) method() {
           }
-          @capture(() => new Foo().#foo2 + 2)
-          static method() {
+          @capture(() => new Foo().#foo2 + 2) static method() {
           }
-          @capture(() => new Foo().#foo2 + 3)
-          field;
-          @capture(() => new Foo().#foo2 + 4)
-          static field;
-          @capture(() => new Foo().#foo2 + 5)
-          get getter() {
+          @capture(() => new Foo().#foo2 + 3) field;
+          @capture(() => new Foo().#foo2 + 4) static field;
+          @capture(() => new Foo().#foo2 + 5) get getter() {
             return;
           }
-          @capture(() => new Foo().#foo2 + 6)
-          static get getter() {
+          @capture(() => new Foo().#foo2 + 6) static get getter() {
             return;
           }
-          @capture(() => new Foo().#foo2 + 7)
-          set setter(x) {
+          @capture(() => new Foo().#foo2 + 7) set setter(x) {
           }
-          @capture(() => new Foo().#foo2 + 8)
-          static set setter(x) {
+          @capture(() => new Foo().#foo2 + 8) static set setter(x) {
           }
-          @capture(() => new Foo().#foo2 + 9)
-          accessor accessor;
-          @capture(() => new Foo().#foo2 + 10)
-          static accessor accessor;
+          @capture(() => new Foo().#foo2 + 9) accessor accessor;
+          @capture(() => new Foo().#foo2 + 10) static accessor accessor;
         }
       }
     }
@@ -2615,36 +2444,25 @@ const tests = {
       return () => {
       };
     };
-    @capture(() => Foo)
-    class Foo {
-      @capture(() => Foo)
-      method() {
+    @capture(() => Foo) class Foo {
+      @capture(() => Foo) method() {
       }
-      @capture(() => Foo)
-      static method() {
+      @capture(() => Foo) static method() {
       }
-      @capture(() => Foo)
-      field;
-      @capture(() => Foo)
-      static field;
-      @capture(() => Foo)
-      get getter() {
+      @capture(() => Foo) field;
+      @capture(() => Foo) static field;
+      @capture(() => Foo) get getter() {
         return;
       }
-      @capture(() => Foo)
-      static get getter() {
+      @capture(() => Foo) static get getter() {
         return;
       }
-      @capture(() => Foo)
-      set setter(x) {
+      @capture(() => Foo) set setter(x) {
       }
-      @capture(() => Foo)
-      static set setter(x) {
+      @capture(() => Foo) static set setter(x) {
       }
-      @capture(() => Foo)
-      accessor accessor;
-      @capture(() => Foo)
-      static accessor accessor;
+      @capture(() => Foo) accessor accessor;
+      @capture(() => Foo) static accessor accessor;
     }
     const originalFoo = Foo;
     for (const fn of fns) {
@@ -2839,9 +2657,7 @@ const tests = {
       } };
     };
     log.push("start");
-    @classDec1
-    @classDec2
-    class Foo extends (log.push("extends"), Object) {
+    @classDec1 @classDec2 class Foo extends (log.push("extends"), Object) {
       static {
         log.push("static:start");
       }
@@ -2850,44 +2666,24 @@ const tests = {
         super();
         log.push("ctor:end");
       }
-      @methodDec1
-      @methodDec2
-      method() {
+      @methodDec1 @methodDec2 method() {
       }
-      @staticMethodDec1
-      @staticMethodDec2
-      static method() {
+      @staticMethodDec1 @staticMethodDec2 static method() {
       }
-      @fieldDec1
-      @fieldDec2
-      field;
-      @staticFieldDec1
-      @staticFieldDec2
-      static field;
-      @getterDec1
-      @getterDec2
-      get getter() {
+      @fieldDec1 @fieldDec2 field;
+      @staticFieldDec1 @staticFieldDec2 static field;
+      @getterDec1 @getterDec2 get getter() {
         return;
       }
-      @staticGetterDec1
-      @staticGetterDec2
-      static get getter() {
+      @staticGetterDec1 @staticGetterDec2 static get getter() {
         return;
       }
-      @setterDec1
-      @setterDec2
-      set setter(x) {
+      @setterDec1 @setterDec2 set setter(x) {
       }
-      @staticSetterDec1
-      @staticSetterDec2
-      static set getter(x) {
+      @staticSetterDec1 @staticSetterDec2 static set getter(x) {
       }
-      @accessorDec1
-      @accessorDec2
-      accessor accessor;
-      @staticAccessorDec1
-      @staticAccessorDec2
-      static accessor accessor;
+      @accessorDec1 @accessorDec2 accessor accessor;
+      @staticAccessorDec1 @staticAccessorDec2 static accessor accessor;
       static {
         log.push("static:end");
       }

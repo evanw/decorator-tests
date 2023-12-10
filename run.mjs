@@ -27,9 +27,7 @@ await checkBehavior('Babel', `@babel/plugin-proposal-decorators@${require('@babe
   '* Decorators on class expressions do not yet use the correct name: [https://github.com/babel/babel/pull/15122](https://github.com/babel/babel/pull/15122).',
   '* The name provided to decorators on private methods (both static and non-static) is empty.',
   '* The context object property `access` exposes the underlying getter and setter instead of the `Get` and `Set` abstract operations.',
-  '* The context object for fields (both static and non-static) is missing the `addInitializer` method.',
   '* Using a private name within a decorator can cause Babel to emit invalid code containing a syntax error.',
-  '* References to the uninitialized class name within a decorator return `undefined` instead of throwing a `ReferenceError`.',
 ])
 
 // Update README.md
