@@ -1,12 +1,13 @@
 # JavaScript Decorator Tests
 
-This repo contains a single file with many behavioral tests for the upcoming [decorators feature](https://github.com/tc39/proposal-decorators) in JavaScript. It's intended to be easy to use for testing a given JavaScript implementation: just run the file [`decorator-tests.js`](./decorator-tests.js) and see what `console.log` prints (although you may need to comment out some of the tests if your implementation emits code containing syntax errors, which TypeScript and Babel both currently do). The source code for that file is in TypeScript (see [`decorator-tests.ts`](./decorator-tests.ts)) to make authoring the tests easier (e.g. to catch typos). I'm planning to use these tests to help me implement JavaScript decorators for [esbuild](https://github.com/evanw/esbuild).
+This repo contains a single file with many behavioral tests for the upcoming [decorators feature](https://github.com/tc39/proposal-decorators) in JavaScript. It's intended to be easy to use for testing a given JavaScript implementation: just run the file [`decorator-tests.js`](./decorator-tests.js) and see what `console.log` prints (although you may need to comment out some of the tests if your implementation emits code containing syntax errors, which TypeScript currently does). The source code for that file is in TypeScript (see [`decorator-tests.ts`](./decorator-tests.ts)) to make authoring the tests easier (e.g. to catch typos). I'm planning to use these tests to help me implement JavaScript decorators for [esbuild](https://github.com/evanw/esbuild).
 
 Some caveats:
 
 * The specification is still a work in progress, and may be outdated
 * I'm not the author of the specification and I may have misinterpreted it
 * Deviations from the specification by the tools below may be intentional
+* The specification itself doesn't yet have good test coverage (see [this](https://github.com/tc39/test262/issues/3997) and [this](https://github.com/tc39/test262/issues/4042))
 
 You can use `node run.mjs` after `npm install` to run and update the tests below.
 
