@@ -12,7 +12,7 @@ You can use `node run.mjs` after `npm install` to run and update the tests below
 
 ## Test Results
 
-### TypeScript (`typescript@5.3.3`)
+### TypeScript (`typescript@5.4.5`)
 
 Known issues:
 
@@ -105,253 +105,67 @@ Known issues:
 
 </details>
 
-### Babel (`@babel/plugin-proposal-decorators@7.23.5`)
+### Babel (`@babel/plugin-proposal-decorators@7.24.1`)
 
 Known issues:
 
-* Decorators on class expressions do not yet use the correct name: [https://github.com/babel/babel/pull/15122](https://github.com/babel/babel/pull/15122).
-* The name provided to decorators on private methods (both static and non-static) is empty.
-* The context object property `access` exposes the underlying getter and setter instead of the `Get` and `Set` abstract operations.
-* Using a private name within a decorator can cause Babel to emit invalid code containing a syntax error.
+* References to the uninitialized class name within a decorator return `undefined` instead of throwing a `ReferenceError`.
 
 <details>
-<summary>❌ 49 checks failed (click for details)</summary>
+<summary>❌ 10 checks failed (click for details)</summary>
 
 ```
-❌ Class decorators: Basic expression: Property value
-  Code: cls.name
-  Expected: "Foo"
-  Observed: ""
-
-❌ Class decorators: Basic expression: Property value
-  Code: ctx.name
-  Expected: "Foo"
-  Observed: ""
-
-❌ Class decorators: Basic expression: Array binding
-  Code: cls.name
-  Expected: "Foo"
-  Observed: ""
-
-❌ Class decorators: Basic expression: Array binding
-  Code: ctx.name
-  Expected: "Foo"
-  Observed: ""
-
-❌ Class decorators: Basic expression: Object binding
-  Code: cls.name
-  Expected: "Foo"
-  Observed: ""
-
-❌ Class decorators: Basic expression: Object binding
-  Code: ctx.name
-  Expected: "Foo"
-  Observed: ""
-
-❌ Class decorators: Basic expression: Assignment initializer
-  Code: cls.name
-  Expected: "Foo"
-  Observed: ""
-
-❌ Class decorators: Basic expression: Assignment initializer
-  Code: ctx.name
-  Expected: "Foo"
-  Observed: ""
-
-❌ Class decorators: Basic expression: Assignment array binding
-  Code: cls.name
-  Expected: "Foo"
-  Observed: ""
-
-❌ Class decorators: Basic expression: Assignment array binding
-  Code: ctx.name
-  Expected: "Foo"
-  Observed: ""
-
-❌ Class decorators: Basic expression: Assignment object binding
-  Code: cls.name
-  Expected: "Foo"
-  Observed: ""
-
-❌ Class decorators: Basic expression: Assignment object binding
-  Code: ctx.name
-  Expected: "Foo"
-  Observed: ""
-
-❌ Class decorators: Basic expression: Instance field initializer
-  Code: cls.name
-  Expected: "Foo"
-  Observed: ""
-
-❌ Class decorators: Basic expression: Instance field initializer
-  Code: ctx.name
-  Expected: "Foo"
-  Observed: ""
-
-❌ Class decorators: Basic expression: Static field initializer
-  Code: cls.name
-  Expected: "Foo"
-  Observed: ""
-
-❌ Class decorators: Basic expression: Static field initializer
-  Code: ctx.name
-  Expected: "Foo"
-  Observed: ""
-
-❌ Class decorators: Basic expression: Instance auto-accessor initializer
-  Code: cls.name
-  Expected: "Foo"
-  Observed: ""
-
-❌ Class decorators: Basic expression: Instance auto-accessor initializer
-  Code: ctx.name
-  Expected: "Foo"
-  Observed: ""
-
-❌ Class decorators: Basic expression: Static auto-accessor initializer
-  Code: cls.name
-  Expected: "Foo"
-  Observed: ""
-
-❌ Class decorators: Basic expression: Static auto-accessor initializer
-  Code: ctx.name
-  Expected: "Foo"
-  Observed: ""
-
-❌ Method decorators: Basic (private instance method)
-  Code: fn.name
-  Expected: "#foo"
-  Observed: ""
-
-❌ Method decorators: Basic (private static method)
-  Code: fn.name
-  Expected: "#foo"
-  Observed: ""
-
-❌ Getter decorators: Basic (instance getter)
-  Code: ctx.access.get({ foo: 123 })
-  Expected: 123
-  Observed: undefined
-
-❌ Getter decorators: Basic (static getter)
-  Code: ctx.access.get({ foo: 123 })
-  Expected: 123
-  Observed: undefined
-
-❌ Setter decorators: Basic (instance setter)
-  Code: obj2.foo
-  Expected: 123
-  Observed: undefined
-
-❌ Setter decorators: Basic (instance setter)
-  Code: "bar" in obj2
-  Expected: false
-  Observed: true
-
-❌ Setter decorators: Basic (static setter)
-  Code: obj.foo
-  Expected: 123
-  Observed: undefined
-
-❌ Setter decorators: Basic (static setter)
-  Code: "bar" in obj
-  Expected: false
-  Observed: true
-
-❌ Auto-accessor decorators: Basic (instance auto-accessor)
-  Code: ctx.access.get({ foo: 123 })
-  Throws: TypeError: Cannot read private member #A from an object whose class did not declare it
-
-❌ Auto-accessor decorators: Basic (instance auto-accessor)
-  Code: { const obj2 = {}; ctx.access.set(obj2, 123); return obj2.foo; }
-  Throws: TypeError: Cannot write private member #A to an object whose class did not declare it
-
-❌ Auto-accessor decorators: Basic (static auto-accessor)
-  Code: ctx.access.get({ foo: 123 })
-  Throws: TypeError: Cannot read private member #A from an object whose class did not declare it
-
-❌ Auto-accessor decorators: Basic (static auto-accessor)
-  Code: { const obj = {}; ctx.access.set(obj, 123); return obj.foo; }
-  Throws: TypeError: Cannot write private member #A to an object whose class did not declare it
-
-❌ Auto-accessor decorators: Basic (private static auto-accessor)
-  Code: { ctx.access.set(Foo, 123); return get$foo(Foo); }
-  Throws: TypeError: Receiver must be an instance of class Foo
-
-❌ Auto-accessor decorators: Basic (private static auto-accessor)
-  Code: set$foo(Foo, 321)
-  Throws: TypeError: Receiver must be an instance of class Foo
-
-❌ Auto-accessor decorators: Basic (private static auto-accessor)
-  Code: get$foo(Foo)
-  Throws: TypeError: Receiver must be an instance of class Foo
-
-❌ Auto-accessor decorators: Shim (private static auto-accessor)
-  Code: get$foo(Foo)
-  Throws: TypeError: Receiver must be an instance of class Foo
-
-❌ Auto-accessor decorators: Shim (private static auto-accessor)
-  Code: set$foo(Foo, 321)
-  Throws: TypeError: Receiver must be an instance of class Foo
-
-❌ Auto-accessor decorators: Shim (private static auto-accessor)
-  Code: get$foo(Foo)
-  Throws: TypeError: Receiver must be an instance of class Foo
-
-❌ Decorator list evaluation: Inner private name
-  Throws: SyntaxError: Private name "#foo2" must be declared in an enclosing class
+❌ Decorator list evaluation: Class binding
+  Code: error instanceof ReferenceError
+  Expected: true
+  Observed: false
 
 ❌ Decorator list evaluation: Class binding
-  Code: fn()
-  Expected: class
-  Observed: null
+  Code: error instanceof ReferenceError
+  Expected: true
+  Observed: false
 
 ❌ Decorator list evaluation: Class binding
-  Code: fn()
-  Expected: class
-  Observed: null
+  Code: error instanceof ReferenceError
+  Expected: true
+  Observed: false
 
 ❌ Decorator list evaluation: Class binding
-  Code: fn()
-  Expected: class
-  Observed: null
+  Code: error instanceof ReferenceError
+  Expected: true
+  Observed: false
 
 ❌ Decorator list evaluation: Class binding
-  Code: fn()
-  Expected: class
-  Observed: null
+  Code: error instanceof ReferenceError
+  Expected: true
+  Observed: false
 
 ❌ Decorator list evaluation: Class binding
-  Code: fn()
-  Expected: class
-  Observed: null
+  Code: error instanceof ReferenceError
+  Expected: true
+  Observed: false
 
 ❌ Decorator list evaluation: Class binding
-  Code: fn()
-  Expected: class
-  Observed: null
+  Code: error instanceof ReferenceError
+  Expected: true
+  Observed: false
 
 ❌ Decorator list evaluation: Class binding
-  Code: fn()
-  Expected: class
-  Observed: null
+  Code: error instanceof ReferenceError
+  Expected: true
+  Observed: false
 
 ❌ Decorator list evaluation: Class binding
-  Code: fn()
-  Expected: class
-  Observed: null
+  Code: error instanceof ReferenceError
+  Expected: true
+  Observed: false
 
 ❌ Decorator list evaluation: Class binding
-  Code: fn()
-  Expected: class
-  Observed: null
+  Code: error instanceof ReferenceError
+  Expected: true
+  Observed: false
 
-❌ Decorator list evaluation: Class binding
-  Code: fn()
-  Expected: class
-  Observed: null
-
-❌ 49 checks failed
+❌ 10 checks failed
 ```
 
 </details>

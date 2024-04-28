@@ -23,11 +23,8 @@ await checkBehavior('TypeScript', `typescript@${require('typescript/package.json
 
 // Check Babel
 await checkBehavior('Babel', `@babel/plugin-proposal-decorators@${require('@babel/plugin-proposal-decorators/package.json').version}`,
-  babel.transformSync(js, { plugins: [['@babel/plugin-proposal-decorators', { version: '2023-05' }]] }).code, [
-  '* Decorators on class expressions do not yet use the correct name: [https://github.com/babel/babel/pull/15122](https://github.com/babel/babel/pull/15122).',
-  '* The name provided to decorators on private methods (both static and non-static) is empty.',
-  '* The context object property `access` exposes the underlying getter and setter instead of the `Get` and `Set` abstract operations.',
-  '* Using a private name within a decorator can cause Babel to emit invalid code containing a syntax error.',
+  babel.transformSync(js, { plugins: [['@babel/plugin-proposal-decorators', { version: '2023-11' }]] }).code, [
+  '* References to the uninitialized class name within a decorator return `undefined` instead of throwing a `ReferenceError`.',
 ])
 
 // Update README.md

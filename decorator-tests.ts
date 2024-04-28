@@ -2410,15 +2410,17 @@ const tests: Record<string, () => Promise<void> | void> = {
       'F1,F2,' + // For each element e of staticElements if e.[[Kind]] is field
       'f1,f2,' + // For each element e of instanceElements if e.[[Kind]] is field
       'c1,c2,' + // ApplyDecoratorsToClassDefinition
-      'M3,M4,M5,M6,G3,G4,G5,G6,S3,S4,S5,S6,A3,A4,A5,A6,F3,F4,F5,F6,' + // staticExtraInitializers
-      'static:start,' + // staticElements
-      'F7,F8,A7,A8,' + // InitializeFieldOrAccessor
-      'static:end,' + // staticElements
-      'c3,c4,c5,c6,' + // classExtraInitializers
+      'M3,M4,M5,M6,G3,G4,G5,G6,S3,S4,S5,S6,' + // For each element initializer of staticMethodExtraInitializers
+      'static:start,' + // For each element elementRecord of staticElements
+      'F7,F8,F3,F4,F5,F6,' + // InitializeFieldOrAccessor + For each element initializer of elementRecord.[[ExtraInitializers]]
+      'A7,A8,A3,A4,A5,A6,' + // InitializeFieldOrAccessor + For each element initializer of elementRecord.[[ExtraInitializers]]
+      'static:end,' + // For each element elementRecord of staticElements
+      'c3,c4,c5,c6,' + // For each element initializer of classExtraInitializers
       'after,' +
       'ctor:start,' +
-      'm3,m4,m5,m6,g3,g4,g5,g6,s3,s4,s5,s6,a3,a4,a5,a6,f3,f4,f5,f6,' + // instanceExtraInitializers
-      'f7,f8,a7,a8,' + // InitializeFieldOrAccessor
+      'm3,m4,m5,m6,g3,g4,g5,g6,s3,s4,s5,s6,' + // For each element initializer of constructor.[[Initializers]] (a.k.a. instanceMethodExtraInitializers)
+      'f7,f8,f3,f4,f5,f6,' + // InitializeFieldOrAccessor + For each element initializer of elementRecord.[[ExtraInitializers]]
+      'a7,a8,a3,a4,a5,a6,' + // InitializeFieldOrAccessor + For each element initializer of elementRecord.[[ExtraInitializers]]
       'ctor:end,' +
       'end')
   },
