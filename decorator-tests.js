@@ -1192,6 +1192,7 @@ const tests = {
   "Getter decorators: Basic (instance getter)": () => {
     const dec = (fn, ctx) => {
       assertEq(() => typeof fn, "function");
+      assertEq(() => fn.name, "get foo");
       assertEq(() => ctx.kind, "getter");
       assertEq(() => ctx.name, "foo");
       assertEq(() => ctx.static, false);
@@ -1212,6 +1213,7 @@ const tests = {
   "Getter decorators: Basic (static getter)": () => {
     const dec = (fn, ctx) => {
       assertEq(() => typeof fn, "function");
+      assertEq(() => fn.name, "get foo");
       assertEq(() => ctx.kind, "getter");
       assertEq(() => ctx.name, "foo");
       assertEq(() => ctx.static, true);
@@ -1233,6 +1235,7 @@ const tests = {
     let lateAsserts;
     const dec = (fn, ctx) => {
       assertEq(() => typeof fn, "function");
+      assertEq(() => fn.name, "get #foo");
       assertEq(() => ctx.kind, "getter");
       assertEq(() => ctx.name, "#foo");
       assertEq(() => ctx.static, false);
@@ -1261,6 +1264,7 @@ const tests = {
     let lateAsserts;
     const dec = (fn, ctx) => {
       assertEq(() => typeof fn, "function");
+      assertEq(() => fn.name, "get #foo");
       assertEq(() => ctx.kind, "getter");
       assertEq(() => ctx.name, "#foo");
       assertEq(() => ctx.static, true);
@@ -1689,6 +1693,7 @@ const tests = {
   "Setter decorators: Basic (instance setter)": () => {
     const dec = (fn, ctx) => {
       assertEq(() => typeof fn, "function");
+      assertEq(() => fn.name, "set foo");
       assertEq(() => ctx.kind, "setter");
       assertEq(() => ctx.name, "foo");
       assertEq(() => ctx.static, false);
@@ -1714,6 +1719,7 @@ const tests = {
   "Setter decorators: Basic (static setter)": () => {
     const dec = (fn, ctx) => {
       assertEq(() => typeof fn, "function");
+      assertEq(() => fn.name, "set foo");
       assertEq(() => ctx.kind, "setter");
       assertEq(() => ctx.name, "foo");
       assertEq(() => ctx.static, true);
@@ -1739,6 +1745,7 @@ const tests = {
     let lateAsserts;
     const dec = (fn, ctx) => {
       assertEq(() => typeof fn, "function");
+      assertEq(() => fn.name, "set #foo");
       assertEq(() => ctx.kind, "setter");
       assertEq(() => ctx.name, "#foo");
       assertEq(() => ctx.static, false);
@@ -1775,6 +1782,7 @@ const tests = {
     let lateAsserts;
     const dec = (fn, ctx) => {
       assertEq(() => typeof fn, "function");
+      assertEq(() => fn.name, "set #foo");
       assertEq(() => ctx.kind, "setter");
       assertEq(() => ctx.name, "#foo");
       assertEq(() => ctx.static, true);
@@ -2212,6 +2220,8 @@ const tests = {
     const dec = (target, ctx) => {
       assertEq(() => typeof target.get, "function");
       assertEq(() => typeof target.set, "function");
+      assertEq(() => target.get.name, "get foo");
+      assertEq(() => target.set.name, "set foo");
       assertEq(() => ctx.kind, "accessor");
       assertEq(() => ctx.name, "foo");
       assertEq(() => ctx.static, false);
@@ -2236,6 +2246,8 @@ const tests = {
     const dec = (target, ctx) => {
       assertEq(() => typeof target.get, "function");
       assertEq(() => typeof target.set, "function");
+      assertEq(() => target.get.name, "get foo");
+      assertEq(() => target.set.name, "set foo");
       assertEq(() => ctx.kind, "accessor");
       assertEq(() => ctx.name, "foo");
       assertEq(() => ctx.static, true);
@@ -2260,6 +2272,8 @@ const tests = {
     const dec = (target, ctx) => {
       assertEq(() => typeof target.get, "function");
       assertEq(() => typeof target.set, "function");
+      assertEq(() => target.get.name, "get #foo");
+      assertEq(() => target.set.name, "set #foo");
       assertEq(() => ctx.kind, "accessor");
       assertEq(() => ctx.name, "#foo");
       assertEq(() => ctx.static, false);
@@ -2296,6 +2310,8 @@ const tests = {
     const dec = (target, ctx) => {
       assertEq(() => typeof target.get, "function");
       assertEq(() => typeof target.set, "function");
+      assertEq(() => target.get.name, "get #foo");
+      assertEq(() => target.set.name, "set #foo");
       assertEq(() => ctx.kind, "accessor");
       assertEq(() => ctx.name, "#foo");
       assertEq(() => ctx.static, true);

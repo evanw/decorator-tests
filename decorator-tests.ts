@@ -1068,6 +1068,7 @@ const tests: Record<string, () => Promise<void> | void> = {
   'Getter decorators: Basic (instance getter)': () => {
     const dec = (fn: (this: Foo) => number, ctx: ClassGetterDecoratorContext) => {
       assertEq(() => typeof fn, 'function')
+      assertEq(() => fn.name, 'get foo')
       assertEq(() => ctx.kind, 'getter')
       assertEq(() => ctx.name, 'foo')
       assertEq(() => ctx.static, false)
@@ -1086,6 +1087,7 @@ const tests: Record<string, () => Promise<void> | void> = {
   'Getter decorators: Basic (static getter)': () => {
     const dec = (fn: (this: typeof Foo) => number, ctx: ClassGetterDecoratorContext) => {
       assertEq(() => typeof fn, 'function')
+      assertEq(() => fn.name, 'get foo')
       assertEq(() => ctx.kind, 'getter')
       assertEq(() => ctx.name, 'foo')
       assertEq(() => ctx.static, true)
@@ -1105,6 +1107,7 @@ const tests: Record<string, () => Promise<void> | void> = {
     let lateAsserts: () => void
     const dec = (fn: (this: Foo) => number, ctx: ClassGetterDecoratorContext) => {
       assertEq(() => typeof fn, 'function')
+      assertEq(() => fn.name, 'get #foo')
       assertEq(() => ctx.kind, 'getter')
       assertEq(() => ctx.name, '#foo')
       assertEq(() => ctx.static, false)
@@ -1129,6 +1132,7 @@ const tests: Record<string, () => Promise<void> | void> = {
     let lateAsserts: () => void
     const dec = (fn: (this: typeof Foo) => number, ctx: ClassGetterDecoratorContext) => {
       assertEq(() => typeof fn, 'function')
+      assertEq(() => fn.name, 'get #foo')
       assertEq(() => ctx.kind, 'getter')
       assertEq(() => ctx.name, '#foo')
       assertEq(() => ctx.static, true)
@@ -1474,6 +1478,7 @@ const tests: Record<string, () => Promise<void> | void> = {
   'Setter decorators: Basic (instance setter)': () => {
     const dec = (fn: (this: Foo, x: number) => void, ctx: ClassSetterDecoratorContext) => {
       assertEq(() => typeof fn, 'function')
+      assertEq(() => fn.name, 'set foo')
       assertEq(() => ctx.kind, 'setter')
       assertEq(() => ctx.name, 'foo')
       assertEq(() => ctx.static, false)
@@ -1497,6 +1502,7 @@ const tests: Record<string, () => Promise<void> | void> = {
   'Setter decorators: Basic (static setter)': () => {
     const dec = (fn: (this: typeof Foo, x: number) => void, ctx: ClassSetterDecoratorContext) => {
       assertEq(() => typeof fn, 'function')
+      assertEq(() => fn.name, 'set foo')
       assertEq(() => ctx.kind, 'setter')
       assertEq(() => ctx.name, 'foo')
       assertEq(() => ctx.static, true)
@@ -1520,6 +1526,7 @@ const tests: Record<string, () => Promise<void> | void> = {
     let lateAsserts: () => void
     const dec = (fn: (this: Foo, x: number) => void, ctx: ClassSetterDecoratorContext) => {
       assertEq(() => typeof fn, 'function')
+      assertEq(() => fn.name, 'set #foo')
       assertEq(() => ctx.kind, 'setter')
       assertEq(() => ctx.name, '#foo')
       assertEq(() => ctx.static, false)
@@ -1550,6 +1557,7 @@ const tests: Record<string, () => Promise<void> | void> = {
     let lateAsserts: () => void
     const dec = (fn: (this: typeof Foo, x: number) => void, ctx: ClassSetterDecoratorContext) => {
       assertEq(() => typeof fn, 'function')
+      assertEq(() => fn.name, 'set #foo')
       assertEq(() => ctx.kind, 'setter')
       assertEq(() => ctx.name, '#foo')
       assertEq(() => ctx.static, true)
@@ -1906,6 +1914,8 @@ const tests: Record<string, () => Promise<void> | void> = {
     const dec = (target: ClassAccessorDecoratorTarget<Foo, number>, ctx: ClassAccessorDecoratorContext) => {
       assertEq(() => typeof target.get, 'function')
       assertEq(() => typeof target.set, 'function')
+      assertEq(() => target.get.name, 'get foo')
+      assertEq(() => target.set.name, 'set foo')
       assertEq(() => ctx.kind, 'accessor')
       assertEq(() => ctx.name, 'foo')
       assertEq(() => ctx.static, false)
@@ -1930,6 +1940,8 @@ const tests: Record<string, () => Promise<void> | void> = {
     const dec = (target: ClassAccessorDecoratorTarget<typeof Foo, number>, ctx: ClassAccessorDecoratorContext) => {
       assertEq(() => typeof target.get, 'function')
       assertEq(() => typeof target.set, 'function')
+      assertEq(() => target.get.name, 'get foo')
+      assertEq(() => target.set.name, 'set foo')
       assertEq(() => ctx.kind, 'accessor')
       assertEq(() => ctx.name, 'foo')
       assertEq(() => ctx.static, true)
@@ -1954,6 +1966,8 @@ const tests: Record<string, () => Promise<void> | void> = {
     const dec = (target: ClassAccessorDecoratorTarget<Foo, number>, ctx: ClassAccessorDecoratorContext) => {
       assertEq(() => typeof target.get, 'function')
       assertEq(() => typeof target.set, 'function')
+      assertEq(() => target.get.name, 'get #foo')
+      assertEq(() => target.set.name, 'set #foo')
       assertEq(() => ctx.kind, 'accessor')
       assertEq(() => ctx.name, '#foo')
       assertEq(() => ctx.static, false)
@@ -1988,6 +2002,8 @@ const tests: Record<string, () => Promise<void> | void> = {
     const dec = (target: ClassAccessorDecoratorTarget<typeof Foo, number>, ctx: ClassAccessorDecoratorContext) => {
       assertEq(() => typeof target.get, 'function')
       assertEq(() => typeof target.set, 'function')
+      assertEq(() => target.get.name, 'get #foo')
+      assertEq(() => target.set.name, 'set #foo')
       assertEq(() => ctx.kind, 'accessor')
       assertEq(() => ctx.name, '#foo')
       assertEq(() => ctx.static, true)
