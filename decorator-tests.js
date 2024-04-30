@@ -2680,7 +2680,7 @@ const tests = {
       }
       @setterDec1 @setterDec2 set setter(x) {
       }
-      @staticSetterDec1 @staticSetterDec2 static set getter(x) {
+      @staticSetterDec1 @staticSetterDec2 static set setter(x) {
       }
       @accessorDec1 @accessorDec2 accessor accessor;
       @staticAccessorDec1 @staticAccessorDec2 static accessor accessor;

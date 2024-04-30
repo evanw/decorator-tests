@@ -2394,7 +2394,7 @@ const tests: Record<string, () => Promise<void> | void> = {
       @staticGetterDec1 @staticGetterDec2 static get getter(): undefined { return }
 
       @setterDec1 @setterDec2 set setter(x: undefined) { }
-      @staticSetterDec1 @staticSetterDec2 static set getter(x: undefined) { }
+      @staticSetterDec1 @staticSetterDec2 static set setter(x: undefined) { }
 
       @accessorDec1 @accessorDec2 accessor accessor: undefined
       @staticAccessorDec1 @staticAccessorDec2 static accessor accessor: undefined
