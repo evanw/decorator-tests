@@ -225,6 +225,17 @@ const tests: Record<string, () => Promise<void> | void> = {
     }
     assertEq(() => error instanceof TypeError, true)
   },
+  'Class decorators: Extra initializer': () => {
+    let got: { this: any, args: any[] }
+    const dec = (cls: { new(): Foo }, ctx: ClassDecoratorContext): any => {
+      ctx.addInitializer(function (...args) {
+        got = { this: this, args }
+      })
+    }
+    @dec class Foo { }
+    assertEq(() => got.this, Foo)
+    assertEq(() => got.args.length, 0)
+  },
 
   // Method decorators
   'Method decorators: Basic (instance method)': () => {
@@ -595,6 +606,54 @@ const tests: Record<string, () => Promise<void> | void> = {
     }
     assertEq(() => error instanceof TypeError, true)
   },
+  'Method decorators: Extra initializer (instance method)': () => {
+    let got: { this: any, args: any[] }
+    const dec = (fn: (this: Foo) => void, ctx: ClassMethodDecoratorContext): any => {
+      ctx.addInitializer(function (...args) {
+        got = { this: this, args }
+      })
+    }
+    class Foo { @dec foo() { } }
+    assertEq(() => got, undefined)
+    const instance = new Foo
+    assertEq(() => got.this, instance)
+    assertEq(() => got.args.length, 0)
+  },
+  'Method decorators: Extra initializer (static method)': () => {
+    let got: { this: any, args: any[] }
+    const dec = (fn: (this: typeof Foo) => void, ctx: ClassMethodDecoratorContext): any => {
+      ctx.addInitializer(function (...args) {
+        got = { this: this, args }
+      })
+    }
+    class Foo { @dec static foo() { } }
+    assertEq(() => got.this, Foo)
+    assertEq(() => got.args.length, 0)
+  },
+  'Method decorators: Extra initializer (private instance method)': () => {
+    let got: { this: any, args: any[] }
+    const dec = (fn: (this: Foo) => void, ctx: ClassMethodDecoratorContext): any => {
+      ctx.addInitializer(function (...args) {
+        got = { this: this, args }
+      })
+    }
+    class Foo { @dec #foo() { } }
+    assertEq(() => got, undefined)
+    const instance = new Foo
+    assertEq(() => got.this, instance)
+    assertEq(() => got.args.length, 0)
+  },
+  'Method decorators: Extra initializer (private static method)': () => {
+    let got: { this: any, args: any[] }
+    const dec = (fn: (this: typeof Foo) => void, ctx: ClassMethodDecoratorContext): any => {
+      ctx.addInitializer(function (...args) {
+        got = { this: this, args }
+      })
+    }
+    class Foo { @dec static #foo() { } }
+    assertEq(() => got.this, Foo)
+    assertEq(() => got.args.length, 0)
+  },
 
   // Field decorators
   'Field decorators: Basic (instance field)': () => {
@@ -956,6 +1015,54 @@ const tests: Record<string, () => Promise<void> | void> = {
     }
     assertEq(() => error instanceof TypeError, true)
   },
+  'Field decorators: Extra initializer (instance method)': () => {
+    let got: { this: any, args: any[] }
+    const dec = (value: undefined, ctx: ClassFieldDecoratorContext): any => {
+      ctx.addInitializer(function (...args) {
+        got = { this: this, args }
+      })
+    }
+    class Foo { @dec foo: undefined }
+    assertEq(() => got, undefined)
+    const instance = new Foo
+    assertEq(() => got.this, instance)
+    assertEq(() => got.args.length, 0)
+  },
+  'Field decorators: Extra initializer (static method)': () => {
+    let got: { this: any, args: any[] }
+    const dec = (value: undefined, ctx: ClassFieldDecoratorContext): any => {
+      ctx.addInitializer(function (...args) {
+        got = { this: this, args }
+      })
+    }
+    class Foo { @dec static foo: undefined }
+    assertEq(() => got.this, Foo)
+    assertEq(() => got.args.length, 0)
+  },
+  'Field decorators: Extra initializer (private instance method)': () => {
+    let got: { this: any, args: any[] }
+    const dec = (value: undefined, ctx: ClassFieldDecoratorContext): any => {
+      ctx.addInitializer(function (...args) {
+        got = { this: this, args }
+      })
+    }
+    class Foo { @dec #foo: undefined }
+    assertEq(() => got, undefined)
+    const instance = new Foo
+    assertEq(() => got.this, instance)
+    assertEq(() => got.args.length, 0)
+  },
+  'Field decorators: Extra initializer (private static method)': () => {
+    let got: { this: any, args: any[] }
+    const dec = (value: undefined, ctx: ClassFieldDecoratorContext): any => {
+      ctx.addInitializer(function (...args) {
+        got = { this: this, args }
+      })
+    }
+    class Foo { @dec static #foo: undefined }
+    assertEq(() => got.this, Foo)
+    assertEq(() => got.args.length, 0)
+  },
 
   // Getter decorators
   'Getter decorators: Basic (instance getter)': () => {
@@ -1313,6 +1420,54 @@ const tests: Record<string, () => Promise<void> | void> = {
       error = err
     }
     assertEq(() => error instanceof TypeError, true)
+  },
+  'Getter decorators: Extra initializer (instance method)': () => {
+    let got: { this: any, args: any[] }
+    const dec = (fn: (this: Foo) => undefined, ctx: ClassGetterDecoratorContext): any => {
+      ctx.addInitializer(function (...args) {
+        got = { this: this, args }
+      })
+    }
+    class Foo { @dec get foo(): undefined { return } }
+    assertEq(() => got, undefined)
+    const instance = new Foo
+    assertEq(() => got.this, instance)
+    assertEq(() => got.args.length, 0)
+  },
+  'Getter decorators: Extra initializer (static method)': () => {
+    let got: { this: any, args: any[] }
+    const dec = (fn: (this: typeof Foo) => undefined, ctx: ClassGetterDecoratorContext): any => {
+      ctx.addInitializer(function (...args) {
+        got = { this: this, args }
+      })
+    }
+    class Foo { @dec static get foo(): undefined { return } }
+    assertEq(() => got.this, Foo)
+    assertEq(() => got.args.length, 0)
+  },
+  'Getter decorators: Extra initializer (private instance method)': () => {
+    let got: { this: any, args: any[] }
+    const dec = (fn: (this: Foo) => undefined, ctx: ClassGetterDecoratorContext): any => {
+      ctx.addInitializer(function (...args) {
+        got = { this: this, args }
+      })
+    }
+    class Foo { @dec get #foo(): undefined { return } }
+    assertEq(() => got, undefined)
+    const instance = new Foo
+    assertEq(() => got.this, instance)
+    assertEq(() => got.args.length, 0)
+  },
+  'Getter decorators: Extra initializer (private static method)': () => {
+    let got: { this: any, args: any[] }
+    const dec = (fn: (this: typeof Foo) => undefined, ctx: ClassGetterDecoratorContext): any => {
+      ctx.addInitializer(function (...args) {
+        got = { this: this, args }
+      })
+    }
+    class Foo { @dec static get #foo(): undefined { return } }
+    assertEq(() => got.this, Foo)
+    assertEq(() => got.args.length, 0)
   },
 
   // Setter decorators
@@ -1697,6 +1852,54 @@ const tests: Record<string, () => Promise<void> | void> = {
     }
     assertEq(() => error instanceof TypeError, true)
   },
+  'Setter decorators: Extra initializer (instance method)': () => {
+    let got: { this: any, args: any[] }
+    const dec = (fn: (this: Foo, x: undefined) => void, ctx: ClassSetterDecoratorContext): any => {
+      ctx.addInitializer(function (...args) {
+        got = { this: this, args }
+      })
+    }
+    class Foo { @dec set foo(x: undefined) { } }
+    assertEq(() => got, undefined)
+    const instance = new Foo
+    assertEq(() => got.this, instance)
+    assertEq(() => got.args.length, 0)
+  },
+  'Setter decorators: Extra initializer (static method)': () => {
+    let got: { this: any, args: any[] }
+    const dec = (fn: (this: typeof Foo, x: undefined) => void, ctx: ClassSetterDecoratorContext): any => {
+      ctx.addInitializer(function (...args) {
+        got = { this: this, args }
+      })
+    }
+    class Foo { @dec static set foo(x: undefined) { } }
+    assertEq(() => got.this, Foo)
+    assertEq(() => got.args.length, 0)
+  },
+  'Setter decorators: Extra initializer (private instance method)': () => {
+    let got: { this: any, args: any[] }
+    const dec = (fn: (this: Foo, x: undefined) => void, ctx: ClassSetterDecoratorContext): any => {
+      ctx.addInitializer(function (...args) {
+        got = { this: this, args }
+      })
+    }
+    class Foo { @dec set #foo(x: undefined) { } }
+    assertEq(() => got, undefined)
+    const instance = new Foo
+    assertEq(() => got.this, instance)
+    assertEq(() => got.args.length, 0)
+  },
+  'Setter decorators: Extra initializer (private static method)': () => {
+    let got: { this: any, args: any[] }
+    const dec = (fn: (this: typeof Foo, x: undefined) => void, ctx: ClassSetterDecoratorContext): any => {
+      ctx.addInitializer(function (...args) {
+        got = { this: this, args }
+      })
+    }
+    class Foo { @dec static set #foo(x: undefined) { } }
+    assertEq(() => got.this, Foo)
+    assertEq(() => got.args.length, 0)
+  },
 
   // Auto-accessor decorators
   'Auto-accessor decorators: Basic (instance auto-accessor)': () => {
@@ -1909,7 +2112,7 @@ const tests: Record<string, () => Promise<void> | void> = {
   'Auto-accessor decorators: Return null (static auto-accessor)': () => {
     let error: unknown
     try {
-      const dec = (target: ClassAccessorDecoratorTarget<Foo, undefined>, ctx: ClassAccessorDecoratorContext): any => {
+      const dec = (target: ClassAccessorDecoratorTarget<typeof Foo, undefined>, ctx: ClassAccessorDecoratorContext): any => {
         return null
       }
       class Foo { @dec static accessor foo: undefined }
@@ -1933,7 +2136,7 @@ const tests: Record<string, () => Promise<void> | void> = {
   'Auto-accessor decorators: Return null (private static auto-accessor)': () => {
     let error: unknown
     try {
-      const dec = (target: ClassAccessorDecoratorTarget<Foo, undefined>, ctx: ClassAccessorDecoratorContext): any => {
+      const dec = (target: ClassAccessorDecoratorTarget<typeof Foo, undefined>, ctx: ClassAccessorDecoratorContext): any => {
         return null
       }
       class Foo { @dec static accessor #foo: undefined }
@@ -1941,6 +2144,54 @@ const tests: Record<string, () => Promise<void> | void> = {
       error = err
     }
     assertEq(() => error instanceof TypeError, true)
+  },
+  'Auto-accessor decorators: Extra initializer (instance method)': () => {
+    let got: { this: any, args: any[] }
+    const dec = (target: ClassAccessorDecoratorTarget<Foo, undefined>, ctx: ClassAccessorDecoratorContext): any => {
+      ctx.addInitializer(function (...args) {
+        got = { this: this, args }
+      })
+    }
+    class Foo { @dec accessor foo: undefined }
+    assertEq(() => got, undefined)
+    const instance = new Foo
+    assertEq(() => got.this, instance)
+    assertEq(() => got.args.length, 0)
+  },
+  'Auto-accessor decorators: Extra initializer (static method)': () => {
+    let got: { this: any, args: any[] }
+    const dec = (target: ClassAccessorDecoratorTarget<typeof Foo, undefined>, ctx: ClassAccessorDecoratorContext): any => {
+      ctx.addInitializer(function (...args) {
+        got = { this: this, args }
+      })
+    }
+    class Foo { @dec static accessor foo: undefined }
+    assertEq(() => got.this, Foo)
+    assertEq(() => got.args.length, 0)
+  },
+  'Auto-accessor decorators: Extra initializer (private instance method)': () => {
+    let got: { this: any, args: any[] }
+    const dec = (target: ClassAccessorDecoratorTarget<Foo, undefined>, ctx: ClassAccessorDecoratorContext): any => {
+      ctx.addInitializer(function (...args) {
+        got = { this: this, args }
+      })
+    }
+    class Foo { @dec accessor #foo: undefined }
+    assertEq(() => got, undefined)
+    const instance = new Foo
+    assertEq(() => got.this, instance)
+    assertEq(() => got.args.length, 0)
+  },
+  'Auto-accessor decorators: Extra initializer (private static method)': () => {
+    let got: { this: any, args: any[] }
+    const dec = (target: ClassAccessorDecoratorTarget<typeof Foo, undefined>, ctx: ClassAccessorDecoratorContext): any => {
+      ctx.addInitializer(function (...args) {
+        got = { this: this, args }
+      })
+    }
+    class Foo { @dec static accessor #foo: undefined }
+    assertEq(() => got.this, Foo)
+    assertEq(() => got.args.length, 0)
   },
 
   // Decorator list evaluation

@@ -243,6 +243,18 @@ const tests = {
     }
     assertEq(() => error instanceof TypeError, true);
   },
+  "Class decorators: Extra initializer": () => {
+    let got;
+    const dec = (cls, ctx) => {
+      ctx.addInitializer(function(...args) {
+        got = { this: this, args };
+      });
+    };
+    @dec class Foo {
+    }
+    assertEq(() => got.this, Foo);
+    assertEq(() => got.args.length, 0);
+  },
   // Method decorators
   "Method decorators: Basic (instance method)": () => {
     let old;
@@ -676,6 +688,66 @@ const tests = {
     }
     assertEq(() => error instanceof TypeError, true);
   },
+  "Method decorators: Extra initializer (instance method)": () => {
+    let got;
+    const dec = (fn, ctx) => {
+      ctx.addInitializer(function(...args) {
+        got = { this: this, args };
+      });
+    };
+    class Foo {
+      @dec foo() {
+      }
+    }
+    assertEq(() => got, void 0);
+    const instance = new Foo();
+    assertEq(() => got.this, instance);
+    assertEq(() => got.args.length, 0);
+  },
+  "Method decorators: Extra initializer (static method)": () => {
+    let got;
+    const dec = (fn, ctx) => {
+      ctx.addInitializer(function(...args) {
+        got = { this: this, args };
+      });
+    };
+    class Foo {
+      @dec static foo() {
+      }
+    }
+    assertEq(() => got.this, Foo);
+    assertEq(() => got.args.length, 0);
+  },
+  "Method decorators: Extra initializer (private instance method)": () => {
+    let got;
+    const dec = (fn, ctx) => {
+      ctx.addInitializer(function(...args) {
+        got = { this: this, args };
+      });
+    };
+    class Foo {
+      @dec #foo() {
+      }
+    }
+    assertEq(() => got, void 0);
+    const instance = new Foo();
+    assertEq(() => got.this, instance);
+    assertEq(() => got.args.length, 0);
+  },
+  "Method decorators: Extra initializer (private static method)": () => {
+    let got;
+    const dec = (fn, ctx) => {
+      ctx.addInitializer(function(...args) {
+        got = { this: this, args };
+      });
+    };
+    class Foo {
+      @dec static #foo() {
+      }
+    }
+    assertEq(() => got.this, Foo);
+    assertEq(() => got.args.length, 0);
+  },
   // Field decorators
   "Field decorators: Basic (instance field)": () => {
     const dec = (value, ctx) => {
@@ -1059,6 +1131,62 @@ const tests = {
       error = err;
     }
     assertEq(() => error instanceof TypeError, true);
+  },
+  "Field decorators: Extra initializer (instance method)": () => {
+    let got;
+    const dec = (value, ctx) => {
+      ctx.addInitializer(function(...args) {
+        got = { this: this, args };
+      });
+    };
+    class Foo {
+      @dec foo;
+    }
+    assertEq(() => got, void 0);
+    const instance = new Foo();
+    assertEq(() => got.this, instance);
+    assertEq(() => got.args.length, 0);
+  },
+  "Field decorators: Extra initializer (static method)": () => {
+    let got;
+    const dec = (value, ctx) => {
+      ctx.addInitializer(function(...args) {
+        got = { this: this, args };
+      });
+    };
+    class Foo {
+      @dec static foo;
+    }
+    assertEq(() => got.this, Foo);
+    assertEq(() => got.args.length, 0);
+  },
+  "Field decorators: Extra initializer (private instance method)": () => {
+    let got;
+    const dec = (value, ctx) => {
+      ctx.addInitializer(function(...args) {
+        got = { this: this, args };
+      });
+    };
+    class Foo {
+      @dec #foo;
+    }
+    assertEq(() => got, void 0);
+    const instance = new Foo();
+    assertEq(() => got.this, instance);
+    assertEq(() => got.args.length, 0);
+  },
+  "Field decorators: Extra initializer (private static method)": () => {
+    let got;
+    const dec = (value, ctx) => {
+      ctx.addInitializer(function(...args) {
+        got = { this: this, args };
+      });
+    };
+    class Foo {
+      @dec static #foo;
+    }
+    assertEq(() => got.this, Foo);
+    assertEq(() => got.args.length, 0);
   },
   // Getter decorators
   "Getter decorators: Basic (instance getter)": () => {
@@ -1492,6 +1620,70 @@ const tests = {
       error = err;
     }
     assertEq(() => error instanceof TypeError, true);
+  },
+  "Getter decorators: Extra initializer (instance method)": () => {
+    let got;
+    const dec = (fn, ctx) => {
+      ctx.addInitializer(function(...args) {
+        got = { this: this, args };
+      });
+    };
+    class Foo {
+      @dec get foo() {
+        return;
+      }
+    }
+    assertEq(() => got, void 0);
+    const instance = new Foo();
+    assertEq(() => got.this, instance);
+    assertEq(() => got.args.length, 0);
+  },
+  "Getter decorators: Extra initializer (static method)": () => {
+    let got;
+    const dec = (fn, ctx) => {
+      ctx.addInitializer(function(...args) {
+        got = { this: this, args };
+      });
+    };
+    class Foo {
+      @dec static get foo() {
+        return;
+      }
+    }
+    assertEq(() => got.this, Foo);
+    assertEq(() => got.args.length, 0);
+  },
+  "Getter decorators: Extra initializer (private instance method)": () => {
+    let got;
+    const dec = (fn, ctx) => {
+      ctx.addInitializer(function(...args) {
+        got = { this: this, args };
+      });
+    };
+    class Foo {
+      @dec get #foo() {
+        return;
+      }
+    }
+    assertEq(() => got, void 0);
+    const instance = new Foo();
+    assertEq(() => got.this, instance);
+    assertEq(() => got.args.length, 0);
+  },
+  "Getter decorators: Extra initializer (private static method)": () => {
+    let got;
+    const dec = (fn, ctx) => {
+      ctx.addInitializer(function(...args) {
+        got = { this: this, args };
+      });
+    };
+    class Foo {
+      @dec static get #foo() {
+        return;
+      }
+    }
+    assertEq(() => got.this, Foo);
+    assertEq(() => got.args.length, 0);
   },
   // Setter decorators
   "Setter decorators: Basic (instance setter)": () => {
@@ -1955,6 +2147,66 @@ const tests = {
     }
     assertEq(() => error instanceof TypeError, true);
   },
+  "Setter decorators: Extra initializer (instance method)": () => {
+    let got;
+    const dec = (fn, ctx) => {
+      ctx.addInitializer(function(...args) {
+        got = { this: this, args };
+      });
+    };
+    class Foo {
+      @dec set foo(x) {
+      }
+    }
+    assertEq(() => got, void 0);
+    const instance = new Foo();
+    assertEq(() => got.this, instance);
+    assertEq(() => got.args.length, 0);
+  },
+  "Setter decorators: Extra initializer (static method)": () => {
+    let got;
+    const dec = (fn, ctx) => {
+      ctx.addInitializer(function(...args) {
+        got = { this: this, args };
+      });
+    };
+    class Foo {
+      @dec static set foo(x) {
+      }
+    }
+    assertEq(() => got.this, Foo);
+    assertEq(() => got.args.length, 0);
+  },
+  "Setter decorators: Extra initializer (private instance method)": () => {
+    let got;
+    const dec = (fn, ctx) => {
+      ctx.addInitializer(function(...args) {
+        got = { this: this, args };
+      });
+    };
+    class Foo {
+      @dec set #foo(x) {
+      }
+    }
+    assertEq(() => got, void 0);
+    const instance = new Foo();
+    assertEq(() => got.this, instance);
+    assertEq(() => got.args.length, 0);
+  },
+  "Setter decorators: Extra initializer (private static method)": () => {
+    let got;
+    const dec = (fn, ctx) => {
+      ctx.addInitializer(function(...args) {
+        got = { this: this, args };
+      });
+    };
+    class Foo {
+      @dec static set #foo(x) {
+      }
+    }
+    assertEq(() => got.this, Foo);
+    assertEq(() => got.args.length, 0);
+  },
   // Auto-accessor decorators
   "Auto-accessor decorators: Basic (instance auto-accessor)": () => {
     const dec = (target, ctx) => {
@@ -2230,6 +2482,62 @@ const tests = {
       error = err;
     }
     assertEq(() => error instanceof TypeError, true);
+  },
+  "Auto-accessor decorators: Extra initializer (instance method)": () => {
+    let got;
+    const dec = (target, ctx) => {
+      ctx.addInitializer(function(...args) {
+        got = { this: this, args };
+      });
+    };
+    class Foo {
+      @dec accessor foo;
+    }
+    assertEq(() => got, void 0);
+    const instance = new Foo();
+    assertEq(() => got.this, instance);
+    assertEq(() => got.args.length, 0);
+  },
+  "Auto-accessor decorators: Extra initializer (static method)": () => {
+    let got;
+    const dec = (target, ctx) => {
+      ctx.addInitializer(function(...args) {
+        got = { this: this, args };
+      });
+    };
+    class Foo {
+      @dec static accessor foo;
+    }
+    assertEq(() => got.this, Foo);
+    assertEq(() => got.args.length, 0);
+  },
+  "Auto-accessor decorators: Extra initializer (private instance method)": () => {
+    let got;
+    const dec = (target, ctx) => {
+      ctx.addInitializer(function(...args) {
+        got = { this: this, args };
+      });
+    };
+    class Foo {
+      @dec accessor #foo;
+    }
+    assertEq(() => got, void 0);
+    const instance = new Foo();
+    assertEq(() => got.this, instance);
+    assertEq(() => got.args.length, 0);
+  },
+  "Auto-accessor decorators: Extra initializer (private static method)": () => {
+    let got;
+    const dec = (target, ctx) => {
+      ctx.addInitializer(function(...args) {
+        got = { this: this, args };
+      });
+    };
+    class Foo {
+      @dec static accessor #foo;
+    }
+    assertEq(() => got.this, Foo);
+    assertEq(() => got.args.length, 0);
   },
   // Decorator list evaluation
   "Decorator list evaluation: Computed names": () => {
