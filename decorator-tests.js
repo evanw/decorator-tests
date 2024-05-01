@@ -1132,7 +1132,7 @@ const tests = {
     }
     assertEq(() => error instanceof TypeError, true);
   },
-  "Field decorators: Extra initializer (instance method)": () => {
+  "Field decorators: Extra initializer (instance field)": () => {
     let got;
     const dec = (value, ctx) => {
       ctx.addInitializer(function(...args) {
@@ -1147,7 +1147,7 @@ const tests = {
     assertEq(() => got.this, instance);
     assertEq(() => got.args.length, 0);
   },
-  "Field decorators: Extra initializer (static method)": () => {
+  "Field decorators: Extra initializer (static field)": () => {
     let got;
     const dec = (value, ctx) => {
       ctx.addInitializer(function(...args) {
@@ -1160,7 +1160,7 @@ const tests = {
     assertEq(() => got.this, Foo);
     assertEq(() => got.args.length, 0);
   },
-  "Field decorators: Extra initializer (private instance method)": () => {
+  "Field decorators: Extra initializer (private instance field)": () => {
     let got;
     const dec = (value, ctx) => {
       ctx.addInitializer(function(...args) {
@@ -1175,7 +1175,7 @@ const tests = {
     assertEq(() => got.this, instance);
     assertEq(() => got.args.length, 0);
   },
-  "Field decorators: Extra initializer (private static method)": () => {
+  "Field decorators: Extra initializer (private static field)": () => {
     let got;
     const dec = (value, ctx) => {
       ctx.addInitializer(function(...args) {
@@ -1625,7 +1625,7 @@ const tests = {
     }
     assertEq(() => error instanceof TypeError, true);
   },
-  "Getter decorators: Extra initializer (instance method)": () => {
+  "Getter decorators: Extra initializer (instance getter)": () => {
     let got;
     const dec = (fn, ctx) => {
       ctx.addInitializer(function(...args) {
@@ -1642,7 +1642,7 @@ const tests = {
     assertEq(() => got.this, instance);
     assertEq(() => got.args.length, 0);
   },
-  "Getter decorators: Extra initializer (static method)": () => {
+  "Getter decorators: Extra initializer (static getter)": () => {
     let got;
     const dec = (fn, ctx) => {
       ctx.addInitializer(function(...args) {
@@ -1657,7 +1657,7 @@ const tests = {
     assertEq(() => got.this, Foo);
     assertEq(() => got.args.length, 0);
   },
-  "Getter decorators: Extra initializer (private instance method)": () => {
+  "Getter decorators: Extra initializer (private instance getter)": () => {
     let got;
     const dec = (fn, ctx) => {
       ctx.addInitializer(function(...args) {
@@ -1674,7 +1674,7 @@ const tests = {
     assertEq(() => got.this, instance);
     assertEq(() => got.args.length, 0);
   },
-  "Getter decorators: Extra initializer (private static method)": () => {
+  "Getter decorators: Extra initializer (private static getter)": () => {
     let got;
     const dec = (fn, ctx) => {
       ctx.addInitializer(function(...args) {
@@ -2155,7 +2155,7 @@ const tests = {
     }
     assertEq(() => error instanceof TypeError, true);
   },
-  "Setter decorators: Extra initializer (instance method)": () => {
+  "Setter decorators: Extra initializer (instance setter)": () => {
     let got;
     const dec = (fn, ctx) => {
       ctx.addInitializer(function(...args) {
@@ -2171,7 +2171,7 @@ const tests = {
     assertEq(() => got.this, instance);
     assertEq(() => got.args.length, 0);
   },
-  "Setter decorators: Extra initializer (static method)": () => {
+  "Setter decorators: Extra initializer (static setter)": () => {
     let got;
     const dec = (fn, ctx) => {
       ctx.addInitializer(function(...args) {
@@ -2185,7 +2185,7 @@ const tests = {
     assertEq(() => got.this, Foo);
     assertEq(() => got.args.length, 0);
   },
-  "Setter decorators: Extra initializer (private instance method)": () => {
+  "Setter decorators: Extra initializer (private instance setter)": () => {
     let got;
     const dec = (fn, ctx) => {
       ctx.addInitializer(function(...args) {
@@ -2201,7 +2201,7 @@ const tests = {
     assertEq(() => got.this, instance);
     assertEq(() => got.args.length, 0);
   },
-  "Setter decorators: Extra initializer (private static method)": () => {
+  "Setter decorators: Extra initializer (private static setter)": () => {
     let got;
     const dec = (fn, ctx) => {
       ctx.addInitializer(function(...args) {
@@ -2499,7 +2499,7 @@ const tests = {
     }
     assertEq(() => error instanceof TypeError, true);
   },
-  "Auto-accessor decorators: Extra initializer (instance method)": () => {
+  "Auto-accessor decorators: Extra initializer (instance auto-accessor)": () => {
     let got;
     const dec = (target, ctx) => {
       ctx.addInitializer(function(...args) {
@@ -2514,7 +2514,7 @@ const tests = {
     assertEq(() => got.this, instance);
     assertEq(() => got.args.length, 0);
   },
-  "Auto-accessor decorators: Extra initializer (static method)": () => {
+  "Auto-accessor decorators: Extra initializer (static auto-accessor)": () => {
     let got;
     const dec = (target, ctx) => {
       ctx.addInitializer(function(...args) {
@@ -2527,7 +2527,7 @@ const tests = {
     assertEq(() => got.this, Foo);
     assertEq(() => got.args.length, 0);
   },
-  "Auto-accessor decorators: Extra initializer (private instance method)": () => {
+  "Auto-accessor decorators: Extra initializer (private instance auto-accessor)": () => {
     let got;
     const dec = (target, ctx) => {
       ctx.addInitializer(function(...args) {
@@ -2542,7 +2542,7 @@ const tests = {
     assertEq(() => got.this, instance);
     assertEq(() => got.args.length, 0);
   },
-  "Auto-accessor decorators: Extra initializer (private static method)": () => {
+  "Auto-accessor decorators: Extra initializer (private static auto-accessor)": () => {
     let got;
     const dec = (target, ctx) => {
       ctx.addInitializer(function(...args) {
