@@ -2673,27 +2673,27 @@ const tests = {
         return Symbol("accessor");
       }
     };
-    @foo(0) class Foo {
-      @foo(1) [computed.method]() {
+    @foo(0) class Foo extends (foo(1), Object) {
+      @foo(2) [computed.method]() {
       }
-      @foo(3) static [computed.method]() {
+      @foo(4) static [computed.method]() {
       }
-      @foo(5) [computed.field];
-      @foo(7) static [computed.field];
-      @foo(9) get [computed.getter]() {
+      @foo(6) [computed.field];
+      @foo(8) static [computed.field];
+      @foo(10) get [computed.getter]() {
         return;
       }
-      @foo(11) static get [computed.getter]() {
+      @foo(12) static get [computed.getter]() {
         return;
       }
-      @foo(13) set [computed.setter](x) {
+      @foo(14) set [computed.setter](x) {
       }
-      @foo(15) static set [computed.setter](x) {
+      @foo(16) static set [computed.setter](x) {
       }
-      @foo(17) accessor [computed.accessor];
-      @foo(19) static accessor [computed.accessor];
+      @foo(18) accessor [computed.accessor];
+      @foo(20) static accessor [computed.accessor];
     }
-    assertEq(() => "" + log, "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20");
+    assertEq(() => "" + log, "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21");
   },
   'Decorator list evaluation: "this"': () => {
     const log = [];
@@ -2705,58 +2705,58 @@ const tests = {
       }
     };
     function wrapper() {
-      @(assertEq(() => this.foo(0), void 0), dummy) class Foo {
-        @(assertEq(() => this.foo(1), void 0), dummy) method() {
+      @(assertEq(() => this.foo(0), void 0), dummy) class Foo extends (assertEq(() => this.foo(1), void 0), Object) {
+        @(assertEq(() => this.foo(2), void 0), dummy) method() {
         }
-        @(assertEq(() => this.foo(2), void 0), dummy) static method() {
+        @(assertEq(() => this.foo(3), void 0), dummy) static method() {
         }
-        @(assertEq(() => this.foo(3), void 0), dummy) field;
-        @(assertEq(() => this.foo(4), void 0), dummy) static field;
-        @(assertEq(() => this.foo(5), void 0), dummy) get getter() {
+        @(assertEq(() => this.foo(4), void 0), dummy) field;
+        @(assertEq(() => this.foo(5), void 0), dummy) static field;
+        @(assertEq(() => this.foo(6), void 0), dummy) get getter() {
           return;
         }
-        @(assertEq(() => this.foo(6), void 0), dummy) static get getter() {
+        @(assertEq(() => this.foo(7), void 0), dummy) static get getter() {
           return;
         }
-        @(assertEq(() => this.foo(7), void 0), dummy) set setter(x) {
+        @(assertEq(() => this.foo(8), void 0), dummy) set setter(x) {
         }
-        @(assertEq(() => this.foo(8), void 0), dummy) static set setter(x) {
+        @(assertEq(() => this.foo(9), void 0), dummy) static set setter(x) {
         }
-        @(assertEq(() => this.foo(9), void 0), dummy) accessor accessor;
-        @(assertEq(() => this.foo(10), void 0), dummy) static accessor accessor;
+        @(assertEq(() => this.foo(10), void 0), dummy) accessor accessor;
+        @(assertEq(() => this.foo(11), void 0), dummy) static accessor accessor;
       }
     }
     wrapper.call(ctx);
-    assertEq(() => "" + log, "0,1,2,3,4,5,6,7,8,9,10");
+    assertEq(() => "" + log, "0,1,2,3,4,5,6,7,8,9,10,11");
   },
   'Decorator list evaluation: "await"': async () => {
     const log = [];
     const dummy = () => {
     };
     async function wrapper() {
-      @(log.push(await Promise.resolve(0)), dummy) class Foo {
-        @(log.push(await Promise.resolve(1)), dummy) method() {
+      @(log.push(await Promise.resolve(0)), dummy) class Foo extends (log.push(await Promise.resolve(1)), Object) {
+        @(log.push(await Promise.resolve(2)), dummy) method() {
         }
-        @(log.push(await Promise.resolve(2)), dummy) static method() {
+        @(log.push(await Promise.resolve(3)), dummy) static method() {
         }
-        @(log.push(await Promise.resolve(3)), dummy) field;
-        @(log.push(await Promise.resolve(4)), dummy) static field;
-        @(log.push(await Promise.resolve(5)), dummy) get getter() {
+        @(log.push(await Promise.resolve(4)), dummy) field;
+        @(log.push(await Promise.resolve(5)), dummy) static field;
+        @(log.push(await Promise.resolve(6)), dummy) get getter() {
           return;
         }
-        @(log.push(await Promise.resolve(6)), dummy) static get getter() {
+        @(log.push(await Promise.resolve(7)), dummy) static get getter() {
           return;
         }
-        @(log.push(await Promise.resolve(7)), dummy) set setter(x) {
+        @(log.push(await Promise.resolve(8)), dummy) set setter(x) {
         }
-        @(log.push(await Promise.resolve(8)), dummy) static set setter(x) {
+        @(log.push(await Promise.resolve(9)), dummy) static set setter(x) {
         }
-        @(log.push(await Promise.resolve(9)), dummy) accessor accessor;
-        @(log.push(await Promise.resolve(10)), dummy) static accessor accessor;
+        @(log.push(await Promise.resolve(10)), dummy) accessor accessor;
+        @(log.push(await Promise.resolve(11)), dummy) static accessor accessor;
       }
     }
     await wrapper();
-    assertEq(() => "" + log, "0,1,2,3,4,5,6,7,8,9,10");
+    assertEq(() => "" + log, "0,1,2,3,4,5,6,7,8,9,10,11");
   },
   "Decorator list evaluation: Outer private name": () => {
     const log = [];
@@ -2768,29 +2768,29 @@ const tests = {
       }
       static {
         const dummy = this;
-        @dummy.#foo(0) class Foo {
-          @dummy.#foo(1) method() {
+        @dummy.#foo(0) class Foo extends (dummy.#foo(1), Object) {
+          @dummy.#foo(2) method() {
           }
-          @dummy.#foo(2) static method() {
+          @dummy.#foo(3) static method() {
           }
-          @dummy.#foo(3) field;
-          @dummy.#foo(4) static field;
-          @dummy.#foo(5) get getter() {
+          @dummy.#foo(4) field;
+          @dummy.#foo(5) static field;
+          @dummy.#foo(6) get getter() {
             return;
           }
-          @dummy.#foo(6) static get getter() {
+          @dummy.#foo(7) static get getter() {
             return;
           }
-          @dummy.#foo(7) set setter(x) {
+          @dummy.#foo(8) set setter(x) {
           }
-          @dummy.#foo(8) static set setter(x) {
+          @dummy.#foo(9) static set setter(x) {
           }
-          @dummy.#foo(9) accessor accessor;
-          @dummy.#foo(10) static accessor accessor;
+          @dummy.#foo(10) accessor accessor;
+          @dummy.#foo(11) static accessor accessor;
         }
       }
     }
-    assertEq(() => "" + log, "0,1,2,3,4,5,6,7,8,9,10");
+    assertEq(() => "" + log, "0,1,2,3,4,5,6,7,8,9,10,11");
   },
   "Decorator list evaluation: Inner private name": () => {
     const fns = [];

@@ -26,17 +26,17 @@ Known issues:
 
 ```
 ❌ Decorator list evaluation: "this"
-  Code: _classThis_1.foo(4)
+  Code: _classThis_1.foo(5)
   Throws: TypeError: _classThis_1.foo is not a function
 
 ❌ Decorator list evaluation: "this"
-  Code: _classThis_1.foo(10)
+  Code: _classThis_1.foo(11)
   Throws: TypeError: _classThis_1.foo is not a function
 
 ❌ Decorator list evaluation: "this"
   Code: '' + log
-  Expected: "0,1,2,3,4,5,6,7,8,9,10"
-  Observed: "0,1,2,3,5,6,7,8,9"
+  Expected: "0,1,2,3,4,5,6,7,8,9,10,11"
+  Observed: "0,1,2,3,4,6,7,8,9,10"
 
 ❌ Decorator list evaluation: "await"
   Throws: SyntaxError: "await" can only be used inside an "async" function

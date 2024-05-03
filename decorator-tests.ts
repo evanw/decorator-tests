@@ -2310,24 +2310,26 @@ const tests: Record<string, () => Promise<void> | void> = {
       get accessor() { log.push(log.length); return Symbol('accessor') },
     } as any
 
-    @foo(0) class Foo {
-      @foo(1) [computed.method]() { }
-      @foo(3) static [computed.method]() { }
+    @foo(0) class Foo
+      extends (foo(1), Object)
+    {
+      @foo(2) [computed.method]() { }
+      @foo(4) static [computed.method]() { }
 
-      @foo(5) [computed.field]: undefined
-      @foo(7) static [computed.field]: undefined
+      @foo(6) [computed.field]: undefined
+      @foo(8) static [computed.field]: undefined
 
-      @foo(9) get [computed.getter](): undefined { return }
-      @foo(11) static get [computed.getter](): undefined { return }
+      @foo(10) get [computed.getter](): undefined { return }
+      @foo(12) static get [computed.getter](): undefined { return }
 
-      @foo(13) set [computed.setter](x: undefined) { }
-      @foo(15) static set [computed.setter](x: undefined) { }
+      @foo(14) set [computed.setter](x: undefined) { }
+      @foo(16) static set [computed.setter](x: undefined) { }
 
-      @foo(17) accessor [computed.accessor]: undefined
-      @foo(19) static accessor [computed.accessor]: undefined
+      @foo(18) accessor [computed.accessor]: undefined
+      @foo(20) static accessor [computed.accessor]: undefined
     }
 
-    assertEq(() => '' + log, '0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20')
+    assertEq(() => '' + log, '0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21')
   },
   'Decorator list evaluation: "this"': () => {
     const log: number[] = []
@@ -2339,52 +2341,56 @@ const tests: Record<string, () => Promise<void> | void> = {
     }
 
     function wrapper(this: typeof ctx) {
-      @(assertEq(() => this.foo(0), undefined), dummy) class Foo {
-        @(assertEq(() => this.foo(1), undefined), dummy) method() { }
-        @(assertEq(() => this.foo(2), undefined), dummy) static method() { }
+      @(assertEq(() => this.foo(0), undefined), dummy) class Foo
+        extends (assertEq(() => this.foo(1), undefined), Object)
+      {
+        @(assertEq(() => this.foo(2), undefined), dummy) method() { }
+        @(assertEq(() => this.foo(3), undefined), dummy) static method() { }
 
-        @(assertEq(() => this.foo(3), undefined), dummy) field: undefined
-        @(assertEq(() => this.foo(4), undefined), dummy) static field: undefined
+        @(assertEq(() => this.foo(4), undefined), dummy) field: undefined
+        @(assertEq(() => this.foo(5), undefined), dummy) static field: undefined
 
-        @(assertEq(() => this.foo(5), undefined), dummy) get getter(): undefined { return }
-        @(assertEq(() => this.foo(6), undefined), dummy) static get getter(): undefined { return }
+        @(assertEq(() => this.foo(6), undefined), dummy) get getter(): undefined { return }
+        @(assertEq(() => this.foo(7), undefined), dummy) static get getter(): undefined { return }
 
-        @(assertEq(() => this.foo(7), undefined), dummy) set setter(x: undefined) { }
-        @(assertEq(() => this.foo(8), undefined), dummy) static set setter(x: undefined) { }
+        @(assertEq(() => this.foo(8), undefined), dummy) set setter(x: undefined) { }
+        @(assertEq(() => this.foo(9), undefined), dummy) static set setter(x: undefined) { }
 
-        @(assertEq(() => this.foo(9), undefined), dummy) accessor accessor: undefined
-        @(assertEq(() => this.foo(10), undefined), dummy) static accessor accessor: undefined
+        @(assertEq(() => this.foo(10), undefined), dummy) accessor accessor: undefined
+        @(assertEq(() => this.foo(11), undefined), dummy) static accessor accessor: undefined
       }
     }
 
     wrapper.call(ctx)
-    assertEq(() => '' + log, '0,1,2,3,4,5,6,7,8,9,10')
+    assertEq(() => '' + log, '0,1,2,3,4,5,6,7,8,9,10,11')
   },
   'Decorator list evaluation: "await"': async () => {
     const log: number[] = []
     const dummy: Function = () => { }
 
     async function wrapper() {
-      @(log.push(await Promise.resolve(0)), dummy) class Foo {
-        @(log.push(await Promise.resolve(1)), dummy) method() { }
-        @(log.push(await Promise.resolve(2)), dummy) static method() { }
+      @(log.push(await Promise.resolve(0)), dummy) class Foo
+        extends (log.push(await Promise.resolve(1)), Object)
+      {
+        @(log.push(await Promise.resolve(2)), dummy) method() { }
+        @(log.push(await Promise.resolve(3)), dummy) static method() { }
 
-        @(log.push(await Promise.resolve(3)), dummy) field: undefined
-        @(log.push(await Promise.resolve(4)), dummy) static field: undefined
+        @(log.push(await Promise.resolve(4)), dummy) field: undefined
+        @(log.push(await Promise.resolve(5)), dummy) static field: undefined
 
-        @(log.push(await Promise.resolve(5)), dummy) get getter(): undefined { return }
-        @(log.push(await Promise.resolve(6)), dummy) static get getter(): undefined { return }
+        @(log.push(await Promise.resolve(6)), dummy) get getter(): undefined { return }
+        @(log.push(await Promise.resolve(7)), dummy) static get getter(): undefined { return }
 
-        @(log.push(await Promise.resolve(7)), dummy) set setter(x: undefined) { }
-        @(log.push(await Promise.resolve(8)), dummy) static set setter(x: undefined) { }
+        @(log.push(await Promise.resolve(8)), dummy) set setter(x: undefined) { }
+        @(log.push(await Promise.resolve(9)), dummy) static set setter(x: undefined) { }
 
-        @(log.push(await Promise.resolve(9)), dummy) accessor accessor: undefined
-        @(log.push(await Promise.resolve(10)), dummy) static accessor accessor: undefined
+        @(log.push(await Promise.resolve(10)), dummy) accessor accessor: undefined
+        @(log.push(await Promise.resolve(11)), dummy) static accessor accessor: undefined
       }
     }
 
     await wrapper()
-    assertEq(() => '' + log, '0,1,2,3,4,5,6,7,8,9,10')
+    assertEq(() => '' + log, '0,1,2,3,4,5,6,7,8,9,10,11')
   },
   'Decorator list evaluation: Outer private name': () => {
     const log: number[] = []
@@ -2397,26 +2403,28 @@ const tests: Record<string, () => Promise<void> | void> = {
 
       static {
         const dummy = this
-        @(dummy.#foo(0)) class Foo {
-          @(dummy.#foo(1)) method() { }
-          @(dummy.#foo(2)) static method() { }
+        @(dummy.#foo(0)) class Foo
+          extends (dummy.#foo(1), Object)
+        {
+          @(dummy.#foo(2)) method() { }
+          @(dummy.#foo(3)) static method() { }
 
-          @(dummy.#foo(3)) field: undefined
-          @(dummy.#foo(4)) static field: undefined
+          @(dummy.#foo(4)) field: undefined
+          @(dummy.#foo(5)) static field: undefined
 
-          @(dummy.#foo(5)) get getter(): undefined { return }
-          @(dummy.#foo(6)) static get getter(): undefined { return }
+          @(dummy.#foo(6)) get getter(): undefined { return }
+          @(dummy.#foo(7)) static get getter(): undefined { return }
 
-          @(dummy.#foo(7)) set setter(x: undefined) { }
-          @(dummy.#foo(8)) static set setter(x: undefined) { }
+          @(dummy.#foo(8)) set setter(x: undefined) { }
+          @(dummy.#foo(9)) static set setter(x: undefined) { }
 
-          @(dummy.#foo(9)) accessor accessor: undefined
-          @(dummy.#foo(10)) static accessor accessor: undefined
+          @(dummy.#foo(10)) accessor accessor: undefined
+          @(dummy.#foo(11)) static accessor accessor: undefined
         }
       }
     }
 
-    assertEq(() => '' + log, '0,1,2,3,4,5,6,7,8,9,10')
+    assertEq(() => '' + log, '0,1,2,3,4,5,6,7,8,9,10,11')
   },
   'Decorator list evaluation: Inner private name': () => {
     const fns: (() => number)[] = []
