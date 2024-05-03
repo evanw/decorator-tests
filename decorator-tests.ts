@@ -239,44 +239,58 @@ const tests: Record<string, () => Promise<void> | void> = {
 
   // Method decorators
   'Method decorators: Basic (instance method)': () => {
-    let old: (this: Foo) => void
-    const dec = (fn: (this: Foo) => void, ctx: ClassMethodDecoratorContext) => {
-      assertEq(() => typeof fn, 'function')
-      assertEq(() => fn.name, 'foo')
-      assertEq(() => ctx.kind, 'method')
-      assertEq(() => ctx.name, 'foo')
-      assertEq(() => ctx.static, false)
-      assertEq(() => ctx.private, false)
-      assertEq(() => ctx.access.has({ foo: false }), true)
-      assertEq(() => ctx.access.has({ bar: true }), false)
-      assertEq(() => (ctx.access.get as any)({ foo: 123 }), 123)
-      assertEq(() => 'set' in ctx.access, false)
-      old = fn
-    }
+    const old: Record<PropertyKey, (this: Foo) => void> = {}
+    const dec = (key: PropertyKey, name: string) =>
+      (fn: (this: Foo) => void, ctx: ClassMethodDecoratorContext) => {
+        assertEq(() => typeof fn, 'function')
+        assertEq(() => fn.name, name)
+        assertEq(() => ctx.kind, 'method')
+        assertEq(() => ctx.name, key)
+        assertEq(() => ctx.static, false)
+        assertEq(() => ctx.private, false)
+        assertEq(() => ctx.access.has({ [key]: false }), true)
+        assertEq(() => ctx.access.has({ bar: true }), false)
+        assertEq(() => (ctx.access.get as any)({ [key]: 123 }), 123)
+        assertEq(() => 'set' in ctx.access, false)
+        old[key] = fn
+      }
+    const bar = Symbol('bar')
+    const baz = Symbol()
     class Foo {
-      @dec foo() { }
+      @dec('foo', 'foo') foo() { }
+      @dec(bar, '[bar]') [bar]() { }
+      @dec(baz, '') [baz]() { }
     }
-    assertEq(() => Foo.prototype.foo, old!)
+    assertEq(() => Foo.prototype.foo, old['foo'])
+    assertEq(() => Foo.prototype[bar], old[bar])
+    assertEq(() => Foo.prototype[baz], old[baz])
   },
   'Method decorators: Basic (static method)': () => {
-    let old: (this: typeof Foo) => void
-    const dec = (fn: (this: typeof Foo) => void, ctx: ClassMethodDecoratorContext) => {
-      assertEq(() => typeof fn, 'function')
-      assertEq(() => fn.name, 'foo')
-      assertEq(() => ctx.kind, 'method')
-      assertEq(() => ctx.name, 'foo')
-      assertEq(() => ctx.static, true)
-      assertEq(() => ctx.private, false)
-      assertEq(() => ctx.access.has({ foo: false }), true)
-      assertEq(() => ctx.access.has({ bar: true }), false)
-      assertEq(() => (ctx.access.get as any)({ foo: 123 }), 123)
-      assertEq(() => 'set' in ctx.access, false)
-      old = fn
-    }
+    const old: Record<PropertyKey, (this: typeof Foo) => void> = {}
+    const dec = (key: PropertyKey, name: string) =>
+      (fn: (this: typeof Foo) => void, ctx: ClassMethodDecoratorContext) => {
+        assertEq(() => typeof fn, 'function')
+        assertEq(() => fn.name, name)
+        assertEq(() => ctx.kind, 'method')
+        assertEq(() => ctx.name, key)
+        assertEq(() => ctx.static, true)
+        assertEq(() => ctx.private, false)
+        assertEq(() => ctx.access.has({ [key]: false }), true)
+        assertEq(() => ctx.access.has({ bar: true }), false)
+        assertEq(() => (ctx.access.get as any)({ [key]: 123 }), 123)
+        assertEq(() => 'set' in ctx.access, false)
+        old[key] = fn
+      }
+    const bar = Symbol('bar')
+    const baz = Symbol()
     class Foo {
-      @dec static foo() { }
+      @dec('foo', 'foo') static foo() { }
+      @dec(bar, '[bar]') static [bar]() { }
+      @dec(baz, '') static [baz]() { }
     }
-    assertEq(() => Foo.foo, old!)
+    assertEq(() => Foo.foo, old['foo'])
+    assertEq(() => Foo[bar], old[bar])
+    assertEq(() => Foo[baz], old[baz])
   },
   'Method decorators: Basic (private instance method)': () => {
     let old: (this: Foo) => void
@@ -657,46 +671,60 @@ const tests: Record<string, () => Promise<void> | void> = {
 
   // Field decorators
   'Field decorators: Basic (instance field)': () => {
-    const dec = (value: undefined, ctx: ClassFieldDecoratorContext) => {
-      assertEq(() => value, undefined)
-      assertEq(() => ctx.kind, 'field')
-      assertEq(() => ctx.name, 'foo')
-      assertEq(() => ctx.static, false)
-      assertEq(() => ctx.private, false)
-      assertEq(() => ctx.access.has({ foo: false }), true)
-      assertEq(() => ctx.access.has({ bar: true }), false)
-      assertEq(() => ctx.access.get({ foo: 123 }), 123)
-      assertEq(() => {
-        const obj: any = {}
-        ctx.access.set(obj, 321)
-        return obj.foo
-      }, 321)
-    }
+    const dec = (key: PropertyKey) =>
+      (value: undefined, ctx: ClassFieldDecoratorContext) => {
+        assertEq(() => value, undefined)
+        assertEq(() => ctx.kind, 'field')
+        assertEq(() => ctx.name, key)
+        assertEq(() => ctx.static, false)
+        assertEq(() => ctx.private, false)
+        assertEq(() => ctx.access.has({ [key]: false }), true)
+        assertEq(() => ctx.access.has({ bar: true }), false)
+        assertEq(() => ctx.access.get({ [key]: 123 }), 123)
+        assertEq(() => {
+          const obj: any = {}
+          ctx.access.set(obj, 321)
+          return obj[key]
+        }, 321)
+      }
+    const bar = Symbol('bar')
+    const baz = Symbol()
     class Foo {
-      @dec foo = 123
+      @dec('foo') foo = 123
+      @dec(bar) [bar] = 123
+      @dec(baz) [baz] = 123
     }
     assertEq(() => new Foo().foo, 123)
+    assertEq(() => new Foo()[bar], 123)
+    assertEq(() => new Foo()[baz], 123)
   },
   'Field decorators: Basic (static field)': () => {
-    const dec = (value: undefined, ctx: ClassFieldDecoratorContext) => {
-      assertEq(() => value, undefined)
-      assertEq(() => ctx.kind, 'field')
-      assertEq(() => ctx.name, 'foo')
-      assertEq(() => ctx.static, true)
-      assertEq(() => ctx.private, false)
-      assertEq(() => ctx.access.has({ foo: false }), true)
-      assertEq(() => ctx.access.has({ bar: true }), false)
-      assertEq(() => ctx.access.get({ foo: 123 }), 123)
-      assertEq(() => {
-        const obj: any = {}
-        ctx.access.set(obj, 321)
-        return obj.foo
-      }, 321)
-    }
+    const dec = (key: PropertyKey) =>
+      (value: undefined, ctx: ClassFieldDecoratorContext) => {
+        assertEq(() => value, undefined)
+        assertEq(() => ctx.kind, 'field')
+        assertEq(() => ctx.name, key)
+        assertEq(() => ctx.static, true)
+        assertEq(() => ctx.private, false)
+        assertEq(() => ctx.access.has({ [key]: false }), true)
+        assertEq(() => ctx.access.has({ bar: true }), false)
+        assertEq(() => ctx.access.get({ [key]: 123 }), 123)
+        assertEq(() => {
+          const obj: any = {}
+          ctx.access.set(obj, 321)
+          return obj[key]
+        }, 321)
+      }
+    const bar = Symbol('bar')
+    const baz = Symbol()
     class Foo {
-      @dec static foo = 123
+      @dec('foo') static foo = 123
+      @dec(bar) static [bar] = 123
+      @dec(baz) static [baz] = 123
     }
     assertEq(() => Foo.foo, 123)
+    assertEq(() => Foo[bar], 123)
+    assertEq(() => Foo[baz], 123)
   },
   'Field decorators: Basic (private instance field)': () => {
     let lateAsserts: () => void
@@ -1066,42 +1094,56 @@ const tests: Record<string, () => Promise<void> | void> = {
 
   // Getter decorators
   'Getter decorators: Basic (instance getter)': () => {
-    const dec = (fn: (this: Foo) => number, ctx: ClassGetterDecoratorContext) => {
-      assertEq(() => typeof fn, 'function')
-      assertEq(() => fn.name, 'get foo')
-      assertEq(() => ctx.kind, 'getter')
-      assertEq(() => ctx.name, 'foo')
-      assertEq(() => ctx.static, false)
-      assertEq(() => ctx.private, false)
-      assertEq(() => ctx.access.has({ foo: false }), true)
-      assertEq(() => ctx.access.has({ bar: true }), false)
-      assertEq(() => ctx.access.get({ foo: 123 }), 123)
-      assertEq(() => 'set' in ctx.access, false)
-    }
+    const dec = (key: PropertyKey, name: string) =>
+      (fn: (this: Foo) => number, ctx: ClassGetterDecoratorContext) => {
+        assertEq(() => typeof fn, 'function')
+        assertEq(() => fn.name, name)
+        assertEq(() => ctx.kind, 'getter')
+        assertEq(() => ctx.name, key)
+        assertEq(() => ctx.static, false)
+        assertEq(() => ctx.private, false)
+        assertEq(() => ctx.access.has({ [key]: false }), true)
+        assertEq(() => ctx.access.has({ bar: true }), false)
+        assertEq(() => ctx.access.get({ [key]: 123 }), 123)
+        assertEq(() => 'set' in ctx.access, false)
+      }
+    const bar = Symbol('bar')
+    const baz = Symbol()
     class Foo {
       bar = 123
-      @dec get foo() { return this.bar }
+      @dec('foo', 'get foo') get foo() { return this.bar }
+      @dec(bar, 'get [bar]') get [bar]() { return this.bar }
+      @dec(baz, 'get ') get [baz]() { return this.bar }
     }
     assertEq(() => new Foo().foo, 123)
+    assertEq(() => new Foo()[bar], 123)
+    assertEq(() => new Foo()[baz], 123)
   },
   'Getter decorators: Basic (static getter)': () => {
-    const dec = (fn: (this: typeof Foo) => number, ctx: ClassGetterDecoratorContext) => {
-      assertEq(() => typeof fn, 'function')
-      assertEq(() => fn.name, 'get foo')
-      assertEq(() => ctx.kind, 'getter')
-      assertEq(() => ctx.name, 'foo')
-      assertEq(() => ctx.static, true)
-      assertEq(() => ctx.private, false)
-      assertEq(() => ctx.access.has({ foo: false }), true)
-      assertEq(() => ctx.access.has({ bar: true }), false)
-      assertEq(() => ctx.access.get({ foo: 123 }), 123)
-      assertEq(() => 'set' in ctx.access, false)
-    }
+    const dec = (key: PropertyKey, name: string) =>
+      (fn: (this: typeof Foo) => number, ctx: ClassGetterDecoratorContext) => {
+        assertEq(() => typeof fn, 'function')
+        assertEq(() => fn.name, name)
+        assertEq(() => ctx.kind, 'getter')
+        assertEq(() => ctx.name, key)
+        assertEq(() => ctx.static, true)
+        assertEq(() => ctx.private, false)
+        assertEq(() => ctx.access.has({ [key]: false }), true)
+        assertEq(() => ctx.access.has({ bar: true }), false)
+        assertEq(() => ctx.access.get({ [key]: 123 }), 123)
+        assertEq(() => 'set' in ctx.access, false)
+      }
+    const bar = Symbol('bar')
+    const baz = Symbol()
     class Foo {
       static bar = 123
-      @dec static get foo() { return this.bar }
+      @dec('foo', 'get foo') static get foo() { return this.bar }
+      @dec(bar, 'get [bar]') static get [bar]() { return this.bar }
+      @dec(baz, 'get ') static get [baz]() { return this.bar }
     }
     assertEq(() => Foo.foo, 123)
+    assertEq(() => Foo[bar], 123)
+    assertEq(() => Foo[baz], 123)
   },
   'Getter decorators: Basic (private instance getter)': () => {
     let lateAsserts: () => void
@@ -1476,51 +1518,69 @@ const tests: Record<string, () => Promise<void> | void> = {
 
   // Setter decorators
   'Setter decorators: Basic (instance setter)': () => {
-    const dec = (fn: (this: Foo, x: number) => void, ctx: ClassSetterDecoratorContext) => {
-      assertEq(() => typeof fn, 'function')
-      assertEq(() => fn.name, 'set foo')
-      assertEq(() => ctx.kind, 'setter')
-      assertEq(() => ctx.name, 'foo')
-      assertEq(() => ctx.static, false)
-      assertEq(() => ctx.private, false)
-      assertEq(() => ctx.access.has({ foo: false }), true)
-      assertEq(() => ctx.access.has({ bar: true }), false)
-      assertEq(() => 'get' in ctx.access, false)
-      const obj: any = {}
-      ctx.access.set(obj, 123)
-      assertEq(() => obj.foo, 123)
-      assertEq(() => 'bar' in obj, false)
-    }
+    const dec = (key: PropertyKey, name: string) =>
+      (fn: (this: Foo, x: number) => void, ctx: ClassSetterDecoratorContext) => {
+        assertEq(() => typeof fn, 'function')
+        assertEq(() => fn.name, name)
+        assertEq(() => ctx.kind, 'setter')
+        assertEq(() => ctx.name, key)
+        assertEq(() => ctx.static, false)
+        assertEq(() => ctx.private, false)
+        assertEq(() => ctx.access.has({ [key]: false }), true)
+        assertEq(() => ctx.access.has({ bar: true }), false)
+        assertEq(() => 'get' in ctx.access, false)
+        const obj: any = {}
+        ctx.access.set(obj, 123)
+        assertEq(() => obj[key], 123)
+        assertEq(() => 'bar' in obj, false)
+      }
+    const bar = Symbol('bar')
+    const baz = Symbol()
     class Foo {
       bar = 0
-      @dec set foo(x: number) { this.bar = x }
+      @dec('foo', 'set foo') set foo(x: number) { this.bar = x }
+      @dec(bar, 'set [bar]') set [bar](x: number) { this.bar = x }
+      @dec(baz, 'set ') set [baz](x: number) { this.bar = x }
     }
     var obj = new Foo
     obj.foo = 321
     assertEq(() => obj.bar, 321)
+    obj[bar] = 4321
+    assertEq(() => obj.bar, 4321)
+    obj[baz] = 54321
+    assertEq(() => obj.bar, 54321)
   },
   'Setter decorators: Basic (static setter)': () => {
-    const dec = (fn: (this: typeof Foo, x: number) => void, ctx: ClassSetterDecoratorContext) => {
-      assertEq(() => typeof fn, 'function')
-      assertEq(() => fn.name, 'set foo')
-      assertEq(() => ctx.kind, 'setter')
-      assertEq(() => ctx.name, 'foo')
-      assertEq(() => ctx.static, true)
-      assertEq(() => ctx.private, false)
-      assertEq(() => ctx.access.has({ foo: false }), true)
-      assertEq(() => ctx.access.has({ bar: true }), false)
-      assertEq(() => 'get' in ctx.access, false)
-      const obj: any = {}
-      ctx.access.set(obj, 123)
-      assertEq(() => obj.foo, 123)
-      assertEq(() => 'bar' in obj, false)
-    }
+    const dec = (key: PropertyKey, name: string) =>
+      (fn: (this: typeof Foo, x: number) => void, ctx: ClassSetterDecoratorContext) => {
+        assertEq(() => typeof fn, 'function')
+        assertEq(() => fn.name, name)
+        assertEq(() => ctx.kind, 'setter')
+        assertEq(() => ctx.name, key)
+        assertEq(() => ctx.static, true)
+        assertEq(() => ctx.private, false)
+        assertEq(() => ctx.access.has({ [key]: false }), true)
+        assertEq(() => ctx.access.has({ bar: true }), false)
+        assertEq(() => 'get' in ctx.access, false)
+        const obj: any = {}
+        ctx.access.set(obj, 123)
+        assertEq(() => obj[key], 123)
+        assertEq(() => 'bar' in obj, false)
+      }
+    const bar = Symbol('bar')
+    const baz = Symbol()
     class Foo {
       static bar = 0
-      @dec static set foo(x: number) { this.bar = x }
+      @dec('foo', 'set foo') static set foo(x: number) { this.bar = x }
+      @dec(bar, 'set [bar]') static set [bar](x: number) { this.bar = x }
+      @dec(baz, 'set ') static set [baz](x: number) { this.bar = x }
     }
     Foo.foo = 321
     assertEq(() => Foo.bar, 321)
+    Foo[bar] = 4321
+    assertEq(() => Foo.bar, 4321)
+    Foo[baz] = 54321
+    assertEq(() => Foo.bar, 54321)
   },
   'Setter decorators: Basic (private instance setter)': () => {
     let lateAsserts: () => void
@@ -1911,55 +1971,73 @@ const tests: Record<string, () => Promise<void> | void> = {
 
   // Auto-accessor decorators
   'Auto-accessor decorators: Basic (instance auto-accessor)': () => {
-    const dec = (target: ClassAccessorDecoratorTarget<Foo, number>, ctx: ClassAccessorDecoratorContext) => {
-      assertEq(() => typeof target.get, 'function')
-      assertEq(() => typeof target.set, 'function')
-      assertEq(() => target.get.name, 'get foo')
-      assertEq(() => target.set.name, 'set foo')
-      assertEq(() => ctx.kind, 'accessor')
-      assertEq(() => ctx.name, 'foo')
-      assertEq(() => ctx.static, false)
-      assertEq(() => ctx.private, false)
-      assertEq(() => ctx.access.has({ foo: false }), true)
-      assertEq(() => ctx.access.has({ bar: true }), false)
-      assertEq(() => ctx.access.get({ foo: 123 }), 123)
-      assertEq(() => {
-        const obj: any = {}
-        ctx.access.set(obj, 123)
-        return obj.foo
-      }, 123)
-    }
+    const dec = (key: PropertyKey, getName: string, setName: string) =>
+      (target: ClassAccessorDecoratorTarget<Foo, number>, ctx: ClassAccessorDecoratorContext) => {
+        assertEq(() => typeof target.get, 'function')
+        assertEq(() => typeof target.set, 'function')
+        assertEq(() => target.get.name, getName)
+        assertEq(() => target.set.name, setName)
+        assertEq(() => ctx.kind, 'accessor')
+        assertEq(() => ctx.name, key)
+        assertEq(() => ctx.static, false)
+        assertEq(() => ctx.private, false)
+        assertEq(() => ctx.access.has({ [key]: false }), true)
+        assertEq(() => ctx.access.has({ bar: true }), false)
+        assertEq(() => ctx.access.get({ [key]: 123 }), 123)
+        assertEq(() => {
+          const obj: any = {}
+          ctx.access.set(obj, 123)
+          return obj[key]
+        }, 123)
+      }
+    const bar = Symbol('bar')
+    const baz = Symbol()
     class Foo {
-      @dec accessor foo = 0
+      @dec('foo', 'get foo', 'set foo') accessor foo = 0
+      @dec(bar, 'get [bar]', 'set [bar]') accessor [bar] = 0
+      @dec(baz, 'get ', 'set ') accessor [baz] = 0
     }
     var obj = new Foo
     obj.foo = 321
     assertEq(() => obj.foo, 321)
+    obj[bar] = 4321
+    assertEq(() => obj[bar], 4321)
+    obj[baz] = 54321
+    assertEq(() => obj[baz], 54321)
   },
   'Auto-accessor decorators: Basic (static auto-accessor)': () => {
-    const dec = (target: ClassAccessorDecoratorTarget<typeof Foo, number>, ctx: ClassAccessorDecoratorContext) => {
-      assertEq(() => typeof target.get, 'function')
-      assertEq(() => typeof target.set, 'function')
-      assertEq(() => target.get.name, 'get foo')
-      assertEq(() => target.set.name, 'set foo')
-      assertEq(() => ctx.kind, 'accessor')
-      assertEq(() => ctx.name, 'foo')
-      assertEq(() => ctx.static, true)
-      assertEq(() => ctx.private, false)
-      assertEq(() => ctx.access.has({ foo: false }), true)
-      assertEq(() => ctx.access.has({ bar: true }), false)
-      assertEq(() => ctx.access.get({ foo: 123 }), 123)
-      assertEq(() => {
-        const obj: any = {}
-        ctx.access.set(obj, 123)
-        return obj.foo
-      }, 123)
-    }
+    const dec = (key: PropertyKey, getName: string, setName: string) =>
+      (target: ClassAccessorDecoratorTarget<typeof Foo, number>, ctx: ClassAccessorDecoratorContext) => {
+        assertEq(() => typeof target.get, 'function')
+        assertEq(() => typeof target.set, 'function')
+        assertEq(() => target.get.name, getName)
+        assertEq(() => target.set.name, setName)
+        assertEq(() => ctx.kind, 'accessor')
+        assertEq(() => ctx.name, key)
+        assertEq(() => ctx.static, true)
+        assertEq(() => ctx.private, false)
+        assertEq(() => ctx.access.has({ [key]: false }), true)
+        assertEq(() => ctx.access.has({ bar: true }), false)
+        assertEq(() => ctx.access.get({ [key]: 123 }), 123)
+        assertEq(() => {
+          const obj: any = {}
+          ctx.access.set(obj, 123)
+          return obj[key]
+        }, 123)
+      }
+    const bar = Symbol('bar')
+    const baz = Symbol()
     class Foo {
-      @dec static accessor foo = 0
+      @dec('foo', 'get foo', 'set foo') static accessor foo = 0
+      @dec(bar, 'get [bar]', 'set [bar]') static accessor [bar] = 0
+      @dec(baz, 'get ', 'set ') static accessor [baz] = 0
     }
     Foo.foo = 321
     assertEq(() => Foo.foo, 321)
+    Foo[bar] = 4321
+    assertEq(() => Foo[bar], 4321)
+    Foo[baz] = 54321
+    assertEq(() => Foo[baz], 54321)
   },
   'Auto-accessor decorators: Basic (private instance auto-accessor)': () => {
     let lateAsserts: () => void
