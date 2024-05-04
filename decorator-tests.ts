@@ -2554,11 +2554,11 @@ const tests: Record<string, () => Promise<void> | void> = {
       return () => { }
     }
 
-    class Dummy {
-      static #foo = NaN
+    class Outer {
+      static #foo = 0
 
       static {
-        (@(capture(() => (new Foo() as any).#foo + 0))
+        (@(capture(() => Outer.#foo + 0))
           class Foo {
           #foo = 10
 
@@ -2580,24 +2580,16 @@ const tests: Record<string, () => Promise<void> | void> = {
       }
     }
 
-    // Accessing "#foo" in the class decorator should fail. The "#foo" should
-    // refer to the outer "#foo", not the inner "#foo".
-    const firstFn = fns.shift()!
-    assertEq(() => {
-      try {
-        firstFn()
-        throw new Error('Expected a TypeError to be thrown')
-      } catch (err) {
-        if (err instanceof TypeError) return true
-        throw err
-      }
-    }, true)
-
-    // Accessing "#foo" from any of the class element decorators should succeed.
-    // Each "#foo" should refer to the inner "#foo", not the outer "#foo".
+    // Accessing the outer "#foo" on "Outer" from within the class decorator
+    // should succeed. Class decorators are evaluated in the outer private
+    // environment before entering "ClassDefinitionEvaluation".
+    //
+    // Accessing the inner "#foo" on "Foo" from within any of the class element
+    // decorators should also succeed. Class element decorators are evaluated
+    // in the inner private environment inside "ClassDefinitionEvaluation".
     const log: number[] = []
     for (const fn of fns) log.push(fn())
-    assertEq(() => '' + log, '11,12,13,14,15,16,17,18,19,20')
+    assertEq(() => '' + log, '0,11,12,13,14,15,16,17,18,19,20')
   },
   'Decorator list evaluation: Class binding (class statement)': () => {
     const fns: (() => typeof Foo)[] = []
