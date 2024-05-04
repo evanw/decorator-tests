@@ -20,6 +20,7 @@ await checkBehavior('TypeScript', `typescript@${require('typescript/package.json
   '* Using `await` within a decorator can cause TypeScript to emit invalid code containing a syntax error.',
   '* References to the uninitialized class name within a decorator return `undefined` instead of throwing a `ReferenceError`.',
   '* Class expressions incorrectly run some initializers multiple times due to [a compiler bug](https://github.com/microsoft/TypeScript/issues/58436).',
+  `* TypeScript doesn't prevent \`addInitializer\` from adding more initializers after \`decorationState.[[Finished]]\` is true.`,
 ])
 
 // Check Babel
@@ -27,6 +28,7 @@ await checkBehavior('Babel', `@babel/plugin-proposal-decorators@${require('@babe
   () => babel.transformSync(hackToFixBabelBugs(js), { plugins: [['@babel/plugin-proposal-decorators', { version: '2023-11' }]] }).code, [
   '* Decorators on anonymous classes can cause Babel to crash due to [a compiler bug](https://github.com/babel/babel/issues/16473).',
   '* References to the uninitialized class name within a decorator return `undefined` instead of throwing a `ReferenceError`.',
+  `* Babel throws \`Error\` instead of \`TypeError\` when \`addInitializer\` is used after \`decorationState.[[Finished]]\` is true.`,
 ])
 
 // Update README.md

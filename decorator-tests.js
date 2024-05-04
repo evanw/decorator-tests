@@ -263,12 +263,18 @@ const tests = {
         }, TypeError);
     },
     'Class decorators: Extra initializer': () => {
+        let oldAddInitializer;
         let got;
         const dec = (cls, ctx) => {
             ctx.addInitializer(function (...args) {
                 got = { this: this, args };
             });
+            if (oldAddInitializer)
+                assertThrows(() => oldAddInitializer(() => { }), TypeError);
+            assertThrows(() => ctx.addInitializer({}), TypeError);
+            oldAddInitializer = ctx.addInitializer;
         };
+        @dec
         @dec
         class Foo {
         }
@@ -669,13 +675,19 @@ const tests = {
         }, TypeError);
     },
     'Method decorators: Extra initializer (instance method)': () => {
+        let oldAddInitializer;
         let got;
         const dec = (fn, ctx) => {
             ctx.addInitializer(function (...args) {
                 got = { this: this, args };
             });
+            if (oldAddInitializer)
+                assertThrows(() => oldAddInitializer(() => { }), TypeError);
+            assertThrows(() => ctx.addInitializer({}), TypeError);
+            oldAddInitializer = ctx.addInitializer;
         };
         class Foo {
+            @dec
             @dec
             foo() { }
         }
@@ -685,13 +697,19 @@ const tests = {
         assertEq(() => got.args.length, 0);
     },
     'Method decorators: Extra initializer (static method)': () => {
+        let oldAddInitializer;
         let got;
         const dec = (fn, ctx) => {
             ctx.addInitializer(function (...args) {
                 got = { this: this, args };
             });
+            if (oldAddInitializer)
+                assertThrows(() => oldAddInitializer(() => { }), TypeError);
+            assertThrows(() => ctx.addInitializer({}), TypeError);
+            oldAddInitializer = ctx.addInitializer;
         };
         class Foo {
+            @dec
             @dec
             static foo() { }
         }
@@ -699,13 +717,19 @@ const tests = {
         assertEq(() => got.args.length, 0);
     },
     'Method decorators: Extra initializer (private instance method)': () => {
+        let oldAddInitializer;
         let got;
         const dec = (fn, ctx) => {
             ctx.addInitializer(function (...args) {
                 got = { this: this, args };
             });
+            if (oldAddInitializer)
+                assertThrows(() => oldAddInitializer(() => { }), TypeError);
+            assertThrows(() => ctx.addInitializer({}), TypeError);
+            oldAddInitializer = ctx.addInitializer;
         };
         class Foo {
+            @dec
             @dec
             #foo() { }
         }
@@ -715,13 +739,19 @@ const tests = {
         assertEq(() => got.args.length, 0);
     },
     'Method decorators: Extra initializer (private static method)': () => {
+        let oldAddInitializer;
         let got;
         const dec = (fn, ctx) => {
             ctx.addInitializer(function (...args) {
                 got = { this: this, args };
             });
+            if (oldAddInitializer)
+                assertThrows(() => oldAddInitializer(() => { }), TypeError);
+            assertThrows(() => ctx.addInitializer({}), TypeError);
+            oldAddInitializer = ctx.addInitializer;
         };
         class Foo {
+            @dec
             @dec
             static #foo() { }
         }
@@ -1117,13 +1147,19 @@ const tests = {
         }, TypeError);
     },
     'Field decorators: Extra initializer (instance field)': () => {
+        let oldAddInitializer;
         let got;
         const dec = (value, ctx) => {
             ctx.addInitializer(function (...args) {
                 got = { this: this, args };
             });
+            if (oldAddInitializer)
+                assertThrows(() => oldAddInitializer(() => { }), TypeError);
+            assertThrows(() => ctx.addInitializer({}), TypeError);
+            oldAddInitializer = ctx.addInitializer;
         };
         class Foo {
+            @dec
             @dec
             foo;
         }
@@ -1133,13 +1169,19 @@ const tests = {
         assertEq(() => got.args.length, 0);
     },
     'Field decorators: Extra initializer (static field)': () => {
+        let oldAddInitializer;
         let got;
         const dec = (value, ctx) => {
             ctx.addInitializer(function (...args) {
                 got = { this: this, args };
             });
+            if (oldAddInitializer)
+                assertThrows(() => oldAddInitializer(() => { }), TypeError);
+            assertThrows(() => ctx.addInitializer({}), TypeError);
+            oldAddInitializer = ctx.addInitializer;
         };
         class Foo {
+            @dec
             @dec
             static foo;
         }
@@ -1147,13 +1189,19 @@ const tests = {
         assertEq(() => got.args.length, 0);
     },
     'Field decorators: Extra initializer (private instance field)': () => {
+        let oldAddInitializer;
         let got;
         const dec = (value, ctx) => {
             ctx.addInitializer(function (...args) {
                 got = { this: this, args };
             });
+            if (oldAddInitializer)
+                assertThrows(() => oldAddInitializer(() => { }), TypeError);
+            assertThrows(() => ctx.addInitializer({}), TypeError);
+            oldAddInitializer = ctx.addInitializer;
         };
         class Foo {
+            @dec
             @dec
             #foo;
         }
@@ -1163,13 +1211,19 @@ const tests = {
         assertEq(() => got.args.length, 0);
     },
     'Field decorators: Extra initializer (private static field)': () => {
+        let oldAddInitializer;
         let got;
         const dec = (value, ctx) => {
             ctx.addInitializer(function (...args) {
                 got = { this: this, args };
             });
+            if (oldAddInitializer)
+                assertThrows(() => oldAddInitializer(() => { }), TypeError);
+            assertThrows(() => ctx.addInitializer({}), TypeError);
+            oldAddInitializer = ctx.addInitializer;
         };
         class Foo {
+            @dec
             @dec
             static #foo;
         }
@@ -1562,13 +1616,19 @@ const tests = {
         }, TypeError);
     },
     'Getter decorators: Extra initializer (instance getter)': () => {
+        let oldAddInitializer;
         let got;
         const dec = (fn, ctx) => {
             ctx.addInitializer(function (...args) {
                 got = { this: this, args };
             });
+            if (oldAddInitializer)
+                assertThrows(() => oldAddInitializer(() => { }), TypeError);
+            assertThrows(() => ctx.addInitializer({}), TypeError);
+            oldAddInitializer = ctx.addInitializer;
         };
         class Foo {
+            @dec
             @dec
             get foo() { return; }
         }
@@ -1578,13 +1638,19 @@ const tests = {
         assertEq(() => got.args.length, 0);
     },
     'Getter decorators: Extra initializer (static getter)': () => {
+        let oldAddInitializer;
         let got;
         const dec = (fn, ctx) => {
             ctx.addInitializer(function (...args) {
                 got = { this: this, args };
             });
+            if (oldAddInitializer)
+                assertThrows(() => oldAddInitializer(() => { }), TypeError);
+            assertThrows(() => ctx.addInitializer({}), TypeError);
+            oldAddInitializer = ctx.addInitializer;
         };
         class Foo {
+            @dec
             @dec
             static get foo() { return; }
         }
@@ -1592,13 +1658,19 @@ const tests = {
         assertEq(() => got.args.length, 0);
     },
     'Getter decorators: Extra initializer (private instance getter)': () => {
+        let oldAddInitializer;
         let got;
         const dec = (fn, ctx) => {
             ctx.addInitializer(function (...args) {
                 got = { this: this, args };
             });
+            if (oldAddInitializer)
+                assertThrows(() => oldAddInitializer(() => { }), TypeError);
+            assertThrows(() => ctx.addInitializer({}), TypeError);
+            oldAddInitializer = ctx.addInitializer;
         };
         class Foo {
+            @dec
             @dec
             get #foo() { return; }
         }
@@ -1608,13 +1680,19 @@ const tests = {
         assertEq(() => got.args.length, 0);
     },
     'Getter decorators: Extra initializer (private static getter)': () => {
+        let oldAddInitializer;
         let got;
         const dec = (fn, ctx) => {
             ctx.addInitializer(function (...args) {
                 got = { this: this, args };
             });
+            if (oldAddInitializer)
+                assertThrows(() => oldAddInitializer(() => { }), TypeError);
+            assertThrows(() => ctx.addInitializer({}), TypeError);
+            oldAddInitializer = ctx.addInitializer;
         };
         class Foo {
+            @dec
             @dec
             static get #foo() { return; }
         }
@@ -2036,13 +2114,19 @@ const tests = {
         }, TypeError);
     },
     'Setter decorators: Extra initializer (instance setter)': () => {
+        let oldAddInitializer;
         let got;
         const dec = (fn, ctx) => {
             ctx.addInitializer(function (...args) {
                 got = { this: this, args };
             });
+            if (oldAddInitializer)
+                assertThrows(() => oldAddInitializer(() => { }), TypeError);
+            assertThrows(() => ctx.addInitializer({}), TypeError);
+            oldAddInitializer = ctx.addInitializer;
         };
         class Foo {
+            @dec
             @dec
             set foo(x) { }
         }
@@ -2052,13 +2136,19 @@ const tests = {
         assertEq(() => got.args.length, 0);
     },
     'Setter decorators: Extra initializer (static setter)': () => {
+        let oldAddInitializer;
         let got;
         const dec = (fn, ctx) => {
             ctx.addInitializer(function (...args) {
                 got = { this: this, args };
             });
+            if (oldAddInitializer)
+                assertThrows(() => oldAddInitializer(() => { }), TypeError);
+            assertThrows(() => ctx.addInitializer({}), TypeError);
+            oldAddInitializer = ctx.addInitializer;
         };
         class Foo {
+            @dec
             @dec
             static set foo(x) { }
         }
@@ -2066,13 +2156,19 @@ const tests = {
         assertEq(() => got.args.length, 0);
     },
     'Setter decorators: Extra initializer (private instance setter)': () => {
+        let oldAddInitializer;
         let got;
         const dec = (fn, ctx) => {
             ctx.addInitializer(function (...args) {
                 got = { this: this, args };
             });
+            if (oldAddInitializer)
+                assertThrows(() => oldAddInitializer(() => { }), TypeError);
+            assertThrows(() => ctx.addInitializer({}), TypeError);
+            oldAddInitializer = ctx.addInitializer;
         };
         class Foo {
+            @dec
             @dec
             set #foo(x) { }
         }
@@ -2082,13 +2178,19 @@ const tests = {
         assertEq(() => got.args.length, 0);
     },
     'Setter decorators: Extra initializer (private static setter)': () => {
+        let oldAddInitializer;
         let got;
         const dec = (fn, ctx) => {
             ctx.addInitializer(function (...args) {
                 got = { this: this, args };
             });
+            if (oldAddInitializer)
+                assertThrows(() => oldAddInitializer(() => { }), TypeError);
+            assertThrows(() => ctx.addInitializer({}), TypeError);
+            oldAddInitializer = ctx.addInitializer;
         };
         class Foo {
+            @dec
             @dec
             static set #foo(x) { }
         }
@@ -2372,13 +2474,19 @@ const tests = {
         }, TypeError);
     },
     'Auto-accessor decorators: Extra initializer (instance auto-accessor)': () => {
+        let oldAddInitializer;
         let got;
         const dec = (target, ctx) => {
             ctx.addInitializer(function (...args) {
                 got = { this: this, args };
             });
+            if (oldAddInitializer)
+                assertThrows(() => oldAddInitializer(() => { }), TypeError);
+            assertThrows(() => ctx.addInitializer({}), TypeError);
+            oldAddInitializer = ctx.addInitializer;
         };
         class Foo {
+            @dec
             @dec
             accessor foo;
         }
@@ -2388,13 +2496,19 @@ const tests = {
         assertEq(() => got.args.length, 0);
     },
     'Auto-accessor decorators: Extra initializer (static auto-accessor)': () => {
+        let oldAddInitializer;
         let got;
         const dec = (target, ctx) => {
             ctx.addInitializer(function (...args) {
                 got = { this: this, args };
             });
+            if (oldAddInitializer)
+                assertThrows(() => oldAddInitializer(() => { }), TypeError);
+            assertThrows(() => ctx.addInitializer({}), TypeError);
+            oldAddInitializer = ctx.addInitializer;
         };
         class Foo {
+            @dec
             @dec
             static accessor foo;
         }
@@ -2402,13 +2516,19 @@ const tests = {
         assertEq(() => got.args.length, 0);
     },
     'Auto-accessor decorators: Extra initializer (private instance auto-accessor)': () => {
+        let oldAddInitializer;
         let got;
         const dec = (target, ctx) => {
             ctx.addInitializer(function (...args) {
                 got = { this: this, args };
             });
+            if (oldAddInitializer)
+                assertThrows(() => oldAddInitializer(() => { }), TypeError);
+            assertThrows(() => ctx.addInitializer({}), TypeError);
+            oldAddInitializer = ctx.addInitializer;
         };
         class Foo {
+            @dec
             @dec
             accessor #foo;
         }
@@ -2418,13 +2538,19 @@ const tests = {
         assertEq(() => got.args.length, 0);
     },
     'Auto-accessor decorators: Extra initializer (private static auto-accessor)': () => {
+        let oldAddInitializer;
         let got;
         const dec = (target, ctx) => {
             ctx.addInitializer(function (...args) {
                 got = { this: this, args };
             });
+            if (oldAddInitializer)
+                assertThrows(() => oldAddInitializer(() => { }), TypeError);
+            assertThrows(() => ctx.addInitializer({}), TypeError);
+            oldAddInitializer = ctx.addInitializer;
         };
         class Foo {
+            @dec
             @dec
             static accessor #foo;
         }
@@ -3918,12 +4044,12 @@ function assertThrows(callback, expected) {
     let details;
     try {
         let x = callback();
-        details = `  Expected: throws instanceof ${expected.name}\n  Observed: ${prettyPrint(x)}`;
+        details = `  Expected: throws instanceof ${expected.name}\n  Observed: returns ${prettyPrint(x)}`;
     }
     catch (error) {
         if (error instanceof expected)
             return true;
-        details = `  Throws: ${error}`;
+        details = `  Expected: throws instanceof ${expected.name}\n  Observed: throws ${error}`;
     }
     const code = callback.toString().replace(/^\(\) => /, '').replace(/\s+/g, ' ');
     console.log(`❌ ${testName}\n  Code: ${code}\n${details}\n`);
