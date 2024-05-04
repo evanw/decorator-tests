@@ -202,28 +202,20 @@ const tests: Record<string, () => Promise<void> | void> = {
     assertEq(() => log + '', '0,1,2,3,4,5,6,7')
   },
   'Class decorators: Return null': () => {
-    let error: unknown
-    try {
+    assertThrows(() => {
       const dec = (cls: { new(): Foo }, ctx: ClassDecoratorContext): any => {
         return null
       }
       @dec class Foo { }
-    } catch (err) {
-      error = err
-    }
-    assertEq(() => error instanceof TypeError, true)
+    }, TypeError)
   },
   'Class decorators: Return object': () => {
-    let error: unknown
-    try {
+    assertThrows(() => {
       const dec = (cls: { new(): Foo }, ctx: ClassDecoratorContext): any => {
         return {}
       }
       @dec class Foo { }
-    } catch (err) {
-      error = err
-    }
-    assertEq(() => error instanceof TypeError, true)
+    }, TypeError)
   },
   'Class decorators: Extra initializer': () => {
     let got: { this: any, args: any[] }
@@ -525,100 +517,68 @@ const tests: Record<string, () => Promise<void> | void> = {
     assertEq(() => log + '', '0,1,2,3,4,5,6,7')
   },
   'Method decorators: Return null (instance method)': () => {
-    let error: unknown
-    try {
+    assertThrows(() => {
       const dec = (fn: (this: Foo) => void, ctx: ClassMethodDecoratorContext): any => {
         return null
       }
       class Foo { @dec foo() { } }
-    } catch (err) {
-      error = err
-    }
-    assertEq(() => error instanceof TypeError, true)
+    }, TypeError)
   },
   'Method decorators: Return null (static method)': () => {
-    let error: unknown
-    try {
+    assertThrows(() => {
       const dec = (fn: (this: typeof Foo) => void, ctx: ClassMethodDecoratorContext): any => {
         return null
       }
       class Foo { @dec static foo() { } }
-    } catch (err) {
-      error = err
-    }
-    assertEq(() => error instanceof TypeError, true)
+    }, TypeError)
   },
   'Method decorators: Return null (private instance method)': () => {
-    let error: unknown
-    try {
+    assertThrows(() => {
       const dec = (fn: (this: Foo) => void, ctx: ClassMethodDecoratorContext): any => {
         return null
       }
       class Foo { @dec #foo() { } }
-    } catch (err) {
-      error = err
-    }
-    assertEq(() => error instanceof TypeError, true)
+    }, TypeError)
   },
   'Method decorators: Return null (private static method)': () => {
-    let error: unknown
-    try {
+    assertThrows(() => {
       const dec = (fn: (this: typeof Foo) => void, ctx: ClassMethodDecoratorContext): any => {
         return null
       }
       class Foo { @dec static #foo() { } }
-    } catch (err) {
-      error = err
-    }
-    assertEq(() => error instanceof TypeError, true)
+    }, TypeError)
   },
   'Method decorators: Return object (instance method)': () => {
-    let error: unknown
-    try {
+    assertThrows(() => {
       const dec = (fn: (this: Foo) => void, ctx: ClassMethodDecoratorContext): any => {
         return {}
       }
       class Foo { @dec foo() { } }
-    } catch (err) {
-      error = err
-    }
-    assertEq(() => error instanceof TypeError, true)
+    }, TypeError)
   },
   'Method decorators: Return object (static method)': () => {
-    let error: unknown
-    try {
+    assertThrows(() => {
       const dec = (fn: (this: typeof Foo) => void, ctx: ClassMethodDecoratorContext): any => {
         return {}
       }
       class Foo { @dec static foo() { } }
-    } catch (err) {
-      error = err
-    }
-    assertEq(() => error instanceof TypeError, true)
+    }, TypeError)
   },
   'Method decorators: Return object (private instance method)': () => {
-    let error: unknown
-    try {
+    assertThrows(() => {
       const dec = (fn: (this: Foo) => void, ctx: ClassMethodDecoratorContext): any => {
         return {}
       }
       class Foo { @dec #foo() { } }
-    } catch (err) {
-      error = err
-    }
-    assertEq(() => error instanceof TypeError, true)
+    }, TypeError)
   },
   'Method decorators: Return object (private static method)': () => {
-    let error: unknown
-    try {
+    assertThrows(() => {
       const dec = (fn: (this: typeof Foo) => void, ctx: ClassMethodDecoratorContext): any => {
         return {}
       }
       class Foo { @dec static #foo() { } }
-    } catch (err) {
-      error = err
-    }
-    assertEq(() => error instanceof TypeError, true)
+    }, TypeError)
   },
   'Method decorators: Extra initializer (instance method)': () => {
     let got: { this: any, args: any[] }
@@ -948,100 +908,68 @@ const tests: Record<string, () => Promise<void> | void> = {
     assertEq(() => log + '', '0,1,2,3,4,5')
   },
   'Field decorators: Return null (instance field)': () => {
-    let error: unknown
-    try {
+    assertThrows(() => {
       const dec = (value: undefined, ctx: ClassFieldDecoratorContext): any => {
         return null
       }
       class Foo { @dec foo: undefined }
-    } catch (err) {
-      error = err
-    }
-    assertEq(() => error instanceof TypeError, true)
+    }, TypeError)
   },
   'Field decorators: Return null (static field)': () => {
-    let error: unknown
-    try {
+    assertThrows(() => {
       const dec = (value: undefined, ctx: ClassFieldDecoratorContext): any => {
         return null
       }
       class Foo { @dec static foo: undefined }
-    } catch (err) {
-      error = err
-    }
-    assertEq(() => error instanceof TypeError, true)
+    }, TypeError)
   },
   'Field decorators: Return null (private instance field)': () => {
-    let error: unknown
-    try {
+    assertThrows(() => {
       const dec = (value: undefined, ctx: ClassFieldDecoratorContext): any => {
         return null
       }
       class Foo { @dec #foo: undefined }
-    } catch (err) {
-      error = err
-    }
-    assertEq(() => error instanceof TypeError, true)
+    }, TypeError)
   },
   'Field decorators: Return null (private static field)': () => {
-    let error: unknown
-    try {
+    assertThrows(() => {
       const dec = (value: undefined, ctx: ClassFieldDecoratorContext): any => {
         return null
       }
       class Foo { @dec static #foo: undefined }
-    } catch (err) {
-      error = err
-    }
-    assertEq(() => error instanceof TypeError, true)
+    }, TypeError)
   },
   'Field decorators: Return object (instance field)': () => {
-    let error: unknown
-    try {
+    assertThrows(() => {
       const dec = (value: undefined, ctx: ClassFieldDecoratorContext): any => {
         return {}
       }
       class Foo { @dec foo: undefined }
-    } catch (err) {
-      error = err
-    }
-    assertEq(() => error instanceof TypeError, true)
+    }, TypeError)
   },
   'Field decorators: Return object (static field)': () => {
-    let error: unknown
-    try {
+    assertThrows(() => {
       const dec = (value: undefined, ctx: ClassFieldDecoratorContext): any => {
         return {}
       }
       class Foo { @dec static foo: undefined }
-    } catch (err) {
-      error = err
-    }
-    assertEq(() => error instanceof TypeError, true)
+    }, TypeError)
   },
   'Field decorators: Return object (private instance field)': () => {
-    let error: unknown
-    try {
+    assertThrows(() => {
       const dec = (value: undefined, ctx: ClassFieldDecoratorContext): any => {
         return {}
       }
       class Foo { @dec #foo: undefined }
-    } catch (err) {
-      error = err
-    }
-    assertEq(() => error instanceof TypeError, true)
+    }, TypeError)
   },
   'Field decorators: Return object (private static field)': () => {
-    let error: unknown
-    try {
+    assertThrows(() => {
       const dec = (value: undefined, ctx: ClassFieldDecoratorContext): any => {
         return {}
       }
       class Foo { @dec static #foo: undefined }
-    } catch (err) {
-      error = err
-    }
-    assertEq(() => error instanceof TypeError, true)
+    }, TypeError)
   },
   'Field decorators: Extra initializer (instance field)': () => {
     let got: { this: any, args: any[] }
@@ -1372,100 +1300,68 @@ const tests: Record<string, () => Promise<void> | void> = {
     assertEq(() => log + '', '0,1,2,3,4,5,6,7')
   },
   'Getter decorators: Return null (instance getter)': () => {
-    let error: unknown
-    try {
+    assertThrows(() => {
       const dec = (fn: (this: Foo) => undefined, ctx: ClassGetterDecoratorContext): any => {
         return null
       }
       class Foo { @dec get foo(): undefined { return } }
-    } catch (err) {
-      error = err
-    }
-    assertEq(() => error instanceof TypeError, true)
+    }, TypeError)
   },
   'Getter decorators: Return null (static getter)': () => {
-    let error: unknown
-    try {
+    assertThrows(() => {
       const dec = (fn: (this: typeof Foo) => undefined, ctx: ClassGetterDecoratorContext): any => {
         return null
       }
       class Foo { @dec static get foo(): undefined { return } }
-    } catch (err) {
-      error = err
-    }
-    assertEq(() => error instanceof TypeError, true)
+    }, TypeError)
   },
   'Getter decorators: Return null (private instance getter)': () => {
-    let error: unknown
-    try {
+    assertThrows(() => {
       const dec = (fn: (this: Foo) => undefined, ctx: ClassGetterDecoratorContext): any => {
         return null
       }
       class Foo { @dec get #foo(): undefined { return } }
-    } catch (err) {
-      error = err
-    }
-    assertEq(() => error instanceof TypeError, true)
+    }, TypeError)
   },
   'Getter decorators: Return null (private static getter)': () => {
-    let error: unknown
-    try {
+    assertThrows(() => {
       const dec = (fn: (this: typeof Foo) => undefined, ctx: ClassGetterDecoratorContext): any => {
         return null
       }
       class Foo { @dec static get #foo(): undefined { return } }
-    } catch (err) {
-      error = err
-    }
-    assertEq(() => error instanceof TypeError, true)
+    }, TypeError)
   },
   'Getter decorators: Return object (instance getter)': () => {
-    let error: unknown
-    try {
+    assertThrows(() => {
       const dec = (fn: (this: Foo) => undefined, ctx: ClassGetterDecoratorContext): any => {
         return {}
       }
       class Foo { @dec get foo(): undefined { return } }
-    } catch (err) {
-      error = err
-    }
-    assertEq(() => error instanceof TypeError, true)
+    }, TypeError)
   },
   'Getter decorators: Return object (static getter)': () => {
-    let error: unknown
-    try {
+    assertThrows(() => {
       const dec = (fn: (this: typeof Foo) => undefined, ctx: ClassGetterDecoratorContext): any => {
         return {}
       }
       class Foo { @dec static get foo(): undefined { return } }
-    } catch (err) {
-      error = err
-    }
-    assertEq(() => error instanceof TypeError, true)
+    }, TypeError)
   },
   'Getter decorators: Return object (private instance getter)': () => {
-    let error: unknown
-    try {
+    assertThrows(() => {
       const dec = (fn: (this: Foo) => undefined, ctx: ClassGetterDecoratorContext): any => {
         return {}
       }
       class Foo { @dec get #foo(): undefined { return } }
-    } catch (err) {
-      error = err
-    }
-    assertEq(() => error instanceof TypeError, true)
+    }, TypeError)
   },
   'Getter decorators: Return object (private static getter)': () => {
-    let error: unknown
-    try {
+    assertThrows(() => {
       const dec = (fn: (this: typeof Foo) => undefined, ctx: ClassGetterDecoratorContext): any => {
         return {}
       }
       class Foo { @dec static get #foo(): undefined { return } }
-    } catch (err) {
-      error = err
-    }
-    assertEq(() => error instanceof TypeError, true)
+    }, TypeError)
   },
   'Getter decorators: Extra initializer (instance getter)': () => {
     let got: { this: any, args: any[] }
@@ -1825,100 +1721,68 @@ const tests: Record<string, () => Promise<void> | void> = {
     assertEq(() => log + '', '0,1,2,3,4,5,6,7')
   },
   'Setter decorators: Return null (instance setter)': () => {
-    let error: unknown
-    try {
+    assertThrows(() => {
       const dec = (fn: (this: Foo, x: undefined) => void, ctx: ClassSetterDecoratorContext): any => {
         return null
       }
       class Foo { @dec set foo(x: undefined) { } }
-    } catch (err) {
-      error = err
-    }
-    assertEq(() => error instanceof TypeError, true)
+    }, TypeError)
   },
   'Setter decorators: Return null (static setter)': () => {
-    let error: unknown
-    try {
+    assertThrows(() => {
       const dec = (fn: (this: typeof Foo, x: undefined) => void, ctx: ClassSetterDecoratorContext): any => {
         return null
       }
       class Foo { @dec static set foo(x: undefined) { } }
-    } catch (err) {
-      error = err
-    }
-    assertEq(() => error instanceof TypeError, true)
+    }, TypeError)
   },
   'Setter decorators: Return null (private instance setter)': () => {
-    let error: unknown
-    try {
+    assertThrows(() => {
       const dec = (fn: (this: Foo, x: undefined) => void, ctx: ClassSetterDecoratorContext): any => {
         return null
       }
       class Foo { @dec set #foo(x: undefined) { } }
-    } catch (err) {
-      error = err
-    }
-    assertEq(() => error instanceof TypeError, true)
+    }, TypeError)
   },
   'Setter decorators: Return null (private static setter)': () => {
-    let error: unknown
-    try {
+    assertThrows(() => {
       const dec = (fn: (this: typeof Foo, x: undefined) => void, ctx: ClassSetterDecoratorContext): any => {
         return null
       }
       class Foo { @dec static set #foo(x: undefined) { } }
-    } catch (err) {
-      error = err
-    }
-    assertEq(() => error instanceof TypeError, true)
+    }, TypeError)
   },
   'Setter decorators: Return object (instance setter)': () => {
-    let error: unknown
-    try {
+    assertThrows(() => {
       const dec = (fn: (this: Foo, x: undefined) => void, ctx: ClassSetterDecoratorContext): any => {
         return {}
       }
       class Foo { @dec set foo(x: undefined) { } }
-    } catch (err) {
-      error = err
-    }
-    assertEq(() => error instanceof TypeError, true)
+    }, TypeError)
   },
   'Setter decorators: Return object (static setter)': () => {
-    let error: unknown
-    try {
+    assertThrows(() => {
       const dec = (fn: (this: typeof Foo, x: undefined) => void, ctx: ClassSetterDecoratorContext): any => {
         return {}
       }
       class Foo { @dec static set foo(x: undefined) { } }
-    } catch (err) {
-      error = err
-    }
-    assertEq(() => error instanceof TypeError, true)
+    }, TypeError)
   },
   'Setter decorators: Return object (private instance setter)': () => {
-    let error: unknown
-    try {
+    assertThrows(() => {
       const dec = (fn: (this: Foo, x: undefined) => void, ctx: ClassSetterDecoratorContext): any => {
         return {}
       }
       class Foo { @dec set #foo(x: undefined) { } }
-    } catch (err) {
-      error = err
-    }
-    assertEq(() => error instanceof TypeError, true)
+    }, TypeError)
   },
   'Setter decorators: Return object (private static setter)': () => {
-    let error: unknown
-    try {
+    assertThrows(() => {
       const dec = (fn: (this: typeof Foo, x: undefined) => void, ctx: ClassSetterDecoratorContext): any => {
         return {}
       }
       class Foo { @dec static set #foo(x: undefined) { } }
-    } catch (err) {
-      error = err
-    }
-    assertEq(() => error instanceof TypeError, true)
+    }, TypeError)
   },
   'Setter decorators: Extra initializer (instance setter)': () => {
     let got: { this: any, args: any[] }
@@ -2192,52 +2056,36 @@ const tests: Record<string, () => Promise<void> | void> = {
     assertEq(() => get$foo(Foo), (321 * 2) * 10)
   },
   'Auto-accessor decorators: Return null (instance auto-accessor)': () => {
-    let error: unknown
-    try {
+    assertThrows(() => {
       const dec = (target: ClassAccessorDecoratorTarget<Foo, undefined>, ctx: ClassAccessorDecoratorContext): any => {
         return null
       }
       class Foo { @dec accessor foo: undefined }
-    } catch (err) {
-      error = err
-    }
-    assertEq(() => error instanceof TypeError, true)
+    }, TypeError)
   },
   'Auto-accessor decorators: Return null (static auto-accessor)': () => {
-    let error: unknown
-    try {
+    assertThrows(() => {
       const dec = (target: ClassAccessorDecoratorTarget<typeof Foo, undefined>, ctx: ClassAccessorDecoratorContext): any => {
         return null
       }
       class Foo { @dec static accessor foo: undefined }
-    } catch (err) {
-      error = err
-    }
-    assertEq(() => error instanceof TypeError, true)
+    }, TypeError)
   },
   'Auto-accessor decorators: Return null (private instance auto-accessor)': () => {
-    let error: unknown
-    try {
+    assertThrows(() => {
       const dec = (target: ClassAccessorDecoratorTarget<Foo, undefined>, ctx: ClassAccessorDecoratorContext): any => {
         return null
       }
       class Foo { @dec accessor #foo: undefined }
-    } catch (err) {
-      error = err
-    }
-    assertEq(() => error instanceof TypeError, true)
+    }, TypeError)
   },
   'Auto-accessor decorators: Return null (private static auto-accessor)': () => {
-    let error: unknown
-    try {
+    assertThrows(() => {
       const dec = (target: ClassAccessorDecoratorTarget<typeof Foo, undefined>, ctx: ClassAccessorDecoratorContext): any => {
         return null
       }
       class Foo { @dec static accessor #foo: undefined }
-    } catch (err) {
-      error = err
-    }
-    assertEq(() => error instanceof TypeError, true)
+    }, TypeError)
   },
   'Auto-accessor decorators: Extra initializer (instance auto-accessor)': () => {
     let got: { this: any, args: any[] }
@@ -2672,12 +2520,6 @@ const tests: Record<string, () => Promise<void> | void> = {
 
     const capture = (fn: () => typeof Foo): Function => {
       fns.push(fn)
-      let error: unknown
-      try {
-        fn()
-      } catch (err) {
-        error = err
-      }
 
       // Note: As far as I can tell, early reference to the class name should
       // throw a reference error because:
@@ -2689,7 +2531,7 @@ const tests: Record<string, () => Promise<void> | void> = {
       //    runs ClassElementEvaluation for each class element before eventually
       //    running classEnv.InitializeBinding(classBinding, F).
       //
-      assertEq(() => error instanceof ReferenceError, true)
+      assertThrows(() => fn(), ReferenceError)
       return () => { }
     }
 
@@ -2740,12 +2582,6 @@ const tests: Record<string, () => Promise<void> | void> = {
 
     const capture = (fn: () => { new(): Object }): Function => {
       fns.push(fn)
-      let error: unknown
-      try {
-        fn()
-      } catch (err) {
-        error = err
-      }
 
       // Note: As far as I can tell, early reference to the class name should
       // throw a reference error because:
@@ -2757,7 +2593,7 @@ const tests: Record<string, () => Promise<void> | void> = {
       //    runs ClassElementEvaluation for each class element before eventually
       //    running classEnv.InitializeBinding(classBinding, F).
       //
-      assertEq(() => error instanceof ReferenceError, true)
+      assertThrows(() => fn(), ReferenceError)
       return () => { }
     }
 
@@ -2783,13 +2619,7 @@ const tests: Record<string, () => Promise<void> | void> = {
     // expression runs "DecoratorListEvaluation" in the outer environment and
     // then passes the evaluated decorators to "ClassDefinitionEvaluation".
     const firstFn = fns.shift()!
-    let error: unknown
-    try {
-      firstFn()
-    } catch (err) {
-      error = err
-    }
-    assertEq(() => error instanceof ReferenceError, true)
+    assertThrows(() => firstFn(), ReferenceError)
 
     // All other decorators should reference the classBinding called "Foo",
     // which should now be initialized. This is because all other decorators
@@ -3733,6 +3563,22 @@ function assertEq<T>(callback: () => T, expected: T): boolean {
     details = `  Expected: ${prettyPrint(expected)}\n  Observed: ${prettyPrint(x)}`
   } catch (error) {
     details = `  Throws: ${error}`
+  }
+
+  const code = callback.toString().replace(/^\(\) => /, '').replace(/\s+/g, ' ')
+  console.log(`❌ ${testName}\n  Code: ${code}\n${details}\n`)
+  failures++
+  return false
+}
+
+function assertThrows<T extends Function>(callback: () => void, expected: T): boolean {
+  let details: string
+  try {
+    let x: any = callback()
+    details = `  Expected: throws instanceof ${expected.name}\n  Observed: returns ${prettyPrint(x)}`
+  } catch (error) {
+    if (error instanceof expected) return true
+    details = `  Expected: throws instanceof ${expected.name}\n  Observed: throws ${error}`
   }
 
   const code = callback.toString().replace(/^\(\) => /, '').replace(/\s+/g, ' ')

@@ -59,59 +59,59 @@ Known issues:
   Throws: SyntaxError: "await" can only be used inside an "async" function
 
 ❌ Decorator list evaluation: Class binding (class statement)
-  Code: error instanceof ReferenceError
-  Expected: true
-  Observed: false
+  Code: fn()
+  Expected: throws instanceof ReferenceError
+  Observed: undefined
 
 ❌ Decorator list evaluation: Class binding (class statement)
-  Code: error instanceof ReferenceError
-  Expected: true
-  Observed: false
+  Code: fn()
+  Expected: throws instanceof ReferenceError
+  Observed: undefined
 
 ❌ Decorator list evaluation: Class binding (class statement)
-  Code: error instanceof ReferenceError
-  Expected: true
-  Observed: false
+  Code: fn()
+  Expected: throws instanceof ReferenceError
+  Observed: undefined
 
 ❌ Decorator list evaluation: Class binding (class statement)
-  Code: error instanceof ReferenceError
-  Expected: true
-  Observed: false
+  Code: fn()
+  Expected: throws instanceof ReferenceError
+  Observed: undefined
 
 ❌ Decorator list evaluation: Class binding (class statement)
-  Code: error instanceof ReferenceError
-  Expected: true
-  Observed: false
+  Code: fn()
+  Expected: throws instanceof ReferenceError
+  Observed: undefined
 
 ❌ Decorator list evaluation: Class binding (class statement)
-  Code: error instanceof ReferenceError
-  Expected: true
-  Observed: false
+  Code: fn()
+  Expected: throws instanceof ReferenceError
+  Observed: undefined
 
 ❌ Decorator list evaluation: Class binding (class statement)
-  Code: error instanceof ReferenceError
-  Expected: true
-  Observed: false
+  Code: fn()
+  Expected: throws instanceof ReferenceError
+  Observed: undefined
 
 ❌ Decorator list evaluation: Class binding (class statement)
-  Code: error instanceof ReferenceError
-  Expected: true
-  Observed: false
+  Code: fn()
+  Expected: throws instanceof ReferenceError
+  Observed: undefined
 
 ❌ Decorator list evaluation: Class binding (class statement)
-  Code: error instanceof ReferenceError
-  Expected: true
-  Observed: false
+  Code: fn()
+  Expected: throws instanceof ReferenceError
+  Observed: undefined
 
 ❌ Decorator list evaluation: Class binding (class statement)
-  Code: error instanceof ReferenceError
-  Expected: true
-  Observed: false
+  Code: fn()
+  Expected: throws instanceof ReferenceError
+  Observed: undefined
 
 ❌ Decorator list evaluation: Class binding (class statement)
-  Code: error instanceof ReferenceError
-  Expected: true
-  Observed: false
+  Code: fn()
+  Expected: throws instanceof ReferenceError
+  Observed: undefined
 
 ❌ Decorator list evaluation: Class binding (class statement)
   Code: firstFn()
@@ -119,64 +119,64 @@ Known issues:
   Observed: class
 
 ❌ Decorator list evaluation: Class binding (class expression)
-  Code: error instanceof ReferenceError
-  Expected: true
-  Observed: false
+  Code: fn()
+  Expected: throws instanceof ReferenceError
+  Observed: undefined
 
 ❌ Decorator list evaluation: Class binding (class expression)
-  Code: error instanceof ReferenceError
-  Expected: true
-  Observed: false
+  Code: fn()
+  Expected: throws instanceof ReferenceError
+  Observed: undefined
 
 ❌ Decorator list evaluation: Class binding (class expression)
-  Code: error instanceof ReferenceError
-  Expected: true
-  Observed: false
+  Code: fn()
+  Expected: throws instanceof ReferenceError
+  Observed: undefined
 
 ❌ Decorator list evaluation: Class binding (class expression)
-  Code: error instanceof ReferenceError
-  Expected: true
-  Observed: false
+  Code: fn()
+  Expected: throws instanceof ReferenceError
+  Observed: undefined
 
 ❌ Decorator list evaluation: Class binding (class expression)
-  Code: error instanceof ReferenceError
-  Expected: true
-  Observed: false
+  Code: fn()
+  Expected: throws instanceof ReferenceError
+  Observed: undefined
 
 ❌ Decorator list evaluation: Class binding (class expression)
-  Code: error instanceof ReferenceError
-  Expected: true
-  Observed: false
+  Code: fn()
+  Expected: throws instanceof ReferenceError
+  Observed: undefined
 
 ❌ Decorator list evaluation: Class binding (class expression)
-  Code: error instanceof ReferenceError
-  Expected: true
-  Observed: false
+  Code: fn()
+  Expected: throws instanceof ReferenceError
+  Observed: undefined
 
 ❌ Decorator list evaluation: Class binding (class expression)
-  Code: error instanceof ReferenceError
-  Expected: true
-  Observed: false
+  Code: fn()
+  Expected: throws instanceof ReferenceError
+  Observed: undefined
 
 ❌ Decorator list evaluation: Class binding (class expression)
-  Code: error instanceof ReferenceError
-  Expected: true
-  Observed: false
+  Code: fn()
+  Expected: throws instanceof ReferenceError
+  Observed: undefined
 
 ❌ Decorator list evaluation: Class binding (class expression)
-  Code: error instanceof ReferenceError
-  Expected: true
-  Observed: false
+  Code: fn()
+  Expected: throws instanceof ReferenceError
+  Observed: undefined
 
 ❌ Decorator list evaluation: Class binding (class expression)
-  Code: error instanceof ReferenceError
-  Expected: true
-  Observed: false
+  Code: fn()
+  Expected: throws instanceof ReferenceError
+  Observed: undefined
 
 ❌ Decorator list evaluation: Class binding (class expression)
-  Code: error instanceof ReferenceError
-  Expected: true
-  Observed: false
+  Code: firstFn()
+  Expected: throws instanceof ReferenceError
+  Observed: class
 
 ❌ Initializer order (public members, class expression)
   Code: log + ''
@@ -217,114 +217,114 @@ Known issues:
   Throws: unknown file: Property object of MemberExpression expected node to be of a type ["Expression","Super"] but instead got undefined
 
 ❌ Decorator list evaluation: Class binding (class statement)
-  Code: error instanceof ReferenceError
-  Expected: true
-  Observed: false
+  Code: fn()
+  Expected: throws instanceof ReferenceError
+  Observed: undefined
 
 ❌ Decorator list evaluation: Class binding (class statement)
-  Code: error instanceof ReferenceError
-  Expected: true
-  Observed: false
+  Code: fn()
+  Expected: throws instanceof ReferenceError
+  Observed: undefined
 
 ❌ Decorator list evaluation: Class binding (class statement)
-  Code: error instanceof ReferenceError
-  Expected: true
-  Observed: false
+  Code: fn()
+  Expected: throws instanceof ReferenceError
+  Observed: undefined
 
 ❌ Decorator list evaluation: Class binding (class statement)
-  Code: error instanceof ReferenceError
-  Expected: true
-  Observed: false
+  Code: fn()
+  Expected: throws instanceof ReferenceError
+  Observed: undefined
 
 ❌ Decorator list evaluation: Class binding (class statement)
-  Code: error instanceof ReferenceError
-  Expected: true
-  Observed: false
+  Code: fn()
+  Expected: throws instanceof ReferenceError
+  Observed: undefined
 
 ❌ Decorator list evaluation: Class binding (class statement)
-  Code: error instanceof ReferenceError
-  Expected: true
-  Observed: false
+  Code: fn()
+  Expected: throws instanceof ReferenceError
+  Observed: undefined
 
 ❌ Decorator list evaluation: Class binding (class statement)
-  Code: error instanceof ReferenceError
-  Expected: true
-  Observed: false
+  Code: fn()
+  Expected: throws instanceof ReferenceError
+  Observed: undefined
 
 ❌ Decorator list evaluation: Class binding (class statement)
-  Code: error instanceof ReferenceError
-  Expected: true
-  Observed: false
+  Code: fn()
+  Expected: throws instanceof ReferenceError
+  Observed: undefined
 
 ❌ Decorator list evaluation: Class binding (class statement)
-  Code: error instanceof ReferenceError
-  Expected: true
-  Observed: false
+  Code: fn()
+  Expected: throws instanceof ReferenceError
+  Observed: undefined
 
 ❌ Decorator list evaluation: Class binding (class statement)
-  Code: error instanceof ReferenceError
-  Expected: true
-  Observed: false
+  Code: fn()
+  Expected: throws instanceof ReferenceError
+  Observed: undefined
 
 ❌ Decorator list evaluation: Class binding (class expression)
-  Code: error instanceof ReferenceError
-  Expected: true
-  Observed: false
+  Code: fn()
+  Expected: throws instanceof ReferenceError
+  Observed: undefined
 
 ❌ Decorator list evaluation: Class binding (class expression)
-  Code: error instanceof ReferenceError
-  Expected: true
-  Observed: false
+  Code: fn()
+  Expected: throws instanceof ReferenceError
+  Observed: undefined
 
 ❌ Decorator list evaluation: Class binding (class expression)
-  Code: error instanceof ReferenceError
-  Expected: true
-  Observed: false
+  Code: fn()
+  Expected: throws instanceof ReferenceError
+  Observed: undefined
 
 ❌ Decorator list evaluation: Class binding (class expression)
-  Code: error instanceof ReferenceError
-  Expected: true
-  Observed: false
+  Code: fn()
+  Expected: throws instanceof ReferenceError
+  Observed: undefined
 
 ❌ Decorator list evaluation: Class binding (class expression)
-  Code: error instanceof ReferenceError
-  Expected: true
-  Observed: false
+  Code: fn()
+  Expected: throws instanceof ReferenceError
+  Observed: undefined
 
 ❌ Decorator list evaluation: Class binding (class expression)
-  Code: error instanceof ReferenceError
-  Expected: true
-  Observed: false
+  Code: fn()
+  Expected: throws instanceof ReferenceError
+  Observed: undefined
 
 ❌ Decorator list evaluation: Class binding (class expression)
-  Code: error instanceof ReferenceError
-  Expected: true
-  Observed: false
+  Code: fn()
+  Expected: throws instanceof ReferenceError
+  Observed: undefined
 
 ❌ Decorator list evaluation: Class binding (class expression)
-  Code: error instanceof ReferenceError
-  Expected: true
-  Observed: false
+  Code: fn()
+  Expected: throws instanceof ReferenceError
+  Observed: undefined
 
 ❌ Decorator list evaluation: Class binding (class expression)
-  Code: error instanceof ReferenceError
-  Expected: true
-  Observed: false
+  Code: fn()
+  Expected: throws instanceof ReferenceError
+  Observed: undefined
 
 ❌ Decorator list evaluation: Class binding (class expression)
-  Code: error instanceof ReferenceError
-  Expected: true
-  Observed: false
+  Code: fn()
+  Expected: throws instanceof ReferenceError
+  Observed: undefined
 
 ❌ Decorator list evaluation: Class binding (class expression)
-  Code: error instanceof ReferenceError
-  Expected: true
-  Observed: false
+  Code: fn()
+  Expected: throws instanceof ReferenceError
+  Observed: undefined
 
 ❌ Decorator list evaluation: Class binding (class expression)
-  Code: error instanceof ReferenceError
-  Expected: true
-  Observed: false
+  Code: firstFn()
+  Expected: throws instanceof ReferenceError
+  Observed: class
 
 ❌ 26 checks failed
 ```

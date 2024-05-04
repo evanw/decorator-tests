@@ -243,34 +243,24 @@ const tests = {
         assertEq(() => log + '', '0,1,2,3,4,5,6,7');
     },
     'Class decorators: Return null': () => {
-        let error;
-        try {
+        assertThrows(() => {
             const dec = (cls, ctx) => {
                 return null;
             };
             @dec
             class Foo {
             }
-        }
-        catch (err) {
-            error = err;
-        }
-        assertEq(() => error instanceof TypeError, true);
+        }, TypeError);
     },
     'Class decorators: Return object': () => {
-        let error;
-        try {
+        assertThrows(() => {
             const dec = (cls, ctx) => {
                 return {};
             };
             @dec
             class Foo {
             }
-        }
-        catch (err) {
-            error = err;
-        }
-        assertEq(() => error instanceof TypeError, true);
+        }, TypeError);
     },
     'Class decorators: Extra initializer': () => {
         let got;
@@ -591,8 +581,7 @@ const tests = {
         assertEq(() => log + '', '0,1,2,3,4,5,6,7');
     },
     'Method decorators: Return null (instance method)': () => {
-        let error;
-        try {
+        assertThrows(() => {
             const dec = (fn, ctx) => {
                 return null;
             };
@@ -600,15 +589,10 @@ const tests = {
                 @dec
                 foo() { }
             }
-        }
-        catch (err) {
-            error = err;
-        }
-        assertEq(() => error instanceof TypeError, true);
+        }, TypeError);
     },
     'Method decorators: Return null (static method)': () => {
-        let error;
-        try {
+        assertThrows(() => {
             const dec = (fn, ctx) => {
                 return null;
             };
@@ -616,15 +600,10 @@ const tests = {
                 @dec
                 static foo() { }
             }
-        }
-        catch (err) {
-            error = err;
-        }
-        assertEq(() => error instanceof TypeError, true);
+        }, TypeError);
     },
     'Method decorators: Return null (private instance method)': () => {
-        let error;
-        try {
+        assertThrows(() => {
             const dec = (fn, ctx) => {
                 return null;
             };
@@ -632,15 +611,10 @@ const tests = {
                 @dec
                 #foo() { }
             }
-        }
-        catch (err) {
-            error = err;
-        }
-        assertEq(() => error instanceof TypeError, true);
+        }, TypeError);
     },
     'Method decorators: Return null (private static method)': () => {
-        let error;
-        try {
+        assertThrows(() => {
             const dec = (fn, ctx) => {
                 return null;
             };
@@ -648,15 +622,10 @@ const tests = {
                 @dec
                 static #foo() { }
             }
-        }
-        catch (err) {
-            error = err;
-        }
-        assertEq(() => error instanceof TypeError, true);
+        }, TypeError);
     },
     'Method decorators: Return object (instance method)': () => {
-        let error;
-        try {
+        assertThrows(() => {
             const dec = (fn, ctx) => {
                 return {};
             };
@@ -664,15 +633,10 @@ const tests = {
                 @dec
                 foo() { }
             }
-        }
-        catch (err) {
-            error = err;
-        }
-        assertEq(() => error instanceof TypeError, true);
+        }, TypeError);
     },
     'Method decorators: Return object (static method)': () => {
-        let error;
-        try {
+        assertThrows(() => {
             const dec = (fn, ctx) => {
                 return {};
             };
@@ -680,15 +644,10 @@ const tests = {
                 @dec
                 static foo() { }
             }
-        }
-        catch (err) {
-            error = err;
-        }
-        assertEq(() => error instanceof TypeError, true);
+        }, TypeError);
     },
     'Method decorators: Return object (private instance method)': () => {
-        let error;
-        try {
+        assertThrows(() => {
             const dec = (fn, ctx) => {
                 return {};
             };
@@ -696,15 +655,10 @@ const tests = {
                 @dec
                 #foo() { }
             }
-        }
-        catch (err) {
-            error = err;
-        }
-        assertEq(() => error instanceof TypeError, true);
+        }, TypeError);
     },
     'Method decorators: Return object (private static method)': () => {
-        let error;
-        try {
+        assertThrows(() => {
             const dec = (fn, ctx) => {
                 return {};
             };
@@ -712,11 +666,7 @@ const tests = {
                 @dec
                 static #foo() { }
             }
-        }
-        catch (err) {
-            error = err;
-        }
-        assertEq(() => error instanceof TypeError, true);
+        }, TypeError);
     },
     'Method decorators: Extra initializer (instance method)': () => {
         let got;
@@ -1079,8 +1029,7 @@ const tests = {
         assertEq(() => log + '', '0,1,2,3,4,5');
     },
     'Field decorators: Return null (instance field)': () => {
-        let error;
-        try {
+        assertThrows(() => {
             const dec = (value, ctx) => {
                 return null;
             };
@@ -1088,15 +1037,10 @@ const tests = {
                 @dec
                 foo;
             }
-        }
-        catch (err) {
-            error = err;
-        }
-        assertEq(() => error instanceof TypeError, true);
+        }, TypeError);
     },
     'Field decorators: Return null (static field)': () => {
-        let error;
-        try {
+        assertThrows(() => {
             const dec = (value, ctx) => {
                 return null;
             };
@@ -1104,15 +1048,10 @@ const tests = {
                 @dec
                 static foo;
             }
-        }
-        catch (err) {
-            error = err;
-        }
-        assertEq(() => error instanceof TypeError, true);
+        }, TypeError);
     },
     'Field decorators: Return null (private instance field)': () => {
-        let error;
-        try {
+        assertThrows(() => {
             const dec = (value, ctx) => {
                 return null;
             };
@@ -1120,15 +1059,10 @@ const tests = {
                 @dec
                 #foo;
             }
-        }
-        catch (err) {
-            error = err;
-        }
-        assertEq(() => error instanceof TypeError, true);
+        }, TypeError);
     },
     'Field decorators: Return null (private static field)': () => {
-        let error;
-        try {
+        assertThrows(() => {
             const dec = (value, ctx) => {
                 return null;
             };
@@ -1136,15 +1070,10 @@ const tests = {
                 @dec
                 static #foo;
             }
-        }
-        catch (err) {
-            error = err;
-        }
-        assertEq(() => error instanceof TypeError, true);
+        }, TypeError);
     },
     'Field decorators: Return object (instance field)': () => {
-        let error;
-        try {
+        assertThrows(() => {
             const dec = (value, ctx) => {
                 return {};
             };
@@ -1152,15 +1081,10 @@ const tests = {
                 @dec
                 foo;
             }
-        }
-        catch (err) {
-            error = err;
-        }
-        assertEq(() => error instanceof TypeError, true);
+        }, TypeError);
     },
     'Field decorators: Return object (static field)': () => {
-        let error;
-        try {
+        assertThrows(() => {
             const dec = (value, ctx) => {
                 return {};
             };
@@ -1168,15 +1092,10 @@ const tests = {
                 @dec
                 static foo;
             }
-        }
-        catch (err) {
-            error = err;
-        }
-        assertEq(() => error instanceof TypeError, true);
+        }, TypeError);
     },
     'Field decorators: Return object (private instance field)': () => {
-        let error;
-        try {
+        assertThrows(() => {
             const dec = (value, ctx) => {
                 return {};
             };
@@ -1184,15 +1103,10 @@ const tests = {
                 @dec
                 #foo;
             }
-        }
-        catch (err) {
-            error = err;
-        }
-        assertEq(() => error instanceof TypeError, true);
+        }, TypeError);
     },
     'Field decorators: Return object (private static field)': () => {
-        let error;
-        try {
+        assertThrows(() => {
             const dec = (value, ctx) => {
                 return {};
             };
@@ -1200,11 +1114,7 @@ const tests = {
                 @dec
                 static #foo;
             }
-        }
-        catch (err) {
-            error = err;
-        }
-        assertEq(() => error instanceof TypeError, true);
+        }, TypeError);
     },
     'Field decorators: Extra initializer (instance field)': () => {
         let got;
@@ -1564,8 +1474,7 @@ const tests = {
         assertEq(() => log + '', '0,1,2,3,4,5,6,7');
     },
     'Getter decorators: Return null (instance getter)': () => {
-        let error;
-        try {
+        assertThrows(() => {
             const dec = (fn, ctx) => {
                 return null;
             };
@@ -1573,15 +1482,10 @@ const tests = {
                 @dec
                 get foo() { return; }
             }
-        }
-        catch (err) {
-            error = err;
-        }
-        assertEq(() => error instanceof TypeError, true);
+        }, TypeError);
     },
     'Getter decorators: Return null (static getter)': () => {
-        let error;
-        try {
+        assertThrows(() => {
             const dec = (fn, ctx) => {
                 return null;
             };
@@ -1589,15 +1493,10 @@ const tests = {
                 @dec
                 static get foo() { return; }
             }
-        }
-        catch (err) {
-            error = err;
-        }
-        assertEq(() => error instanceof TypeError, true);
+        }, TypeError);
     },
     'Getter decorators: Return null (private instance getter)': () => {
-        let error;
-        try {
+        assertThrows(() => {
             const dec = (fn, ctx) => {
                 return null;
             };
@@ -1605,15 +1504,10 @@ const tests = {
                 @dec
                 get #foo() { return; }
             }
-        }
-        catch (err) {
-            error = err;
-        }
-        assertEq(() => error instanceof TypeError, true);
+        }, TypeError);
     },
     'Getter decorators: Return null (private static getter)': () => {
-        let error;
-        try {
+        assertThrows(() => {
             const dec = (fn, ctx) => {
                 return null;
             };
@@ -1621,15 +1515,10 @@ const tests = {
                 @dec
                 static get #foo() { return; }
             }
-        }
-        catch (err) {
-            error = err;
-        }
-        assertEq(() => error instanceof TypeError, true);
+        }, TypeError);
     },
     'Getter decorators: Return object (instance getter)': () => {
-        let error;
-        try {
+        assertThrows(() => {
             const dec = (fn, ctx) => {
                 return {};
             };
@@ -1637,15 +1526,10 @@ const tests = {
                 @dec
                 get foo() { return; }
             }
-        }
-        catch (err) {
-            error = err;
-        }
-        assertEq(() => error instanceof TypeError, true);
+        }, TypeError);
     },
     'Getter decorators: Return object (static getter)': () => {
-        let error;
-        try {
+        assertThrows(() => {
             const dec = (fn, ctx) => {
                 return {};
             };
@@ -1653,15 +1537,10 @@ const tests = {
                 @dec
                 static get foo() { return; }
             }
-        }
-        catch (err) {
-            error = err;
-        }
-        assertEq(() => error instanceof TypeError, true);
+        }, TypeError);
     },
     'Getter decorators: Return object (private instance getter)': () => {
-        let error;
-        try {
+        assertThrows(() => {
             const dec = (fn, ctx) => {
                 return {};
             };
@@ -1669,15 +1548,10 @@ const tests = {
                 @dec
                 get #foo() { return; }
             }
-        }
-        catch (err) {
-            error = err;
-        }
-        assertEq(() => error instanceof TypeError, true);
+        }, TypeError);
     },
     'Getter decorators: Return object (private static getter)': () => {
-        let error;
-        try {
+        assertThrows(() => {
             const dec = (fn, ctx) => {
                 return {};
             };
@@ -1685,11 +1559,7 @@ const tests = {
                 @dec
                 static get #foo() { return; }
             }
-        }
-        catch (err) {
-            error = err;
-        }
-        assertEq(() => error instanceof TypeError, true);
+        }, TypeError);
     },
     'Getter decorators: Extra initializer (instance getter)': () => {
         let got;
@@ -2078,8 +1948,7 @@ const tests = {
         assertEq(() => log + '', '0,1,2,3,4,5,6,7');
     },
     'Setter decorators: Return null (instance setter)': () => {
-        let error;
-        try {
+        assertThrows(() => {
             const dec = (fn, ctx) => {
                 return null;
             };
@@ -2087,15 +1956,10 @@ const tests = {
                 @dec
                 set foo(x) { }
             }
-        }
-        catch (err) {
-            error = err;
-        }
-        assertEq(() => error instanceof TypeError, true);
+        }, TypeError);
     },
     'Setter decorators: Return null (static setter)': () => {
-        let error;
-        try {
+        assertThrows(() => {
             const dec = (fn, ctx) => {
                 return null;
             };
@@ -2103,15 +1967,10 @@ const tests = {
                 @dec
                 static set foo(x) { }
             }
-        }
-        catch (err) {
-            error = err;
-        }
-        assertEq(() => error instanceof TypeError, true);
+        }, TypeError);
     },
     'Setter decorators: Return null (private instance setter)': () => {
-        let error;
-        try {
+        assertThrows(() => {
             const dec = (fn, ctx) => {
                 return null;
             };
@@ -2119,15 +1978,10 @@ const tests = {
                 @dec
                 set #foo(x) { }
             }
-        }
-        catch (err) {
-            error = err;
-        }
-        assertEq(() => error instanceof TypeError, true);
+        }, TypeError);
     },
     'Setter decorators: Return null (private static setter)': () => {
-        let error;
-        try {
+        assertThrows(() => {
             const dec = (fn, ctx) => {
                 return null;
             };
@@ -2135,15 +1989,10 @@ const tests = {
                 @dec
                 static set #foo(x) { }
             }
-        }
-        catch (err) {
-            error = err;
-        }
-        assertEq(() => error instanceof TypeError, true);
+        }, TypeError);
     },
     'Setter decorators: Return object (instance setter)': () => {
-        let error;
-        try {
+        assertThrows(() => {
             const dec = (fn, ctx) => {
                 return {};
             };
@@ -2151,15 +2000,10 @@ const tests = {
                 @dec
                 set foo(x) { }
             }
-        }
-        catch (err) {
-            error = err;
-        }
-        assertEq(() => error instanceof TypeError, true);
+        }, TypeError);
     },
     'Setter decorators: Return object (static setter)': () => {
-        let error;
-        try {
+        assertThrows(() => {
             const dec = (fn, ctx) => {
                 return {};
             };
@@ -2167,15 +2011,10 @@ const tests = {
                 @dec
                 static set foo(x) { }
             }
-        }
-        catch (err) {
-            error = err;
-        }
-        assertEq(() => error instanceof TypeError, true);
+        }, TypeError);
     },
     'Setter decorators: Return object (private instance setter)': () => {
-        let error;
-        try {
+        assertThrows(() => {
             const dec = (fn, ctx) => {
                 return {};
             };
@@ -2183,15 +2022,10 @@ const tests = {
                 @dec
                 set #foo(x) { }
             }
-        }
-        catch (err) {
-            error = err;
-        }
-        assertEq(() => error instanceof TypeError, true);
+        }, TypeError);
     },
     'Setter decorators: Return object (private static setter)': () => {
-        let error;
-        try {
+        assertThrows(() => {
             const dec = (fn, ctx) => {
                 return {};
             };
@@ -2199,11 +2033,7 @@ const tests = {
                 @dec
                 static set #foo(x) { }
             }
-        }
-        catch (err) {
-            error = err;
-        }
-        assertEq(() => error instanceof TypeError, true);
+        }, TypeError);
     },
     'Setter decorators: Extra initializer (instance setter)': () => {
         let got;
@@ -2498,8 +2328,7 @@ const tests = {
         assertEq(() => get$foo(Foo), (321 * 2) * 10);
     },
     'Auto-accessor decorators: Return null (instance auto-accessor)': () => {
-        let error;
-        try {
+        assertThrows(() => {
             const dec = (target, ctx) => {
                 return null;
             };
@@ -2507,15 +2336,10 @@ const tests = {
                 @dec
                 accessor foo;
             }
-        }
-        catch (err) {
-            error = err;
-        }
-        assertEq(() => error instanceof TypeError, true);
+        }, TypeError);
     },
     'Auto-accessor decorators: Return null (static auto-accessor)': () => {
-        let error;
-        try {
+        assertThrows(() => {
             const dec = (target, ctx) => {
                 return null;
             };
@@ -2523,15 +2347,10 @@ const tests = {
                 @dec
                 static accessor foo;
             }
-        }
-        catch (err) {
-            error = err;
-        }
-        assertEq(() => error instanceof TypeError, true);
+        }, TypeError);
     },
     'Auto-accessor decorators: Return null (private instance auto-accessor)': () => {
-        let error;
-        try {
+        assertThrows(() => {
             const dec = (target, ctx) => {
                 return null;
             };
@@ -2539,15 +2358,10 @@ const tests = {
                 @dec
                 accessor #foo;
             }
-        }
-        catch (err) {
-            error = err;
-        }
-        assertEq(() => error instanceof TypeError, true);
+        }, TypeError);
     },
     'Auto-accessor decorators: Return null (private static auto-accessor)': () => {
-        let error;
-        try {
+        assertThrows(() => {
             const dec = (target, ctx) => {
                 return null;
             };
@@ -2555,11 +2369,7 @@ const tests = {
                 @dec
                 static accessor #foo;
             }
-        }
-        catch (err) {
-            error = err;
-        }
-        assertEq(() => error instanceof TypeError, true);
+        }, TypeError);
     },
     'Auto-accessor decorators: Extra initializer (instance auto-accessor)': () => {
         let got;
@@ -3025,13 +2835,6 @@ const tests = {
         const fns = [];
         const capture = (fn) => {
             fns.push(fn);
-            let error;
-            try {
-                fn();
-            }
-            catch (err) {
-                error = err;
-            }
             // Note: As far as I can tell, early reference to the class name should
             // throw a reference error because:
             //
@@ -3042,7 +2845,7 @@ const tests = {
             //    runs ClassElementEvaluation for each class element before eventually
             //    running classEnv.InitializeBinding(classBinding, F).
             //
-            assertEq(() => error instanceof ReferenceError, true);
+            assertThrows(() => fn(), ReferenceError);
             return () => { };
         };
         @(capture(() => Foo))
@@ -3093,13 +2896,6 @@ const tests = {
         const fns = [];
         const capture = (fn) => {
             fns.push(fn);
-            let error;
-            try {
-                fn();
-            }
-            catch (err) {
-                error = err;
-            }
             // Note: As far as I can tell, early reference to the class name should
             // throw a reference error because:
             //
@@ -3110,7 +2906,7 @@ const tests = {
             //    runs ClassElementEvaluation for each class element before eventually
             //    running classEnv.InitializeBinding(classBinding, F).
             //
-            assertEq(() => error instanceof ReferenceError, true);
+            assertThrows(() => fn(), ReferenceError);
             return () => { };
         };
         const originalFoo = (
@@ -3142,14 +2938,7 @@ const tests = {
         // expression runs "DecoratorListEvaluation" in the outer environment and
         // then passes the evaluated decorators to "ClassDefinitionEvaluation".
         const firstFn = fns.shift();
-        let error;
-        try {
-            firstFn();
-        }
-        catch (err) {
-            error = err;
-        }
-        assertEq(() => error instanceof ReferenceError, true);
+        assertThrows(() => firstFn(), ReferenceError);
         // All other decorators should reference the classBinding called "Foo",
         // which should now be initialized. This is because all other decorators
         // are evaluated within "ClassDefinitionEvaluation" while the running
@@ -4118,6 +3907,22 @@ function assertEq(callback, expected) {
         details = `  Expected: ${prettyPrint(expected)}\n  Observed: ${prettyPrint(x)}`;
     }
     catch (error) {
+        details = `  Throws: ${error}`;
+    }
+    const code = callback.toString().replace(/^\(\) => /, '').replace(/\s+/g, ' ');
+    console.log(`❌ ${testName}\n  Code: ${code}\n${details}\n`);
+    failures++;
+    return false;
+}
+function assertThrows(callback, expected) {
+    let details;
+    try {
+        let x = callback();
+        details = `  Expected: throws instanceof ${expected.name}\n  Observed: ${prettyPrint(x)}`;
+    }
+    catch (error) {
+        if (error instanceof expected)
+            return true;
         details = `  Throws: ${error}`;
     }
     const code = callback.toString().replace(/^\(\) => /, '').replace(/\s+/g, ' ');
