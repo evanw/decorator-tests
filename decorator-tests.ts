@@ -7,6 +7,9 @@ const tests: Record<string, () => Promise<void> | void> = {
       assertEq(() => cls.name, 'Foo')
       assertEq(() => ctx.kind, 'class')
       assertEq(() => ctx.name, 'Foo')
+      assertEq(() => 'static' in ctx, false)
+      assertEq(() => 'private' in ctx, false)
+      assertEq(() => 'access' in ctx, false)
       old = cls
     }
     @dec class Foo { }
@@ -19,6 +22,9 @@ const tests: Record<string, () => Promise<void> | void> = {
       assertEq(() => cls.name, '')
       assertEq(() => ctx.kind, 'class')
       assertEq(() => ctx.name, '')
+      assertEq(() => 'static' in ctx, false)
+      assertEq(() => 'private' in ctx, false)
+      assertEq(() => 'access' in ctx, false)
       old = cls
     }
     const Foo = (x => x)(@dec class { })
@@ -31,6 +37,9 @@ const tests: Record<string, () => Promise<void> | void> = {
       assertEq(() => cls.name, 'Foo')
       assertEq(() => ctx.kind, 'class')
       assertEq(() => ctx.name, 'Foo')
+      assertEq(() => 'static' in ctx, false)
+      assertEq(() => 'private' in ctx, false)
+      assertEq(() => 'access' in ctx, false)
       old = cls
     }
     const obj = {
@@ -45,6 +54,9 @@ const tests: Record<string, () => Promise<void> | void> = {
       assertEq(() => cls.name, 'Foo')
       assertEq(() => ctx.kind, 'class')
       assertEq(() => ctx.name, 'Foo')
+      assertEq(() => 'static' in ctx, false)
+      assertEq(() => 'private' in ctx, false)
+      assertEq(() => 'access' in ctx, false)
       old = cls
     }
     const Foo = @dec class { }
@@ -57,6 +69,9 @@ const tests: Record<string, () => Promise<void> | void> = {
       assertEq(() => cls.name, 'Foo')
       assertEq(() => ctx.kind, 'class')
       assertEq(() => ctx.name, 'Foo')
+      assertEq(() => 'static' in ctx, false)
+      assertEq(() => 'private' in ctx, false)
+      assertEq(() => 'access' in ctx, false)
       old = cls
     }
     const [Foo = @dec class { }] = []
@@ -69,6 +84,9 @@ const tests: Record<string, () => Promise<void> | void> = {
       assertEq(() => cls.name, 'Foo')
       assertEq(() => ctx.kind, 'class')
       assertEq(() => ctx.name, 'Foo')
+      assertEq(() => 'static' in ctx, false)
+      assertEq(() => 'private' in ctx, false)
+      assertEq(() => 'access' in ctx, false)
       old = cls
     }
     const { Foo = @dec class { } } = {}
@@ -81,6 +99,9 @@ const tests: Record<string, () => Promise<void> | void> = {
       assertEq(() => cls.name, 'Foo')
       assertEq(() => ctx.kind, 'class')
       assertEq(() => ctx.name, 'Foo')
+      assertEq(() => 'static' in ctx, false)
+      assertEq(() => 'private' in ctx, false)
+      assertEq(() => 'access' in ctx, false)
       old = cls
     }
     let Foo: { new(): unknown }
@@ -94,6 +115,9 @@ const tests: Record<string, () => Promise<void> | void> = {
       assertEq(() => cls.name, 'Foo')
       assertEq(() => ctx.kind, 'class')
       assertEq(() => ctx.name, 'Foo')
+      assertEq(() => 'static' in ctx, false)
+      assertEq(() => 'private' in ctx, false)
+      assertEq(() => 'access' in ctx, false)
       old = cls
     }
     let Foo: { new(): unknown };
@@ -107,6 +131,9 @@ const tests: Record<string, () => Promise<void> | void> = {
       assertEq(() => cls.name, 'Foo')
       assertEq(() => ctx.kind, 'class')
       assertEq(() => ctx.name, 'Foo')
+      assertEq(() => 'static' in ctx, false)
+      assertEq(() => 'private' in ctx, false)
+      assertEq(() => 'access' in ctx, false)
       old = cls
     }
     let Foo: { new(): unknown };
@@ -120,6 +147,9 @@ const tests: Record<string, () => Promise<void> | void> = {
       assertEq(() => cls.name, 'Foo')
       assertEq(() => ctx.kind, 'class')
       assertEq(() => ctx.name, 'Foo')
+      assertEq(() => 'static' in ctx, false)
+      assertEq(() => 'private' in ctx, false)
+      assertEq(() => 'access' in ctx, false)
       old = cls
     }
     class Class {
@@ -135,6 +165,9 @@ const tests: Record<string, () => Promise<void> | void> = {
       assertEq(() => cls.name, 'Foo')
       assertEq(() => ctx.kind, 'class')
       assertEq(() => ctx.name, 'Foo')
+      assertEq(() => 'static' in ctx, false)
+      assertEq(() => 'private' in ctx, false)
+      assertEq(() => 'access' in ctx, false)
       old = cls
     }
     class Class {
@@ -149,6 +182,9 @@ const tests: Record<string, () => Promise<void> | void> = {
       assertEq(() => cls.name, 'Foo')
       assertEq(() => ctx.kind, 'class')
       assertEq(() => ctx.name, 'Foo')
+      assertEq(() => 'static' in ctx, false)
+      assertEq(() => 'private' in ctx, false)
+      assertEq(() => 'access' in ctx, false)
       old = cls
     }
     class Class {
@@ -164,6 +200,9 @@ const tests: Record<string, () => Promise<void> | void> = {
       assertEq(() => cls.name, 'Foo')
       assertEq(() => ctx.kind, 'class')
       assertEq(() => ctx.name, 'Foo')
+      assertEq(() => 'static' in ctx, false)
+      assertEq(() => 'private' in ctx, false)
+      assertEq(() => 'access' in ctx, false)
       old = cls
     }
     class Class {

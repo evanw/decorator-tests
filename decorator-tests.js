@@ -8,6 +8,9 @@ const tests = {
             assertEq(() => cls.name, 'Foo');
             assertEq(() => ctx.kind, 'class');
             assertEq(() => ctx.name, 'Foo');
+            assertEq(() => 'static' in ctx, false);
+            assertEq(() => 'private' in ctx, false);
+            assertEq(() => 'access' in ctx, false);
             old = cls;
         };
         @dec
@@ -22,6 +25,9 @@ const tests = {
             assertEq(() => cls.name, '');
             assertEq(() => ctx.kind, 'class');
             assertEq(() => ctx.name, '');
+            assertEq(() => 'static' in ctx, false);
+            assertEq(() => 'private' in ctx, false);
+            assertEq(() => 'access' in ctx, false);
             old = cls;
         };
         const Foo = (x => x)(
@@ -37,6 +43,9 @@ const tests = {
             assertEq(() => cls.name, 'Foo');
             assertEq(() => ctx.kind, 'class');
             assertEq(() => ctx.name, 'Foo');
+            assertEq(() => 'static' in ctx, false);
+            assertEq(() => 'private' in ctx, false);
+            assertEq(() => 'access' in ctx, false);
             old = cls;
         };
         const obj = {
@@ -54,6 +63,9 @@ const tests = {
             assertEq(() => cls.name, 'Foo');
             assertEq(() => ctx.kind, 'class');
             assertEq(() => ctx.name, 'Foo');
+            assertEq(() => 'static' in ctx, false);
+            assertEq(() => 'private' in ctx, false);
+            assertEq(() => 'access' in ctx, false);
             old = cls;
         };
         const Foo = 
@@ -69,6 +81,9 @@ const tests = {
             assertEq(() => cls.name, 'Foo');
             assertEq(() => ctx.kind, 'class');
             assertEq(() => ctx.name, 'Foo');
+            assertEq(() => 'static' in ctx, false);
+            assertEq(() => 'private' in ctx, false);
+            assertEq(() => 'access' in ctx, false);
             old = cls;
         };
         const [Foo = 
@@ -84,6 +99,9 @@ const tests = {
             assertEq(() => cls.name, 'Foo');
             assertEq(() => ctx.kind, 'class');
             assertEq(() => ctx.name, 'Foo');
+            assertEq(() => 'static' in ctx, false);
+            assertEq(() => 'private' in ctx, false);
+            assertEq(() => 'access' in ctx, false);
             old = cls;
         };
         const { Foo = 
@@ -99,6 +117,9 @@ const tests = {
             assertEq(() => cls.name, 'Foo');
             assertEq(() => ctx.kind, 'class');
             assertEq(() => ctx.name, 'Foo');
+            assertEq(() => 'static' in ctx, false);
+            assertEq(() => 'private' in ctx, false);
+            assertEq(() => 'access' in ctx, false);
             old = cls;
         };
         let Foo;
@@ -115,6 +136,9 @@ const tests = {
             assertEq(() => cls.name, 'Foo');
             assertEq(() => ctx.kind, 'class');
             assertEq(() => ctx.name, 'Foo');
+            assertEq(() => 'static' in ctx, false);
+            assertEq(() => 'private' in ctx, false);
+            assertEq(() => 'access' in ctx, false);
             old = cls;
         };
         let Foo;
@@ -131,6 +155,9 @@ const tests = {
             assertEq(() => cls.name, 'Foo');
             assertEq(() => ctx.kind, 'class');
             assertEq(() => ctx.name, 'Foo');
+            assertEq(() => 'static' in ctx, false);
+            assertEq(() => 'private' in ctx, false);
+            assertEq(() => 'access' in ctx, false);
             old = cls;
         };
         let Foo;
@@ -147,6 +174,9 @@ const tests = {
             assertEq(() => cls.name, 'Foo');
             assertEq(() => ctx.kind, 'class');
             assertEq(() => ctx.name, 'Foo');
+            assertEq(() => 'static' in ctx, false);
+            assertEq(() => 'private' in ctx, false);
+            assertEq(() => 'access' in ctx, false);
             old = cls;
         };
         class Class {
@@ -165,6 +195,9 @@ const tests = {
             assertEq(() => cls.name, 'Foo');
             assertEq(() => ctx.kind, 'class');
             assertEq(() => ctx.name, 'Foo');
+            assertEq(() => 'static' in ctx, false);
+            assertEq(() => 'private' in ctx, false);
+            assertEq(() => 'access' in ctx, false);
             old = cls;
         };
         class Class {
@@ -182,6 +215,9 @@ const tests = {
             assertEq(() => cls.name, 'Foo');
             assertEq(() => ctx.kind, 'class');
             assertEq(() => ctx.name, 'Foo');
+            assertEq(() => 'static' in ctx, false);
+            assertEq(() => 'private' in ctx, false);
+            assertEq(() => 'access' in ctx, false);
             old = cls;
         };
         class Class {
@@ -200,6 +236,9 @@ const tests = {
             assertEq(() => cls.name, 'Foo');
             assertEq(() => ctx.kind, 'class');
             assertEq(() => ctx.name, 'Foo');
+            assertEq(() => 'static' in ctx, false);
+            assertEq(() => 'private' in ctx, false);
+            assertEq(() => 'access' in ctx, false);
             old = cls;
         };
         class Class {
