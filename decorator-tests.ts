@@ -2289,7 +2289,7 @@ const tests: Record<string, () => Promise<void> | void> = {
   },
 
   // Decorator list evaluation
-  'Decorator list evaluation: Computed names': () => {
+  'Decorator list evaluation: Computed names (class statement)': () => {
     const log: number[] = []
     const foo = (n: number): Function => {
       log.push(n)
@@ -2331,7 +2331,49 @@ const tests: Record<string, () => Promise<void> | void> = {
 
     assertEq(() => '' + log, '0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21')
   },
-  'Decorator list evaluation: "this"': () => {
+  'Decorator list evaluation: Computed names (class expression)': () => {
+    const log: number[] = []
+    const foo = (n: number): Function => {
+      log.push(n)
+      return () => { }
+    }
+
+    const computed: {
+      readonly method: unique symbol,
+      readonly field: unique symbol,
+      readonly getter: unique symbol,
+      readonly setter: unique symbol,
+      readonly accessor: unique symbol,
+    } = {
+      get method() { log.push(log.length); return Symbol('method') },
+      get field() { log.push(log.length); return Symbol('field') },
+      get getter() { log.push(log.length); return Symbol('getter') },
+      get setter() { log.push(log.length); return Symbol('setter') },
+      get accessor() { log.push(log.length); return Symbol('accessor') },
+    } as any
+
+    (@foo(0) class
+      extends (foo(1), Object)
+    {
+      @foo(2) [computed.method]() { }
+      @foo(4) static [computed.method]() { }
+
+      @foo(6) [computed.field]: undefined
+      @foo(8) static [computed.field]: undefined
+
+      @foo(10) get [computed.getter](): undefined { return }
+      @foo(12) static get [computed.getter](): undefined { return }
+
+      @foo(14) set [computed.setter](x: undefined) { }
+      @foo(16) static set [computed.setter](x: undefined) { }
+
+      @foo(18) accessor [computed.accessor]: undefined
+      @foo(20) static accessor [computed.accessor]: undefined
+    })
+
+    assertEq(() => '' + log, '0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21')
+  },
+  'Decorator list evaluation: "this" (class statement)': () => {
     const log: number[] = []
     const dummy: Function = () => { }
     const ctx = {
@@ -2364,7 +2406,40 @@ const tests: Record<string, () => Promise<void> | void> = {
     wrapper.call(ctx)
     assertEq(() => '' + log, '0,1,2,3,4,5,6,7,8,9,10,11')
   },
-  'Decorator list evaluation: "await"': async () => {
+  'Decorator list evaluation: "this" (class expression)': () => {
+    const log: number[] = []
+    const dummy: Function = () => { }
+    const ctx = {
+      foo(n: number) {
+        log.push(n)
+      }
+    }
+
+    function wrapper(this: typeof ctx) {
+      (@(assertEq(() => this.foo(0), undefined), dummy) class
+        extends (assertEq(() => this.foo(1), undefined), Object)
+      {
+        @(assertEq(() => this.foo(2), undefined), dummy) method() { }
+        @(assertEq(() => this.foo(3), undefined), dummy) static method() { }
+
+        @(assertEq(() => this.foo(4), undefined), dummy) field: undefined
+        @(assertEq(() => this.foo(5), undefined), dummy) static field: undefined
+
+        @(assertEq(() => this.foo(6), undefined), dummy) get getter(): undefined { return }
+        @(assertEq(() => this.foo(7), undefined), dummy) static get getter(): undefined { return }
+
+        @(assertEq(() => this.foo(8), undefined), dummy) set setter(x: undefined) { }
+        @(assertEq(() => this.foo(9), undefined), dummy) static set setter(x: undefined) { }
+
+        @(assertEq(() => this.foo(10), undefined), dummy) accessor accessor: undefined
+        @(assertEq(() => this.foo(11), undefined), dummy) static accessor accessor: undefined
+      })
+    }
+
+    wrapper.call(ctx)
+    assertEq(() => '' + log, '0,1,2,3,4,5,6,7,8,9,10,11')
+  },
+  'Decorator list evaluation: "await" (class statement)': async () => {
     const log: number[] = []
     const dummy: Function = () => { }
 
@@ -2392,7 +2467,35 @@ const tests: Record<string, () => Promise<void> | void> = {
     await wrapper()
     assertEq(() => '' + log, '0,1,2,3,4,5,6,7,8,9,10,11')
   },
-  'Decorator list evaluation: Outer private name': () => {
+  'Decorator list evaluation: "await" (class expression)': async () => {
+    const log: number[] = []
+    const dummy: Function = () => { }
+
+    async function wrapper() {
+      (@(log.push(await Promise.resolve(0)), dummy) class
+        extends (log.push(await Promise.resolve(1)), Object)
+      {
+        @(log.push(await Promise.resolve(2)), dummy) method() { }
+        @(log.push(await Promise.resolve(3)), dummy) static method() { }
+
+        @(log.push(await Promise.resolve(4)), dummy) field: undefined
+        @(log.push(await Promise.resolve(5)), dummy) static field: undefined
+
+        @(log.push(await Promise.resolve(6)), dummy) get getter(): undefined { return }
+        @(log.push(await Promise.resolve(7)), dummy) static get getter(): undefined { return }
+
+        @(log.push(await Promise.resolve(8)), dummy) set setter(x: undefined) { }
+        @(log.push(await Promise.resolve(9)), dummy) static set setter(x: undefined) { }
+
+        @(log.push(await Promise.resolve(10)), dummy) accessor accessor: undefined
+        @(log.push(await Promise.resolve(11)), dummy) static accessor accessor: undefined
+      })
+    }
+
+    await wrapper()
+    assertEq(() => '' + log, '0,1,2,3,4,5,6,7,8,9,10,11')
+  },
+  'Decorator list evaluation: Outer private name (class statement)': () => {
     const log: number[] = []
 
     class Dummy {
@@ -2426,7 +2529,41 @@ const tests: Record<string, () => Promise<void> | void> = {
 
     assertEq(() => '' + log, '0,1,2,3,4,5,6,7,8,9,10,11')
   },
-  'Decorator list evaluation: Inner private name': () => {
+  'Decorator list evaluation: Outer private name (class expression)': () => {
+    const log: number[] = []
+
+    class Dummy {
+      static #foo(n: number): Function {
+        log.push(n)
+        return () => { }
+      }
+
+      static {
+        const dummy = this;
+        (@(dummy.#foo(0)) class
+          extends (dummy.#foo(1), Object)
+        {
+          @(dummy.#foo(2)) method() { }
+          @(dummy.#foo(3)) static method() { }
+
+          @(dummy.#foo(4)) field: undefined
+          @(dummy.#foo(5)) static field: undefined
+
+          @(dummy.#foo(6)) get getter(): undefined { return }
+          @(dummy.#foo(7)) static get getter(): undefined { return }
+
+          @(dummy.#foo(8)) set setter(x: undefined) { }
+          @(dummy.#foo(9)) static set setter(x: undefined) { }
+
+          @(dummy.#foo(10)) accessor accessor: undefined
+          @(dummy.#foo(11)) static accessor accessor: undefined
+        })
+      }
+    }
+
+    assertEq(() => '' + log, '0,1,2,3,4,5,6,7,8,9,10,11')
+  },
+  'Decorator list evaluation: Inner private name (class statement)': () => {
     const fns: (() => number)[] = []
     const capture = (fn: () => number): Function => {
       fns.push(fn)
@@ -2478,7 +2615,59 @@ const tests: Record<string, () => Promise<void> | void> = {
     for (const fn of fns) log.push(fn())
     assertEq(() => '' + log, '11,12,13,14,15,16,17,18,19,20')
   },
-  'Decorator list evaluation: Class binding': () => {
+  'Decorator list evaluation: Inner private name (class expression)': () => {
+    const fns: (() => number)[] = []
+    const capture = (fn: () => number): Function => {
+      fns.push(fn)
+      return () => { }
+    }
+
+    class Dummy {
+      static #foo = NaN
+
+      static {
+        (@(capture(() => (new Foo() as any).#foo + 0))
+          class Foo {
+          #foo = 10
+
+          @(capture(() => new Foo().#foo + 1)) method() { }
+          @(capture(() => new Foo().#foo + 2)) static method() { }
+
+          @(capture(() => new Foo().#foo + 3)) field: undefined
+          @(capture(() => new Foo().#foo + 4)) static field: undefined
+
+          @(capture(() => new Foo().#foo + 5)) get getter(): undefined { return }
+          @(capture(() => new Foo().#foo + 6)) static get getter(): undefined { return }
+
+          @(capture(() => new Foo().#foo + 7)) set setter(x: undefined) { }
+          @(capture(() => new Foo().#foo + 8)) static set setter(x: undefined) { }
+
+          @(capture(() => new Foo().#foo + 9)) accessor accessor: undefined
+          @(capture(() => new Foo().#foo + 10)) static accessor accessor: undefined
+        })
+      }
+    }
+
+    // Accessing "#foo" in the class decorator should fail. The "#foo" should
+    // refer to the outer "#foo", not the inner "#foo".
+    const firstFn = fns.shift()!
+    assertEq(() => {
+      try {
+        firstFn()
+        throw new Error('Expected a TypeError to be thrown')
+      } catch (err) {
+        if (err instanceof TypeError) return true
+        throw err
+      }
+    }, true)
+
+    // Accessing "#foo" from any of the class element decorators should succeed.
+    // Each "#foo" should refer to the inner "#foo", not the outer "#foo".
+    const log: number[] = []
+    for (const fn of fns) log.push(fn())
+    assertEq(() => '' + log, '11,12,13,14,15,16,17,18,19,20')
+  },
+  'Decorator list evaluation: Class binding (class statement)': () => {
     const fns: (() => typeof Foo)[] = []
 
     const capture = (fn: () => typeof Foo): Function => {
@@ -2546,9 +2735,73 @@ const tests: Record<string, () => Promise<void> | void> = {
       assertEq(() => fn(), originalFoo)
     }
   },
+  'Decorator list evaluation: Class binding (class expression)': () => {
+    const fns: (() => { new(): Object })[] = []
+
+    const capture = (fn: () => { new(): Object }): Function => {
+      fns.push(fn)
+      let error: unknown
+      try {
+        fn()
+      } catch (err) {
+        error = err
+      }
+
+      // Note: As far as I can tell, early reference to the class name should
+      // throw a reference error because:
+      //
+      // 1. Class decorators run first in the top-level scope before entering
+      //    BindingClassDeclarationEvaluation.
+      //
+      // 2. Class element decorators run in ClassDefinitionEvaluation, which
+      //    runs ClassElementEvaluation for each class element before eventually
+      //    running classEnv.InitializeBinding(classBinding, F).
+      //
+      assertEq(() => error instanceof ReferenceError, true)
+      return () => { }
+    }
+
+    const originalFoo = (@(capture(() => Foo)) class Foo {
+      @(capture(() => Foo)) method() { }
+      @(capture(() => Foo)) static method() { }
+
+      @(capture(() => Foo)) field: undefined
+      @(capture(() => Foo)) static field: undefined
+
+      @(capture(() => Foo)) get getter(): undefined { return }
+      @(capture(() => Foo)) static get getter(): undefined { return }
+
+      @(capture(() => Foo)) set setter(x: undefined) { }
+      @(capture(() => Foo)) static set setter(x: undefined) { }
+
+      @(capture(() => Foo)) accessor accessor: undefined
+      @(capture(() => Foo)) static accessor accessor: undefined
+    })
+
+    // Decorators on the class itself should reference a global called "Foo",
+    // which should still be a reference error. This is because a class
+    // expression runs "DecoratorListEvaluation" in the outer environment and
+    // then passes the evaluated decorators to "ClassDefinitionEvaluation".
+    const firstFn = fns.shift()!
+    let error: unknown
+    try {
+      firstFn()
+    } catch (err) {
+      error = err
+    }
+    assertEq(() => error instanceof ReferenceError, true)
+
+    // All other decorators should reference the classBinding called "Foo",
+    // which should now be initialized. This is because all other decorators
+    // are evaluated within "ClassDefinitionEvaluation" while the running
+    // execution context's environment is the nested class environment.
+    for (const fn of fns) {
+      assertEq(() => fn(), originalFoo)
+    }
+  },
 
   // Initializer order
-  'Initializer order (public members)': () => {
+  'Initializer order (public members, class statement)': () => {
     const log: string[] = []
 
     // Class decorators
@@ -2777,7 +3030,236 @@ const tests: Record<string, () => Promise<void> | void> = {
       'ctor:end,' +
       'end')
   },
-  'Initializer order (private members)': () => {
+  'Initializer order (public members, class expression)': () => {
+    const log: string[] = []
+
+    // Class decorators
+    const classDec1 = (cls: { new(): Object }, ctxClass: ClassDecoratorContext) => {
+      log.push('c2')
+      if (!assertEq(() => typeof ctxClass.addInitializer, 'function')) return
+      ctxClass.addInitializer(() => log.push('c5'))
+      ctxClass.addInitializer(() => log.push('c6'))
+    }
+    const classDec2 = (cls: { new(): Object }, ctxClass: ClassDecoratorContext) => {
+      log.push('c1')
+      if (!assertEq(() => typeof ctxClass.addInitializer, 'function')) return
+      ctxClass.addInitializer(() => log.push('c3'))
+      ctxClass.addInitializer(() => log.push('c4'))
+    }
+
+    // Method decorators
+    const methodDec1 = (fn: (this: Object) => void, ctxMethod: ClassMethodDecoratorContext) => {
+      log.push('m2')
+      if (!assertEq(() => typeof ctxMethod.addInitializer, 'function')) return
+      ctxMethod.addInitializer(() => log.push('m5'))
+      ctxMethod.addInitializer(() => log.push('m6'))
+    }
+    const methodDec2 = (fn: (this: Object) => void, ctxMethod: ClassMethodDecoratorContext) => {
+      log.push('m1')
+      if (!assertEq(() => typeof ctxMethod.addInitializer, 'function')) return
+      ctxMethod.addInitializer(() => log.push('m3'))
+      ctxMethod.addInitializer(() => log.push('m4'))
+    }
+    const staticMethodDec1 = (fn: (this: Object) => void, ctxStaticMethod: ClassMethodDecoratorContext) => {
+      log.push('M2')
+      if (!assertEq(() => typeof ctxStaticMethod.addInitializer, 'function')) return
+      ctxStaticMethod.addInitializer(() => log.push('M5'))
+      ctxStaticMethod.addInitializer(() => log.push('M6'))
+    }
+    const staticMethodDec2 = (fn: (this: Object) => void, ctxStaticMethod: ClassMethodDecoratorContext) => {
+      log.push('M1')
+      if (!assertEq(() => typeof ctxStaticMethod.addInitializer, 'function')) return
+      ctxStaticMethod.addInitializer(() => log.push('M3'))
+      ctxStaticMethod.addInitializer(() => log.push('M4'))
+    }
+
+    // Field decorators
+    const fieldDec1 = (
+      value: undefined,
+      ctxField: ClassFieldDecoratorContext,
+    ): ((this: Object, value: undefined) => undefined) | undefined => {
+      log.push('f2')
+      if (!assertEq(() => typeof ctxField.addInitializer, 'function')) return
+      ctxField.addInitializer(() => log.push('f5'))
+      ctxField.addInitializer(() => log.push('f6'))
+      return () => { log.push('f7') }
+    }
+    const fieldDec2 = (
+      value: undefined,
+      ctxField: ClassFieldDecoratorContext,
+    ): ((this: Object, value: undefined) => undefined) | undefined => {
+      log.push('f1')
+      if (!assertEq(() => typeof ctxField.addInitializer, 'function')) return
+      ctxField.addInitializer(() => log.push('f3'))
+      ctxField.addInitializer(() => log.push('f4'))
+      return () => { log.push('f8') }
+    }
+    const staticFieldDec1 = (
+      value: undefined,
+      ctxStaticField: ClassFieldDecoratorContext,
+    ): ((this: Object, value: undefined) => undefined) | undefined => {
+      log.push('F2')
+      if (!assertEq(() => typeof ctxStaticField.addInitializer, 'function')) return
+      ctxStaticField.addInitializer(() => log.push('F5'))
+      ctxStaticField.addInitializer(() => log.push('F6'))
+      return () => { log.push('F7') }
+    }
+    const staticFieldDec2 = (
+      value: undefined,
+      ctxStaticField: ClassFieldDecoratorContext,
+    ): ((this: Object, value: undefined) => undefined) | undefined => {
+      log.push('F1')
+      if (!assertEq(() => typeof ctxStaticField.addInitializer, 'function')) return
+      ctxStaticField.addInitializer(() => log.push('F3'))
+      ctxStaticField.addInitializer(() => log.push('F4'))
+      return () => { log.push('F8') }
+    }
+
+    // Getter decorators
+    const getterDec1 = (fn: (this: Object) => undefined, ctxGetter: ClassGetterDecoratorContext) => {
+      log.push('g2')
+      if (!assertEq(() => typeof ctxGetter.addInitializer, 'function')) return
+      ctxGetter.addInitializer(() => log.push('g5'))
+      ctxGetter.addInitializer(() => log.push('g6'))
+    }
+    const getterDec2 = (fn: (this: Object) => undefined, ctxGetter: ClassGetterDecoratorContext) => {
+      log.push('g1')
+      if (!assertEq(() => typeof ctxGetter.addInitializer, 'function')) return
+      ctxGetter.addInitializer(() => log.push('g3'))
+      ctxGetter.addInitializer(() => log.push('g4'))
+    }
+    const staticGetterDec1 = (fn: (this: Object) => undefined, ctxStaticGetter: ClassGetterDecoratorContext) => {
+      log.push('G2')
+      if (!assertEq(() => typeof ctxStaticGetter.addInitializer, 'function')) return
+      ctxStaticGetter.addInitializer(() => log.push('G5'))
+      ctxStaticGetter.addInitializer(() => log.push('G6'))
+    }
+    const staticGetterDec2 = (fn: (this: Object) => undefined, ctxStaticGetter: ClassGetterDecoratorContext) => {
+      log.push('G1')
+      if (!assertEq(() => typeof ctxStaticGetter.addInitializer, 'function')) return
+      ctxStaticGetter.addInitializer(() => log.push('G3'))
+      ctxStaticGetter.addInitializer(() => log.push('G4'))
+    }
+
+    // Setter decorators
+    const setterDec1 = (fn: (this: Object, x: undefined) => void, ctxSetter: ClassSetterDecoratorContext) => {
+      log.push('s2')
+      if (!assertEq(() => typeof ctxSetter.addInitializer, 'function')) return
+      ctxSetter.addInitializer(() => log.push('s5'))
+      ctxSetter.addInitializer(() => log.push('s6'))
+    }
+    const setterDec2 = (fn: (this: Object, x: undefined) => void, ctxSetter: ClassSetterDecoratorContext) => {
+      log.push('s1')
+      if (!assertEq(() => typeof ctxSetter.addInitializer, 'function')) return
+      ctxSetter.addInitializer(() => log.push('s3'))
+      ctxSetter.addInitializer(() => log.push('s4'))
+    }
+    const staticSetterDec1 = (fn: (this: Object, x: undefined) => void, ctxStaticSetter: ClassSetterDecoratorContext) => {
+      log.push('S2')
+      if (!assertEq(() => typeof ctxStaticSetter.addInitializer, 'function')) return
+      ctxStaticSetter.addInitializer(() => log.push('S5'))
+      ctxStaticSetter.addInitializer(() => log.push('S6'))
+    }
+    const staticSetterDec2 = (fn: (this: Object, x: undefined) => void, ctxStaticSetter: ClassSetterDecoratorContext) => {
+      log.push('S1')
+      if (!assertEq(() => typeof ctxStaticSetter.addInitializer, 'function')) return
+      ctxStaticSetter.addInitializer(() => log.push('S3'))
+      ctxStaticSetter.addInitializer(() => log.push('S4'))
+    }
+
+    // Auto-accessor decorators
+    const accessorDec1 = (
+      target: ClassAccessorDecoratorTarget<Object, undefined>,
+      ctxAccessor: ClassAccessorDecoratorContext,
+    ): ClassAccessorDecoratorResult<Object, undefined> | undefined => {
+      log.push('a2')
+      if (!assertEq(() => typeof ctxAccessor.addInitializer, 'function')) return
+      ctxAccessor.addInitializer(() => log.push('a5'))
+      ctxAccessor.addInitializer(() => log.push('a6'))
+      return { init() { log.push('a7') } }
+    }
+    const accessorDec2 = (
+      target: ClassAccessorDecoratorTarget<Object, undefined>,
+      ctxAccessor: ClassAccessorDecoratorContext,
+    ): ClassAccessorDecoratorResult<Object, undefined> | undefined => {
+      log.push('a1')
+      if (!assertEq(() => typeof ctxAccessor.addInitializer, 'function')) return
+      ctxAccessor.addInitializer(() => log.push('a3'))
+      ctxAccessor.addInitializer(() => log.push('a4'))
+      return { init() { log.push('a8') } }
+    }
+    const staticAccessorDec1 = (
+      target: ClassAccessorDecoratorTarget<Object, undefined>,
+      ctxStaticAccessor: ClassAccessorDecoratorContext,
+    ): ClassAccessorDecoratorResult<Object, undefined> | undefined => {
+      log.push('A2')
+      if (!assertEq(() => typeof ctxStaticAccessor.addInitializer, 'function')) return
+      ctxStaticAccessor.addInitializer(() => log.push('A5'))
+      ctxStaticAccessor.addInitializer(() => log.push('A6'))
+      return { init() { log.push('A7') } }
+    }
+    const staticAccessorDec2 = (
+      target: ClassAccessorDecoratorTarget<Object, undefined>,
+      ctxStaticAccessor: ClassAccessorDecoratorContext,
+    ): ClassAccessorDecoratorResult<Object, undefined> | undefined => {
+      log.push('A1')
+      if (!assertEq(() => typeof ctxStaticAccessor.addInitializer, 'function')) return
+      ctxStaticAccessor.addInitializer(() => log.push('A3'))
+      ctxStaticAccessor.addInitializer(() => log.push('A4'))
+      return { init() { log.push('A8') } }
+    }
+
+    log.push('start')
+    const Foo = @classDec1 @classDec2 class extends (log.push('extends'), Object) {
+      static { log.push('static:start') }
+
+      constructor() {
+        log.push('ctor:start')
+        super()
+        log.push('ctor:end')
+      }
+
+      @methodDec1 @methodDec2 method() { }
+      @staticMethodDec1 @staticMethodDec2 static method() { }
+
+      @fieldDec1 @fieldDec2 field: undefined
+      @staticFieldDec1 @staticFieldDec2 static field: undefined
+
+      @getterDec1 @getterDec2 get getter(): undefined { return }
+      @staticGetterDec1 @staticGetterDec2 static get getter(): undefined { return }
+
+      @setterDec1 @setterDec2 set setter(x: undefined) { }
+      @staticSetterDec1 @staticSetterDec2 static set setter(x: undefined) { }
+
+      @accessorDec1 @accessorDec2 accessor accessor: undefined
+      @staticAccessorDec1 @staticAccessorDec2 static accessor accessor: undefined
+
+      static { log.push('static:end') }
+    }
+    log.push('after')
+    new Foo
+    log.push('end')
+    assertEq(() => log + '', 'start,extends,' +
+      'M1,M2,G1,G2,S1,S2,A1,A2,' + // For each element e of staticElements if e.[[Kind]] is not field
+      'm1,m2,g1,g2,s1,s2,a1,a2,' + // For each element e of instanceElements if e.[[Kind]] is not field
+      'F1,F2,' + // For each element e of staticElements if e.[[Kind]] is field
+      'f1,f2,' + // For each element e of instanceElements if e.[[Kind]] is field
+      'c1,c2,' + // ApplyDecoratorsToClassDefinition
+      'M3,M4,M5,M6,G3,G4,G5,G6,S3,S4,S5,S6,' + // For each element initializer of staticMethodExtraInitializers
+      'static:start,' + // For each element elementRecord of staticElements
+      'F7,F8,F3,F4,F5,F6,' + // InitializeFieldOrAccessor + For each element initializer of elementRecord.[[ExtraInitializers]]
+      'A7,A8,A3,A4,A5,A6,' + // InitializeFieldOrAccessor + For each element initializer of elementRecord.[[ExtraInitializers]]
+      'static:end,' + // For each element elementRecord of staticElements
+      'c3,c4,c5,c6,' + // For each element initializer of classExtraInitializers
+      'after,' +
+      'ctor:start,' +
+      'm3,m4,m5,m6,g3,g4,g5,g6,s3,s4,s5,s6,' + // For each element initializer of constructor.[[Initializers]] (a.k.a. instanceMethodExtraInitializers)
+      'f7,f8,f3,f4,f5,f6,' + // InitializeFieldOrAccessor + For each element initializer of elementRecord.[[ExtraInitializers]]
+      'a7,a8,a3,a4,a5,a6,' + // InitializeFieldOrAccessor + For each element initializer of elementRecord.[[ExtraInitializers]]
+      'ctor:end,' +
+      'end')
+  },
+  'Initializer order (private members, class statement)': () => {
     const log: string[] = []
 
     // Class decorators
@@ -2958,6 +3440,235 @@ const tests: Record<string, () => Promise<void> | void> = {
 
     log.push('start')
     @classDec1 @classDec2 class Foo extends (log.push('extends'), Object) {
+      static { log.push('static:start') }
+
+      constructor() {
+        log.push('ctor:start')
+        super()
+        log.push('ctor:end')
+      }
+
+      @methodDec1 @methodDec2 #method() { }
+      @staticMethodDec1 @staticMethodDec2 static #staticMethod() { }
+
+      @fieldDec1 @fieldDec2 #field: undefined
+      @staticFieldDec1 @staticFieldDec2 static #staticField: undefined
+
+      @getterDec1 @getterDec2 get #getter(): undefined { return }
+      @staticGetterDec1 @staticGetterDec2 static get #staticGetter(): undefined { return }
+
+      @setterDec1 @setterDec2 set #setter(x: undefined) { }
+      @staticSetterDec1 @staticSetterDec2 static set #staticSetter(x: undefined) { }
+
+      @accessorDec1 @accessorDec2 accessor #accessor: undefined
+      @staticAccessorDec1 @staticAccessorDec2 static accessor #staticAccessor: undefined
+
+      static { log.push('static:end') }
+    }
+    log.push('after')
+    new Foo
+    log.push('end')
+    assertEq(() => log + '', 'start,extends,' +
+      'M1,M2,G1,G2,S1,S2,A1,A2,' + // For each element e of staticElements if e.[[Kind]] is not field
+      'm1,m2,g1,g2,s1,s2,a1,a2,' + // For each element e of instanceElements if e.[[Kind]] is not field
+      'F1,F2,' + // For each element e of staticElements if e.[[Kind]] is field
+      'f1,f2,' + // For each element e of instanceElements if e.[[Kind]] is field
+      'c1,c2,' + // ApplyDecoratorsToClassDefinition
+      'M3,M4,M5,M6,G3,G4,G5,G6,S3,S4,S5,S6,' + // For each element initializer of staticMethodExtraInitializers
+      'static:start,' + // For each element elementRecord of staticElements
+      'F7,F8,F3,F4,F5,F6,' + // InitializeFieldOrAccessor + For each element initializer of elementRecord.[[ExtraInitializers]]
+      'A7,A8,A3,A4,A5,A6,' + // InitializeFieldOrAccessor + For each element initializer of elementRecord.[[ExtraInitializers]]
+      'static:end,' + // For each element elementRecord of staticElements
+      'c3,c4,c5,c6,' + // For each element initializer of classExtraInitializers
+      'after,' +
+      'ctor:start,' +
+      'm3,m4,m5,m6,g3,g4,g5,g6,s3,s4,s5,s6,' + // For each element initializer of constructor.[[Initializers]] (a.k.a. instanceMethodExtraInitializers)
+      'f7,f8,f3,f4,f5,f6,' + // InitializeFieldOrAccessor + For each element initializer of elementRecord.[[ExtraInitializers]]
+      'a7,a8,a3,a4,a5,a6,' + // InitializeFieldOrAccessor + For each element initializer of elementRecord.[[ExtraInitializers]]
+      'ctor:end,' +
+      'end')
+  },
+  'Initializer order (private members, class expression)': () => {
+    const log: string[] = []
+
+    // Class decorators
+    const classDec1 = (cls: { new(): Object }, ctxClass: ClassDecoratorContext) => {
+      log.push('c2')
+      if (!assertEq(() => typeof ctxClass.addInitializer, 'function')) return
+      ctxClass.addInitializer(() => log.push('c5'))
+      ctxClass.addInitializer(() => log.push('c6'))
+    }
+    const classDec2 = (cls: { new(): Object }, ctxClass: ClassDecoratorContext) => {
+      log.push('c1')
+      if (!assertEq(() => typeof ctxClass.addInitializer, 'function')) return
+      ctxClass.addInitializer(() => log.push('c3'))
+      ctxClass.addInitializer(() => log.push('c4'))
+    }
+
+    // Method decorators
+    const methodDec1 = (fn: (this: Object) => void, ctxMethod: ClassMethodDecoratorContext) => {
+      log.push('m2')
+      if (!assertEq(() => typeof ctxMethod.addInitializer, 'function')) return
+      ctxMethod.addInitializer(() => log.push('m5'))
+      ctxMethod.addInitializer(() => log.push('m6'))
+    }
+    const methodDec2 = (fn: (this: Object) => void, ctxMethod: ClassMethodDecoratorContext) => {
+      log.push('m1')
+      if (!assertEq(() => typeof ctxMethod.addInitializer, 'function')) return
+      ctxMethod.addInitializer(() => log.push('m3'))
+      ctxMethod.addInitializer(() => log.push('m4'))
+    }
+    const staticMethodDec1 = (fn: (this: Object) => void, ctxStaticMethod: ClassMethodDecoratorContext) => {
+      log.push('M2')
+      if (!assertEq(() => typeof ctxStaticMethod.addInitializer, 'function')) return
+      ctxStaticMethod.addInitializer(() => log.push('M5'))
+      ctxStaticMethod.addInitializer(() => log.push('M6'))
+    }
+    const staticMethodDec2 = (fn: (this: Object) => void, ctxStaticMethod: ClassMethodDecoratorContext) => {
+      log.push('M1')
+      if (!assertEq(() => typeof ctxStaticMethod.addInitializer, 'function')) return
+      ctxStaticMethod.addInitializer(() => log.push('M3'))
+      ctxStaticMethod.addInitializer(() => log.push('M4'))
+    }
+
+    // Field decorators
+    const fieldDec1 = (
+      value: undefined,
+      ctxField: ClassFieldDecoratorContext,
+    ): ((this: Object, value: undefined) => undefined) | undefined => {
+      log.push('f2')
+      if (!assertEq(() => typeof ctxField.addInitializer, 'function')) return
+      ctxField.addInitializer(() => log.push('f5'))
+      ctxField.addInitializer(() => log.push('f6'))
+      return () => { log.push('f7') }
+    }
+    const fieldDec2 = (
+      value: undefined,
+      ctxField: ClassFieldDecoratorContext,
+    ): ((this: Object, value: undefined) => undefined) | undefined => {
+      log.push('f1')
+      if (!assertEq(() => typeof ctxField.addInitializer, 'function')) return
+      ctxField.addInitializer(() => log.push('f3'))
+      ctxField.addInitializer(() => log.push('f4'))
+      return () => { log.push('f8') }
+    }
+    const staticFieldDec1 = (
+      value: undefined,
+      ctxStaticField: ClassFieldDecoratorContext,
+    ): ((this: Object, value: undefined) => undefined) | undefined => {
+      log.push('F2')
+      if (!assertEq(() => typeof ctxStaticField.addInitializer, 'function')) return
+      ctxStaticField.addInitializer(() => log.push('F5'))
+      ctxStaticField.addInitializer(() => log.push('F6'))
+      return () => { log.push('F7') }
+    }
+    const staticFieldDec2 = (
+      value: undefined,
+      ctxStaticField: ClassFieldDecoratorContext,
+    ): ((this: Object, value: undefined) => undefined) | undefined => {
+      log.push('F1')
+      if (!assertEq(() => typeof ctxStaticField.addInitializer, 'function')) return
+      ctxStaticField.addInitializer(() => log.push('F3'))
+      ctxStaticField.addInitializer(() => log.push('F4'))
+      return () => { log.push('F8') }
+    }
+
+    // Getter decorators
+    const getterDec1 = (fn: (this: Object) => undefined, ctxGetter: ClassGetterDecoratorContext) => {
+      log.push('g2')
+      if (!assertEq(() => typeof ctxGetter.addInitializer, 'function')) return
+      ctxGetter.addInitializer(() => log.push('g5'))
+      ctxGetter.addInitializer(() => log.push('g6'))
+    }
+    const getterDec2 = (fn: (this: Object) => undefined, ctxGetter: ClassGetterDecoratorContext) => {
+      log.push('g1')
+      if (!assertEq(() => typeof ctxGetter.addInitializer, 'function')) return
+      ctxGetter.addInitializer(() => log.push('g3'))
+      ctxGetter.addInitializer(() => log.push('g4'))
+    }
+    const staticGetterDec1 = (fn: (this: Object) => undefined, ctxStaticGetter: ClassGetterDecoratorContext) => {
+      log.push('G2')
+      if (!assertEq(() => typeof ctxStaticGetter.addInitializer, 'function')) return
+      ctxStaticGetter.addInitializer(() => log.push('G5'))
+      ctxStaticGetter.addInitializer(() => log.push('G6'))
+    }
+    const staticGetterDec2 = (fn: (this: Object) => undefined, ctxStaticGetter: ClassGetterDecoratorContext) => {
+      log.push('G1')
+      if (!assertEq(() => typeof ctxStaticGetter.addInitializer, 'function')) return
+      ctxStaticGetter.addInitializer(() => log.push('G3'))
+      ctxStaticGetter.addInitializer(() => log.push('G4'))
+    }
+
+    // Setter decorators
+    const setterDec1 = (fn: (this: Object, x: undefined) => void, ctxSetter: ClassSetterDecoratorContext) => {
+      log.push('s2')
+      if (!assertEq(() => typeof ctxSetter.addInitializer, 'function')) return
+      ctxSetter.addInitializer(() => log.push('s5'))
+      ctxSetter.addInitializer(() => log.push('s6'))
+    }
+    const setterDec2 = (fn: (this: Object, x: undefined) => void, ctxSetter: ClassSetterDecoratorContext) => {
+      log.push('s1')
+      if (!assertEq(() => typeof ctxSetter.addInitializer, 'function')) return
+      ctxSetter.addInitializer(() => log.push('s3'))
+      ctxSetter.addInitializer(() => log.push('s4'))
+    }
+    const staticSetterDec1 = (fn: (this: Object, x: undefined) => void, ctxStaticSetter: ClassSetterDecoratorContext) => {
+      log.push('S2')
+      if (!assertEq(() => typeof ctxStaticSetter.addInitializer, 'function')) return
+      ctxStaticSetter.addInitializer(() => log.push('S5'))
+      ctxStaticSetter.addInitializer(() => log.push('S6'))
+    }
+    const staticSetterDec2 = (fn: (this: Object, x: undefined) => void, ctxStaticSetter: ClassSetterDecoratorContext) => {
+      log.push('S1')
+      if (!assertEq(() => typeof ctxStaticSetter.addInitializer, 'function')) return
+      ctxStaticSetter.addInitializer(() => log.push('S3'))
+      ctxStaticSetter.addInitializer(() => log.push('S4'))
+    }
+
+    // Auto-accessor decorators
+    const accessorDec1 = (
+      target: ClassAccessorDecoratorTarget<Object, undefined>,
+      ctxAccessor: ClassAccessorDecoratorContext,
+    ): ClassAccessorDecoratorResult<Object, undefined> | undefined => {
+      log.push('a2')
+      if (!assertEq(() => typeof ctxAccessor.addInitializer, 'function')) return
+      ctxAccessor.addInitializer(() => log.push('a5'))
+      ctxAccessor.addInitializer(() => log.push('a6'))
+      return { init() { log.push('a7') } }
+    }
+    const accessorDec2 = (
+      target: ClassAccessorDecoratorTarget<Object, undefined>,
+      ctxAccessor: ClassAccessorDecoratorContext,
+    ): ClassAccessorDecoratorResult<Object, undefined> | undefined => {
+      log.push('a1')
+      if (!assertEq(() => typeof ctxAccessor.addInitializer, 'function')) return
+      ctxAccessor.addInitializer(() => log.push('a3'))
+      ctxAccessor.addInitializer(() => log.push('a4'))
+      return { init() { log.push('a8') } }
+    }
+    const staticAccessorDec1 = (
+      target: ClassAccessorDecoratorTarget<Object, undefined>,
+      ctxStaticAccessor: ClassAccessorDecoratorContext,
+    ): ClassAccessorDecoratorResult<Object, undefined> | undefined => {
+      log.push('A2')
+      if (!assertEq(() => typeof ctxStaticAccessor.addInitializer, 'function')) return
+      ctxStaticAccessor.addInitializer(() => log.push('A5'))
+      ctxStaticAccessor.addInitializer(() => log.push('A6'))
+      return { init() { log.push('A7') } }
+    }
+    const staticAccessorDec2 = (
+      target: ClassAccessorDecoratorTarget<Object, undefined>,
+      ctxStaticAccessor: ClassAccessorDecoratorContext,
+    ): ClassAccessorDecoratorResult<Object, undefined> | undefined => {
+      log.push('A1')
+      if (!assertEq(() => typeof ctxStaticAccessor.addInitializer, 'function')) return
+      ctxStaticAccessor.addInitializer(() => log.push('A3'))
+      ctxStaticAccessor.addInitializer(() => log.push('A4'))
+      return { init() { log.push('A8') } }
+    }
+
+    log.push('start')
+    const Foo = @classDec1 @classDec2 class extends (log.push('extends'), Object) {
       static { log.push('static:start') }
 
       constructor() {

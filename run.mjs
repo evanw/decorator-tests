@@ -10,12 +10,12 @@ const testResults = []
 
 // Convert TypeScript to JavaScript for testing JavaScript VMs
 console.log('Converting TypeScript to JavaScript...')
-const js = esbuild.transformSync(ts, { loader: 'ts', logLevel: 'warning' }).code
+const js = typescript.transpileModule(ts, { compilerOptions: { target: typescript.ScriptTarget.ESNext } }).outputText
 fs.writeFileSync('./decorator-tests.js', `// Note: Edit "decorator-tests.ts" instead of this file\n${js}`)
 
 // Check TypeScript
 await checkBehavior('TypeScript', `typescript@${require('typescript/package.json').version}`,
-  typescript.transpileModule(ts, { compilerOptions: { target: typescript.ScriptTarget.ES2022, } }).outputText, [
+  () => typescript.transpileModule(ts, { compilerOptions: { target: typescript.ScriptTarget.ES2022 } }).outputText, [
   '* In decorators of static fields and static accessors, the value of `this` appears to be incorrect.',
   '* Using `await` within a decorator can cause TypeScript to emit invalid code containing a syntax error.',
   '* References to the uninitialized class name within a decorator return `undefined` instead of throwing a `ReferenceError`.',
@@ -23,7 +23,8 @@ await checkBehavior('TypeScript', `typescript@${require('typescript/package.json
 
 // Check Babel
 await checkBehavior('Babel', `@babel/plugin-proposal-decorators@${require('@babel/plugin-proposal-decorators/package.json').version}`,
-  babel.transformSync(js, { plugins: [['@babel/plugin-proposal-decorators', { version: '2023-11' }]] }).code, [
+  () => babel.transformSync(hackToFixBabelBugs(js), { plugins: [['@babel/plugin-proposal-decorators', { version: '2023-11' }]] }).code, [
+  '* Decorators on anonymous classes can cause Babel to crash due to [a compiler bug](https://github.com/babel/babel/issues/16473).',
   '* References to the uninitialized class name within a decorator return `undefined` instead of throwing a `ReferenceError`.',
 ])
 
@@ -35,7 +36,7 @@ console.log('Done')
 async function checkBehavior(name, packageAndVersion, code, knownIssues) {
   console.log(`Checking the behavior of ${name}...`)
   const logs = []
-  code = hackToFixInvalidCode(code)
+  code = hackToFixInvalidCode(code())
   const fn = new Function('console', code + '\nreturn promise;')
   await fn({ log: text => logs.push(text) })
   const summary = logs[logs.length - 1]
@@ -91,4 +92,30 @@ function hackToFixInvalidCode(code) {
       esbuild.transformSync(code, { logLevel: 'warning' })
     }
   }
+}
+
+function hackToFixBabelBugs(js) {
+  const eachTest = /^    ("[^"]*"|'[^']*'): (?:async )?\(\) => \{([^]*?)\n    \}/gm
+  const parts = []
+  let old = 0
+
+  // Disable the test(s) that cause Babel to crash
+  for (let match; match = eachTest.exec(js);) {
+    try {
+      babel.transformSync(match[2], { plugins: [['@babel/plugin-proposal-decorators', { version: '2023-11' }]] })
+    } catch (err) {
+      const message = err && err.message || err
+      console.log(`Warning: Babel crashes on this test: ${match[1]}`)
+      parts.push(
+        js.slice(old, match.index),
+        match[0].slice(0, match[0].indexOf(match[2]))
+        + `\n        throw ${JSON.stringify(message)}`
+        + '\n    }',
+      )
+      old = match.index + match[0].length
+    }
+  }
+
+  parts.push(js.slice(old))
+  return parts.join('')
 }

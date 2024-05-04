@@ -22,86 +22,172 @@ Known issues:
 * References to the uninitialized class name within a decorator return `undefined` instead of throwing a `ReferenceError`.
 
 <details>
-<summary>❌ 16 checks failed (click for details)</summary>
+<summary>❌ 34 checks failed (click for details)</summary>
 
 ```
-❌ Decorator list evaluation: "this"
+❌ Decorator list evaluation: "this" (class statement)
   Code: _classThis_1.foo(5)
   Throws: TypeError: _classThis_1.foo is not a function
 
-❌ Decorator list evaluation: "this"
+❌ Decorator list evaluation: "this" (class statement)
   Code: _classThis_1.foo(11)
   Throws: TypeError: _classThis_1.foo is not a function
 
-❌ Decorator list evaluation: "this"
+❌ Decorator list evaluation: "this" (class statement)
   Code: '' + log
   Expected: "0,1,2,3,4,5,6,7,8,9,10,11"
   Observed: "0,1,2,3,4,6,7,8,9,10"
 
-❌ Decorator list evaluation: "await"
+❌ Decorator list evaluation: "this" (class expression)
+  Code: _classThis_1.foo(5)
+  Throws: TypeError: _classThis_1.foo is not a function
+
+❌ Decorator list evaluation: "this" (class expression)
+  Code: _classThis_1.foo(11)
+  Throws: TypeError: _classThis_1.foo is not a function
+
+❌ Decorator list evaluation: "this" (class expression)
+  Code: '' + log
+  Expected: "0,1,2,3,4,5,6,7,8,9,10,11"
+  Observed: "0,1,2,3,4,6,7,8,9,10"
+
+❌ Decorator list evaluation: "await" (class statement)
   Throws: SyntaxError: "await" can only be used inside an "async" function
 
-❌ Decorator list evaluation: Class binding
+❌ Decorator list evaluation: "await" (class expression)
+  Throws: SyntaxError: "await" can only be used inside an "async" function
+
+❌ Decorator list evaluation: Class binding (class statement)
   Code: error instanceof ReferenceError
   Expected: true
   Observed: false
 
-❌ Decorator list evaluation: Class binding
+❌ Decorator list evaluation: Class binding (class statement)
   Code: error instanceof ReferenceError
   Expected: true
   Observed: false
 
-❌ Decorator list evaluation: Class binding
+❌ Decorator list evaluation: Class binding (class statement)
   Code: error instanceof ReferenceError
   Expected: true
   Observed: false
 
-❌ Decorator list evaluation: Class binding
+❌ Decorator list evaluation: Class binding (class statement)
   Code: error instanceof ReferenceError
   Expected: true
   Observed: false
 
-❌ Decorator list evaluation: Class binding
+❌ Decorator list evaluation: Class binding (class statement)
   Code: error instanceof ReferenceError
   Expected: true
   Observed: false
 
-❌ Decorator list evaluation: Class binding
+❌ Decorator list evaluation: Class binding (class statement)
   Code: error instanceof ReferenceError
   Expected: true
   Observed: false
 
-❌ Decorator list evaluation: Class binding
+❌ Decorator list evaluation: Class binding (class statement)
   Code: error instanceof ReferenceError
   Expected: true
   Observed: false
 
-❌ Decorator list evaluation: Class binding
+❌ Decorator list evaluation: Class binding (class statement)
   Code: error instanceof ReferenceError
   Expected: true
   Observed: false
 
-❌ Decorator list evaluation: Class binding
+❌ Decorator list evaluation: Class binding (class statement)
   Code: error instanceof ReferenceError
   Expected: true
   Observed: false
 
-❌ Decorator list evaluation: Class binding
+❌ Decorator list evaluation: Class binding (class statement)
   Code: error instanceof ReferenceError
   Expected: true
   Observed: false
 
-❌ Decorator list evaluation: Class binding
+❌ Decorator list evaluation: Class binding (class statement)
   Code: error instanceof ReferenceError
   Expected: true
   Observed: false
 
-❌ Decorator list evaluation: Class binding
+❌ Decorator list evaluation: Class binding (class statement)
   Code: firstFn()
   Expected: null
   Observed: class
 
-❌ 16 checks failed
+❌ Decorator list evaluation: Class binding (class expression)
+  Code: error instanceof ReferenceError
+  Expected: true
+  Observed: false
+
+❌ Decorator list evaluation: Class binding (class expression)
+  Code: error instanceof ReferenceError
+  Expected: true
+  Observed: false
+
+❌ Decorator list evaluation: Class binding (class expression)
+  Code: error instanceof ReferenceError
+  Expected: true
+  Observed: false
+
+❌ Decorator list evaluation: Class binding (class expression)
+  Code: error instanceof ReferenceError
+  Expected: true
+  Observed: false
+
+❌ Decorator list evaluation: Class binding (class expression)
+  Code: error instanceof ReferenceError
+  Expected: true
+  Observed: false
+
+❌ Decorator list evaluation: Class binding (class expression)
+  Code: error instanceof ReferenceError
+  Expected: true
+  Observed: false
+
+❌ Decorator list evaluation: Class binding (class expression)
+  Code: error instanceof ReferenceError
+  Expected: true
+  Observed: false
+
+❌ Decorator list evaluation: Class binding (class expression)
+  Code: error instanceof ReferenceError
+  Expected: true
+  Observed: false
+
+❌ Decorator list evaluation: Class binding (class expression)
+  Code: error instanceof ReferenceError
+  Expected: true
+  Observed: false
+
+❌ Decorator list evaluation: Class binding (class expression)
+  Code: error instanceof ReferenceError
+  Expected: true
+  Observed: false
+
+❌ Decorator list evaluation: Class binding (class expression)
+  Code: error instanceof ReferenceError
+  Expected: true
+  Observed: false
+
+❌ Decorator list evaluation: Class binding (class expression)
+  Code: error instanceof ReferenceError
+  Expected: true
+  Observed: false
+
+❌ Initializer order (public members, class expression)
+  Code: log + ''
+  Expected: "start,extends,M1,M2,G1,G2,S1,S2,A1,A2,m1,m2,g1,g2,s1,s2,a1,a2,F1,F2,f1,f2,c1,c2,M3,M4,M5,M6,G3,G4,G5,G6,S3,S4,S5,S6,static:start,F7,F8,F3,F4,F5,F6,A7,A8,A3,A4,A5,A6,static:end,c3,c4,c5,c6,after,ctor:start,m3,m4,m5,m6,g3,g4,g5,g6,s3,s4,s5,s6,f7,f8,f3,f4,f5,f6,a7,a8,a3,a4,a5,a6,ctor:end,end"
+  Observed: "start,extends,M1,M2,G1,G2,S1,S2,A1,A2,m1,m2,g1,g2,s1,s2,a1,a2,F1,F2,f1,f2,c1,c2,M3,M4,M5,M6,G3,G4,G5,G6,S3,S4,S5,S6,static:start,F7,F8,F3,F4,F5,F6,A7,A8,A3,A4,A5,A6,static:end,c3,c4,c5,c6,F7,F8,F3,F4,F5,F6,A7,A8,after,ctor:start,m3,m4,m5,m6,g3,g4,g5,g6,s3,s4,s5,s6,f7,f8,f3,f4,f5,f6,a7,a8,a3,a4,a5,a6,ctor:end,end"
+
+❌ Initializer order (private members, class expression)
+  Code: log + ''
+  Expected: "start,extends,M1,M2,G1,G2,S1,S2,A1,A2,m1,m2,g1,g2,s1,s2,a1,a2,F1,F2,f1,f2,c1,c2,M3,M4,M5,M6,G3,G4,G5,G6,S3,S4,S5,S6,static:start,F7,F8,F3,F4,F5,F6,A7,A8,A3,A4,A5,A6,static:end,c3,c4,c5,c6,after,ctor:start,m3,m4,m5,m6,g3,g4,g5,g6,s3,s4,s5,s6,f7,f8,f3,f4,f5,f6,a7,a8,a3,a4,a5,a6,ctor:end,end"
+  Observed: "start,extends,M1,M2,G1,G2,S1,S2,A1,A2,m1,m2,g1,g2,s1,s2,a1,a2,F1,F2,f1,f2,c1,c2,M3,M4,M5,M6,G3,G4,G5,G6,S3,S4,S5,S6,static:start,F7,F8,F3,F4,F5,F6,A7,A8,A3,A4,A5,A6,static:end,c3,c4,c5,c6,F7,F8,F3,F4,F5,F6,A7,A8,after,ctor:start,m3,m4,m5,m6,g3,g4,g5,g6,s3,s4,s5,s6,f7,f8,f3,f4,f5,f6,a7,a8,a3,a4,a5,a6,ctor:end,end"
+
+❌ 34 checks failed
 ```
 
 </details>
@@ -110,63 +196,136 @@ Known issues:
 
 Known issues:
 
+* Decorators on anonymous classes can cause Babel to crash due to [a compiler bug](https://github.com/babel/babel/issues/16473).
 * References to the uninitialized class name within a decorator return `undefined` instead of throwing a `ReferenceError`.
 
 <details>
-<summary>❌ 10 checks failed (click for details)</summary>
+<summary>❌ 26 checks failed (click for details)</summary>
 
 ```
-❌ Decorator list evaluation: Class binding
+❌ Decorator list evaluation: Computed names (class expression)
+  Throws: unknown file: Property object of MemberExpression expected node to be of a type ["Expression","Super"] but instead got undefined
+
+❌ Decorator list evaluation: "this" (class expression)
+  Throws: unknown file: Property object of MemberExpression expected node to be of a type ["Expression","Super"] but instead got undefined
+
+❌ Decorator list evaluation: "await" (class expression)
+  Throws: unknown file: Property object of MemberExpression expected node to be of a type ["Expression","Super"] but instead got undefined
+
+❌ Decorator list evaluation: Outer private name (class expression)
+  Throws: unknown file: Property object of MemberExpression expected node to be of a type ["Expression","Super"] but instead got undefined
+
+❌ Decorator list evaluation: Class binding (class statement)
   Code: error instanceof ReferenceError
   Expected: true
   Observed: false
 
-❌ Decorator list evaluation: Class binding
+❌ Decorator list evaluation: Class binding (class statement)
   Code: error instanceof ReferenceError
   Expected: true
   Observed: false
 
-❌ Decorator list evaluation: Class binding
+❌ Decorator list evaluation: Class binding (class statement)
   Code: error instanceof ReferenceError
   Expected: true
   Observed: false
 
-❌ Decorator list evaluation: Class binding
+❌ Decorator list evaluation: Class binding (class statement)
   Code: error instanceof ReferenceError
   Expected: true
   Observed: false
 
-❌ Decorator list evaluation: Class binding
+❌ Decorator list evaluation: Class binding (class statement)
   Code: error instanceof ReferenceError
   Expected: true
   Observed: false
 
-❌ Decorator list evaluation: Class binding
+❌ Decorator list evaluation: Class binding (class statement)
   Code: error instanceof ReferenceError
   Expected: true
   Observed: false
 
-❌ Decorator list evaluation: Class binding
+❌ Decorator list evaluation: Class binding (class statement)
   Code: error instanceof ReferenceError
   Expected: true
   Observed: false
 
-❌ Decorator list evaluation: Class binding
+❌ Decorator list evaluation: Class binding (class statement)
   Code: error instanceof ReferenceError
   Expected: true
   Observed: false
 
-❌ Decorator list evaluation: Class binding
+❌ Decorator list evaluation: Class binding (class statement)
   Code: error instanceof ReferenceError
   Expected: true
   Observed: false
 
-❌ Decorator list evaluation: Class binding
+❌ Decorator list evaluation: Class binding (class statement)
   Code: error instanceof ReferenceError
   Expected: true
   Observed: false
 
-❌ 10 checks failed
+❌ Decorator list evaluation: Class binding (class expression)
+  Code: error instanceof ReferenceError
+  Expected: true
+  Observed: false
+
+❌ Decorator list evaluation: Class binding (class expression)
+  Code: error instanceof ReferenceError
+  Expected: true
+  Observed: false
+
+❌ Decorator list evaluation: Class binding (class expression)
+  Code: error instanceof ReferenceError
+  Expected: true
+  Observed: false
+
+❌ Decorator list evaluation: Class binding (class expression)
+  Code: error instanceof ReferenceError
+  Expected: true
+  Observed: false
+
+❌ Decorator list evaluation: Class binding (class expression)
+  Code: error instanceof ReferenceError
+  Expected: true
+  Observed: false
+
+❌ Decorator list evaluation: Class binding (class expression)
+  Code: error instanceof ReferenceError
+  Expected: true
+  Observed: false
+
+❌ Decorator list evaluation: Class binding (class expression)
+  Code: error instanceof ReferenceError
+  Expected: true
+  Observed: false
+
+❌ Decorator list evaluation: Class binding (class expression)
+  Code: error instanceof ReferenceError
+  Expected: true
+  Observed: false
+
+❌ Decorator list evaluation: Class binding (class expression)
+  Code: error instanceof ReferenceError
+  Expected: true
+  Observed: false
+
+❌ Decorator list evaluation: Class binding (class expression)
+  Code: error instanceof ReferenceError
+  Expected: true
+  Observed: false
+
+❌ Decorator list evaluation: Class binding (class expression)
+  Code: error instanceof ReferenceError
+  Expected: true
+  Observed: false
+
+❌ Decorator list evaluation: Class binding (class expression)
+  Code: error instanceof ReferenceError
+  Expected: true
+  Observed: false
+
+❌ 26 checks failed
 ```
 
 </details>
