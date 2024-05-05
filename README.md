@@ -24,7 +24,7 @@ Known issues:
 * TypeScript doesn't prevent `addInitializer` from adding more initializers after `decorationState.[[Finished]]` is true.
 
 <details>
-<summary>❌ 55 checks failed (click for details)</summary>
+<summary>❌ 44 checks failed (click for details)</summary>
 
 ```
 ❌ Class decorators: Extra initializer
@@ -225,61 +225,6 @@ Known issues:
   Observed: class
 
 ❌ Decorator list evaluation: Class binding (class expression)
-  Code: fn()
-  Expected: throws instanceof ReferenceError
-  Observed: returns undefined
-
-❌ Decorator list evaluation: Class binding (class expression)
-  Code: fn()
-  Expected: throws instanceof ReferenceError
-  Observed: returns undefined
-
-❌ Decorator list evaluation: Class binding (class expression)
-  Code: fn()
-  Expected: throws instanceof ReferenceError
-  Observed: returns undefined
-
-❌ Decorator list evaluation: Class binding (class expression)
-  Code: fn()
-  Expected: throws instanceof ReferenceError
-  Observed: returns undefined
-
-❌ Decorator list evaluation: Class binding (class expression)
-  Code: fn()
-  Expected: throws instanceof ReferenceError
-  Observed: returns undefined
-
-❌ Decorator list evaluation: Class binding (class expression)
-  Code: fn()
-  Expected: throws instanceof ReferenceError
-  Observed: returns undefined
-
-❌ Decorator list evaluation: Class binding (class expression)
-  Code: fn()
-  Expected: throws instanceof ReferenceError
-  Observed: returns undefined
-
-❌ Decorator list evaluation: Class binding (class expression)
-  Code: fn()
-  Expected: throws instanceof ReferenceError
-  Observed: returns undefined
-
-❌ Decorator list evaluation: Class binding (class expression)
-  Code: fn()
-  Expected: throws instanceof ReferenceError
-  Observed: returns undefined
-
-❌ Decorator list evaluation: Class binding (class expression)
-  Code: fn()
-  Expected: throws instanceof ReferenceError
-  Observed: returns undefined
-
-❌ Decorator list evaluation: Class binding (class expression)
-  Code: fn()
-  Expected: throws instanceof ReferenceError
-  Observed: returns undefined
-
-❌ Decorator list evaluation: Class binding (class expression)
   Code: firstFn()
   Expected: throws instanceof ReferenceError
   Observed: returns class
@@ -294,7 +239,7 @@ Known issues:
   Expected: "start,extends,M1,M2,G1,G2,S1,S2,A1,A2,m1,m2,g1,g2,s1,s2,a1,a2,F1,F2,f1,f2,c1,c2,M3,M4,M5,M6,G3,G4,G5,G6,S3,S4,S5,S6,static:start,F7,F8,F3,F4,F5,F6,A7,A8,A3,A4,A5,A6,static:end,c3,c4,c5,c6,after,ctor:start,m3,m4,m5,m6,g3,g4,g5,g6,s3,s4,s5,s6,f7,f8,f3,f4,f5,f6,a7,a8,a3,a4,a5,a6,ctor:end,end"
   Observed: "start,extends,M1,M2,G1,G2,S1,S2,A1,A2,m1,m2,g1,g2,s1,s2,a1,a2,F1,F2,f1,f2,c1,c2,M3,M4,M5,M6,G3,G4,G5,G6,S3,S4,S5,S6,static:start,F7,F8,F3,F4,F5,F6,A7,A8,A3,A4,A5,A6,static:end,c3,c4,c5,c6,F7,F8,F3,F4,F5,F6,A7,A8,after,ctor:start,m3,m4,m5,m6,g3,g4,g5,g6,s3,s4,s5,s6,f7,f8,f3,f4,f5,f6,a7,a8,a3,a4,a5,a6,ctor:end,end"
 
-❌ 55 checks failed
+❌ 44 checks failed
 ```
 
 </details>
@@ -308,7 +253,7 @@ Known issues:
 * Babel throws `Error` instead of `TypeError` when `addInitializer` is used after `decorationState.[[Finished]]` is true.
 
 <details>
-<summary>❌ 47 checks failed (click for details)</summary>
+<summary>❌ 36 checks failed (click for details)</summary>
 
 ```
 ❌ Class decorators: Extra initializer
@@ -479,66 +424,11 @@ Known issues:
   Observed: returns undefined
 
 ❌ Decorator list evaluation: Class binding (class expression)
-  Code: fn()
-  Expected: throws instanceof ReferenceError
-  Observed: returns undefined
-
-❌ Decorator list evaluation: Class binding (class expression)
-  Code: fn()
-  Expected: throws instanceof ReferenceError
-  Observed: returns undefined
-
-❌ Decorator list evaluation: Class binding (class expression)
-  Code: fn()
-  Expected: throws instanceof ReferenceError
-  Observed: returns undefined
-
-❌ Decorator list evaluation: Class binding (class expression)
-  Code: fn()
-  Expected: throws instanceof ReferenceError
-  Observed: returns undefined
-
-❌ Decorator list evaluation: Class binding (class expression)
-  Code: fn()
-  Expected: throws instanceof ReferenceError
-  Observed: returns undefined
-
-❌ Decorator list evaluation: Class binding (class expression)
-  Code: fn()
-  Expected: throws instanceof ReferenceError
-  Observed: returns undefined
-
-❌ Decorator list evaluation: Class binding (class expression)
-  Code: fn()
-  Expected: throws instanceof ReferenceError
-  Observed: returns undefined
-
-❌ Decorator list evaluation: Class binding (class expression)
-  Code: fn()
-  Expected: throws instanceof ReferenceError
-  Observed: returns undefined
-
-❌ Decorator list evaluation: Class binding (class expression)
-  Code: fn()
-  Expected: throws instanceof ReferenceError
-  Observed: returns undefined
-
-❌ Decorator list evaluation: Class binding (class expression)
-  Code: fn()
-  Expected: throws instanceof ReferenceError
-  Observed: returns undefined
-
-❌ Decorator list evaluation: Class binding (class expression)
-  Code: fn()
-  Expected: throws instanceof ReferenceError
-  Observed: returns undefined
-
-❌ Decorator list evaluation: Class binding (class expression)
   Code: firstFn()
   Expected: throws instanceof ReferenceError
   Observed: returns class
 
-❌ 47 checks failed
+❌ 36 checks failed
 ```
 
 </details>

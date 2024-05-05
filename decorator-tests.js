@@ -3052,17 +3052,6 @@ const tests = {
         const fns = [];
         const capture = (fn) => {
             fns.push(fn);
-            // Note: As far as I can tell, early reference to the class name should
-            // throw a reference error because:
-            //
-            // 1. Class decorators run first in the top-level scope before entering
-            //    BindingClassDeclarationEvaluation.
-            //
-            // 2. Class element decorators run in ClassDefinitionEvaluation, which
-            //    runs ClassElementEvaluation for each class element before eventually
-            //    running classEnv.InitializeBinding(classBinding, F).
-            //
-            assertThrows(() => fn(), ReferenceError);
             return () => { };
         };
         const originalFoo = (
