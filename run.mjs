@@ -1,6 +1,7 @@
 import esbuild from 'esbuild'
 import typescript from 'typescript'
 import babel from '@babel/core'
+import swc from '@swc/core'
 import fs from 'fs'
 import module from 'module'
 
@@ -31,6 +32,20 @@ await checkBehavior('TypeScript', `typescript@${require('typescript/package.json
   `* TypeScript doesn't prevent \`addInitializer\` from adding more initializers after \`decorationState.[[Finished]]\` is true.`,
 ])
 
+// Check SWC
+await checkBehavior('SWC', `@swc/core@${require('@swc/core/package.json').version}`,
+  () => swc.transformSync(js, {
+    jsc: {
+      target: 'es2022',
+      parser: { syntax: 'typescript', decorators: true },
+      transform: { decoratorVersion: '2022-03' },
+    }
+  }).code, [
+  '* SWC implements an older version of the specification from 2022 with outdated behavior.',
+  '* Generated code sometimes has syntax errors because SWC fails to transform certain decorators.',
+  '* Generated code sometimes has syntax errors caused by duplicate private names in the same class.',
+])
+
 // Update README.md
 const readme = fs.readFileSync('./README.md', 'utf8')
 fs.writeFileSync('./README.md', readme.replace(/^## Test Results\n[^]*/m, '## Test Results\n\n' + testResults.join('\n')))
@@ -49,20 +64,21 @@ async function checkBehavior(name, packageAndVersion, code, knownIssues) {
     `\`\`\`\n${logs.join('\n')}\n\`\`\`\n\n</details>\n`)
 }
 
-// Both TypeScript and Babel currently generate code with syntax errors in
-// certain cases. Attempt to work around them so we can at least run some
+// TypeScript, Babel, and SWC currently all generate code with syntax errors
+// in certain cases. Attempt to work around them so we can at least run some
 // of the tests instead of none of the tests.
 function hackToFixInvalidCode(code) {
-  while (true) {
+  outer: while (true) {
     try {
-      esbuild.transformSync(code, {})
+      esbuild.transformSync(code)
+      new Function(code)
       return code
     }
 
     catch (err) {
       if (err && err.errors && err.errors.length > 0) {
-        const { text, location } = err.errors[0]
-        if (location) {
+        for (const { text, location } of err.errors) {
+          if (!location) continue
           const { line, column, length, lineText } = location
           const lines = code.split('\n')
 
@@ -75,7 +91,20 @@ function hackToFixInvalidCode(code) {
               `[(() => { throw new SyntaxError(${JSON.stringify(text)}) })()]` +
               lineText.slice(column + length)
             code = lines.join('\n')
-            continue
+            console.log(`Fixing syntax error: ${text}`)
+            continue outer
+          }
+
+          if ((
+            /^The symbol "#\w+" has already been declared$/.test(text)
+          ) && lineText === lines[line - 1] && lineText.slice(column, column + 1) === '#') {
+            lines[line - 1] =
+              lineText.slice(0, column) +
+              `[(() => { throw new SyntaxError(${JSON.stringify(text)}) })()]` +
+              lineText.slice(column + length)
+            code = lines.join('\n')
+            console.log(`Fixing syntax error: ${text}`)
+            continue outer
           }
 
           if ((
@@ -87,12 +116,27 @@ function hackToFixInvalidCode(code) {
               `(() => { throw new SyntaxError(${JSON.stringify(text)}) })(),` +
               lineText.slice(column + length)
             code = lines.join('\n')
-            continue
+            console.log(`Fixing syntax error: ${text}`)
+            continue outer
           }
         }
       }
 
+      // SWC has a bug where it sometimes doesn't transform certain decorators
+      if (err instanceof SyntaxError) {
+        const decorator = /@\w+/.exec(code)
+        if (decorator) {
+          code = code.slice(0, decorator.index) +
+            `[(() => { throw new SyntaxError(${JSON.stringify(err.message)}) })()]._ =` +
+            code.slice(decorator.index + decorator[0].length)
+          console.log(`Fixing syntax error: ${err.message}`)
+          continue outer
+        }
+      }
+
+      fs.writeFileSync('code.js', code)
       esbuild.transformSync(code, { logLevel: 'warning' })
+      throw err
     }
   }
 }
