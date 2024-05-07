@@ -13,6 +13,10 @@ You can use `node run.mjs` after `npm install` to run and update the tests below
 
 ## Test Results
 
+### esbuild (`esbuild@0.21.0`)
+
+✅ All checks passed
+
 ### Babel (`@babel/plugin-proposal-decorators@7.24.1`)
 
 Known issues:

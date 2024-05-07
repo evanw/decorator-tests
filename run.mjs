@@ -14,6 +14,11 @@ console.log('Converting TypeScript to JavaScript...')
 const js = typescript.transpileModule(ts, { compilerOptions: { target: typescript.ScriptTarget.ESNext } }).outputText
 fs.writeFileSync('./decorator-tests.js', `// Note: Edit "decorator-tests.ts" instead of this file\n${js}`)
 
+// Check esbuild
+await checkBehavior('esbuild', `esbuild@${require('esbuild/package.json').version}`,
+  () => esbuild.transformSync(js, { target: 'es2022' }).code, [
+])
+
 // Check Babel
 await checkBehavior('Babel', `@babel/plugin-proposal-decorators@${require('@babel/plugin-proposal-decorators/package.json').version}`,
   () => babel.transformSync(hackToFixBabelBugs(js), { plugins: [['@babel/plugin-proposal-decorators', { version: '2023-11' }]] }).code, [
@@ -59,9 +64,11 @@ async function checkBehavior(name, packageAndVersion, code, knownIssues) {
   await fn({ log: text => logs.push(text) })
   const summary = logs[logs.length - 1]
   const notes = knownIssues.length ? `\nKnown issues:\n\n${knownIssues.join('\n')}\n` : ''
-  testResults.push(`### ${name} (\`${packageAndVersion}\`)\n${notes}\n<details>\n` +
-    `<summary>${summary} (click for details)</summary>\n\n` +
-    `\`\`\`\n${logs.join('\n')}\n\`\`\`\n\n</details>\n`)
+  testResults.push(`### ${name} (\`${packageAndVersion}\`)\n${notes}\n` +
+    (summary.includes('✅') ? summary :
+      `<details>\n<summary>${summary} (click for details)</summary>\n\n` +
+      `\`\`\`\n${logs.join('\n')}\n\`\`\`\n\n</details>`) +
+    '\n')
 }
 
 // TypeScript, Babel, and SWC currently all generate code with syntax errors

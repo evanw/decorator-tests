@@ -3707,7 +3707,7 @@ async function run() {
   if (failures > 0) {
     console.log(`❌ ${failures} checks failed`)
   } else {
-    console.log(`✅ all checks passed`)
+    console.log(`✅ All checks passed`)
   }
 }
 
