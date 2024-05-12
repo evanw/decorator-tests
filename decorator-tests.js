@@ -916,7 +916,10 @@ const tests = {
     'Field decorators: Shim (instance field)': () => {
         let log = [];
         const dec = (value, ctx) => {
-            return (x) => log.push(x);
+            return function (x) {
+                assertEq(() => this instanceof Foo, true);
+                return log.push('foo' in this, 'bar' in this, x);
+            };
         };
         class Foo {
             @dec
@@ -926,40 +929,43 @@ const tests = {
         }
         assertEq(() => log + '', '');
         var obj = new Foo;
-        assertEq(() => obj.foo, 1);
-        assertEq(() => obj.bar, 2);
-        assertEq(() => log + '', '123,');
-        var obj = new Foo;
         assertEq(() => obj.foo, 3);
-        assertEq(() => obj.bar, 4);
-        assertEq(() => log + '', '123,,123,');
+        assertEq(() => obj.bar, 6);
+        assertEq(() => log + '', 'false,false,123,true,false,');
     },
     'Field decorators: Shim (static field)': () => {
+        let foo;
         let log = [];
         const dec = (value, ctx) => {
-            return (x) => log.push(x);
-        };
-        const fn = (foo, bar) => {
-            class Foo {
-                @dec
-                static foo = 123;
-                @dec
-                static bar;
-            }
-            assertEq(() => Foo.foo, foo);
-            assertEq(() => Foo.bar, bar);
+            return function (x) {
+                assertEq(() => this, foo);
+                return log.push('foo' in this, 'bar' in this, x);
+            };
         };
         assertEq(() => log + '', '');
-        fn(1, 2);
-        assertEq(() => log + '', '123,');
-        fn(3, 4);
-        assertEq(() => log + '', '123,,123,');
+        class Foo {
+            static {
+                foo = Foo;
+            }
+            @dec
+            static foo = 123;
+            @dec
+            static bar;
+        }
+        assertEq(() => Foo.foo, 3);
+        assertEq(() => Foo.bar, 6);
+        assertEq(() => log + '', 'false,false,123,true,false,');
     },
     'Field decorators: Shim (private instance field)': () => {
         let log = [];
         const dec = (value, ctx) => {
-            return (x) => log.push(x);
+            return function (x) {
+                assertEq(() => this instanceof Foo, true);
+                return log.push(has$foo(this), has$bar(this), x);
+            };
         };
+        let has$foo;
+        let has$bar;
         let get$foo;
         let get$bar;
         class Foo {
@@ -968,46 +974,48 @@ const tests = {
             @dec
             #bar;
             static {
+                has$foo = x => #foo in x;
+                has$bar = x => #bar in x;
                 get$foo = x => x.#foo;
                 get$bar = x => x.#bar;
             }
         }
         assertEq(() => log + '', '');
         var obj = new Foo;
-        assertEq(() => get$foo(obj), 1);
-        assertEq(() => get$bar(obj), 2);
-        assertEq(() => log + '', '123,');
-        var obj = new Foo;
         assertEq(() => get$foo(obj), 3);
-        assertEq(() => get$bar(obj), 4);
-        assertEq(() => log + '', '123,,123,');
+        assertEq(() => get$bar(obj), 6);
+        assertEq(() => log + '', 'false,false,123,true,false,');
     },
     'Field decorators: Shim (private static field)': () => {
+        let foo;
         let log = [];
         const dec = (value, ctx) => {
-            return (x) => log.push(x);
-        };
-        const fn = (foo, bar) => {
-            let get$foo;
-            let get$bar;
-            class Foo {
-                @dec
-                static #foo = 123;
-                @dec
-                static #bar;
-                static {
-                    get$foo = x => x.#foo;
-                    get$bar = x => x.#bar;
-                }
-            }
-            assertEq(() => get$foo(Foo), foo);
-            assertEq(() => get$bar(Foo), bar);
+            return function (x) {
+                assertEq(() => this, foo);
+                return log.push(has$foo(this), has$bar(this), x);
+            };
         };
         assertEq(() => log + '', '');
-        fn(1, 2);
-        assertEq(() => log + '', '123,');
-        fn(3, 4);
-        assertEq(() => log + '', '123,,123,');
+        let has$foo;
+        let has$bar;
+        let get$foo;
+        let get$bar;
+        class Foo {
+            static {
+                foo = Foo;
+                has$foo = x => #foo in x;
+                has$bar = x => #bar in x;
+                get$foo = x => x.#foo;
+                get$bar = x => x.#bar;
+            }
+            @dec
+            static #foo = 123;
+            @dec
+            static #bar;
+        }
+        assertEq(() => get$foo(Foo), 3);
+        assertEq(() => get$bar(Foo), 6);
+        assertEq(() => log + '', 'false,false,123,true,false,');
     },
     'Field decorators: Order (instance field)': () => {
         const log = [];
@@ -2386,7 +2394,10 @@ const tests = {
         let get;
         let set;
         const dec = (target, ctx) => {
-            const init = (x) => x + 1;
+            function init(x) {
+                assertEq(() => this instanceof Foo, true);
+                return x + 1;
+            }
             get = function () { return target.get.call(this) * 10; };
             set = function (x) { target.set.call(this, x * 2); };
             return { get, set, init };
@@ -2403,15 +2414,22 @@ const tests = {
         assertEq(() => obj.foo, (321 * 2) * 10);
     },
     'Auto-accessor decorators: Shim (static auto-accessor)': () => {
+        let foo;
         let get;
         let set;
         const dec = (target, ctx) => {
-            const init = (x) => x + 1;
+            function init(x) {
+                assertEq(() => this, foo);
+                return x + 1;
+            }
             get = function () { return target.get.call(this) * 10; };
             set = function (x) { target.set.call(this, x * 2); };
             return { get, set, init };
         };
         class Foo {
+            static {
+                foo = Foo;
+            }
             @dec
             static accessor foo = 123;
         }
@@ -2425,7 +2443,10 @@ const tests = {
         let get;
         let set;
         const dec = (target, ctx) => {
-            const init = (x) => x + 1;
+            function init(x) {
+                assertEq(() => this instanceof Foo, true);
+                return x + 1;
+            }
             get = function () { return target.get.call(this) * 10; };
             set = function (x) { target.set.call(this, x * 2); };
             return { get, set, init };
@@ -2446,10 +2467,14 @@ const tests = {
         assertEq(() => get$foo(obj), (321 * 2) * 10);
     },
     'Auto-accessor decorators: Shim (private static auto-accessor)': () => {
+        let foo;
         let get;
         let set;
         const dec = (target, ctx) => {
-            const init = (x) => x + 1;
+            function init(x) {
+                assertEq(() => this, foo);
+                return x + 1;
+            }
             get = function () { return target.get.call(this) * 10; };
             set = function (x) { target.set.call(this, x * 2); };
             return { get, set, init };
@@ -2457,12 +2482,13 @@ const tests = {
         let get$foo;
         let set$foo;
         class Foo {
-            @dec
-            static accessor #foo = 123;
             static {
+                foo = Foo;
                 get$foo = x => x.#foo;
                 set$foo = (x, y) => { x.#foo = y; };
             }
+            @dec
+            static accessor #foo = 123;
         }
         assertEq(() => get$foo(Foo), (123 + 1) * 10);
         assertEq(() => set$foo(Foo, 321), undefined);
