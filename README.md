@@ -13,96 +13,9 @@ You can use `node run.mjs` after `npm install` to run and update the tests below
 
 ## Test Results
 
-### esbuild (`esbuild@0.21.0`)
+### esbuild (`esbuild@0.21.2`)
 
-<details>
-<summary>❌ 16 checks failed (click for details)</summary>
-
-```
-❌ Field decorators: Shim (instance field)
-  Code: this instanceof Foo2
-  Expected: true
-  Observed: false
-
-❌ Field decorators: Shim (instance field)
-  Code: this instanceof Foo2
-  Expected: true
-  Observed: false
-
-❌ Field decorators: Shim (instance field)
-  Code: log + ""
-  Expected: "false,false,123,true,false,"
-  Observed: "false,false,123,false,false,"
-
-❌ Field decorators: Shim (static field)
-  Code: this
-  Expected: class
-  Observed: [object global]
-
-❌ Field decorators: Shim (static field)
-  Code: this
-  Expected: class
-  Observed: [object global]
-
-❌ Field decorators: Shim (static field)
-  Code: log + ""
-  Expected: "false,false,123,true,false,"
-  Observed: "false,false,123,false,false,"
-
-❌ Field decorators: Shim (private instance field)
-  Code: this instanceof Foo2
-  Expected: true
-  Observed: false
-
-❌ Field decorators: Shim (private instance field)
-  Code: this instanceof Foo2
-  Expected: true
-  Observed: false
-
-❌ Field decorators: Shim (private instance field)
-  Code: log + ""
-  Expected: "false,false,123,true,false,"
-  Observed: "false,false,123,false,false,"
-
-❌ Field decorators: Shim (private static field)
-  Code: this
-  Expected: class
-  Observed: [object global]
-
-❌ Field decorators: Shim (private static field)
-  Code: this
-  Expected: class
-  Observed: [object global]
-
-❌ Field decorators: Shim (private static field)
-  Code: log + ""
-  Expected: "false,false,123,true,false,"
-  Observed: "false,false,123,false,false,"
-
-❌ Auto-accessor decorators: Shim (instance auto-accessor)
-  Code: this instanceof Foo2
-  Expected: true
-  Observed: false
-
-❌ Auto-accessor decorators: Shim (static auto-accessor)
-  Code: this
-  Expected: class
-  Observed: [object global]
-
-❌ Auto-accessor decorators: Shim (private instance auto-accessor)
-  Code: this instanceof Foo2
-  Expected: true
-  Observed: false
-
-❌ Auto-accessor decorators: Shim (private static auto-accessor)
-  Code: this
-  Expected: class
-  Observed: [object global]
-
-❌ 16 checks failed
-```
-
-</details>
+✅ All checks passed
 
 ### Babel (`@babel/plugin-proposal-decorators@7.24.1`)
 
