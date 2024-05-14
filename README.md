@@ -1,13 +1,13 @@
 # JavaScript Decorator Tests
 
-This repo contains a single file with many behavioral tests for the upcoming [decorators feature](https://github.com/tc39/proposal-decorators) in JavaScript. It's intended to be easy to use for testing a given JavaScript implementation: just run the file [`decorator-tests.js`](./decorator-tests.js) and see what `console.log` prints (although you may need to comment out some of the tests if your implementation emits code containing syntax errors, which TypeScript currently does). The source code for that file is in TypeScript (see [`decorator-tests.ts`](./decorator-tests.ts)) to make authoring the tests easier (e.g. to catch typos). I'm planning to use these tests to help me implement JavaScript decorators for [esbuild](https://github.com/evanw/esbuild).
+This repo contains a single file with many behavioral tests for the upcoming [decorators](https://github.com/tc39/proposal-decorators) and [decorator metadata](https://github.com/tc39/proposal-decorator-metadata) features in JavaScript. It's intended to be easy to use for testing a given JavaScript implementation: just run the file [`decorator-tests.js`](./decorator-tests.js) and see what `console.log` prints (although you may need to comment out some of the tests if your implementation emits code containing syntax errors, which TypeScript currently does). The source code for that file is in TypeScript (see [`decorator-tests.ts`](./decorator-tests.ts)) to make authoring the tests easier (e.g. to catch typos). I'm planning to use these tests to help me implement JavaScript decorators for [esbuild](https://github.com/evanw/esbuild).
 
 Some caveats:
 
-* The specification is still a work in progress, and may be outdated
-* I'm not the author of the specification and I may have misinterpreted it
-* Deviations from the specification by the tools below may be intentional
-* The specification itself doesn't yet have good test coverage (see [this](https://github.com/tc39/test262/issues/3997) and [this](https://github.com/tc39/test262/issues/4042))
+* The specifications are still a work in progress, and may be outdated
+* I'm not the author of the specifications and I may have misinterpreted them
+* Deviations from the specifications by the tools below may be intentional
+* The specifications themselves don't yet have good test coverage (see [this](https://github.com/tc39/test262/issues/3997) and [this](https://github.com/tc39/test262/issues/4042))
 
 You can use `node run.mjs` after `npm install` to run and update the tests below.
 
@@ -15,7 +15,24 @@ You can use `node run.mjs` after `npm install` to run and update the tests below
 
 ### esbuild (`esbuild@0.21.2`)
 
-✅ All checks passed
+Known issues:
+
+* Doesn't support the [decorator metadata](https://github.com/tc39/proposal-decorator-metadata) proposal yet.
+
+<details>
+<summary>❌ 2 checks failed (click for details)</summary>
+
+```
+❌ Decorator metadata: class statement
+  Throws: TypeError: Cannot set properties of undefined (setting 'staticAccessor')
+
+❌ Decorator metadata: class expression
+  Throws: TypeError: Cannot set properties of undefined (setting 'staticAccessor')
+
+❌ 2 checks failed
+```
+
+</details>
 
 ### Babel (`@babel/plugin-proposal-decorators@7.24.1`)
 
@@ -446,7 +463,7 @@ Known issues:
 * Generated code sometimes has syntax errors caused by duplicate private names in the same class.
 
 <details>
-<summary>❌ 234 checks failed (click for details)</summary>
+<summary>❌ 238 checks failed (click for details)</summary>
 
 ```
 ❌ Class decorators: Basic expression: Property value
@@ -1468,6 +1485,26 @@ Known issues:
 ❌ Decorator list evaluation: Class binding (class expression)
   Throws: SyntaxError: The symbol "#___private_accessor" has already been declared
 
+❌ Decorator metadata: class statement
+  Code: ()=>order(foo)
+  Expected: "0,1,2,3,,,,,4,5,6,7,,,,,8,,9,,10,"
+  Observed: "0,1,2,3,,,,,5,6,7,8,,,,,4,,9,,10,"
+
+❌ Decorator metadata: class statement
+  Code: ()=>order(bar)
+  Expected: "0,1,2,3,11,12,13,14,4,5,6,7,15,16,17,18,8,19,9,20,10,21"
+  Observed: "0,1,2,3,11,12,13,14,5,6,7,8,16,17,18,19,4,15,9,20,10,21"
+
+❌ Decorator metadata: class expression
+  Code: ()=>order(foo)
+  Expected: "0,1,2,3,,,,,4,5,6,7,,,,,8,,9,,10,"
+  Observed: "0,1,2,3,,,,,5,6,7,8,,,,,4,,9,,,"
+
+❌ Decorator metadata: class expression
+  Code: ()=>order(bar)
+  Expected: "0,1,2,3,11,12,13,14,4,5,6,7,15,16,17,18,8,19,9,20,10,21"
+  Observed: "0,1,2,3,11,12,13,14,5,6,7,8,16,17,18,19,4,15,9,20,,"
+
 ❌ Initializer order (public members, class statement)
   Code: ()=>log + ''
   Expected: "start,extends,M1,M2,G1,G2,S1,S2,A1,A2,m1,m2,g1,g2,s1,s2,a1,a2,F1,F2,f1,f2,c1,c2,M3,M4,M5,M6,G3,G4,G5,G6,S3,S4,S5,S6,static:start,F7,F8,F3,F4,F5,F6,A7,A8,A3,A4,A5,A6,static:end,c3,c4,c5,c6,after,ctor:start,m3,m4,m5,m6,g3,g4,g5,g6,s3,s4,s5,s6,f7,f8,f3,f4,f5,f6,a7,a8,a3,a4,a5,a6,ctor:end,end"
@@ -1486,7 +1523,7 @@ Known issues:
   Expected: "start,extends,M1,M2,G1,G2,S1,S2,A1,A2,m1,m2,g1,g2,s1,s2,a1,a2,F1,F2,f1,f2,c1,c2,M3,M4,M5,M6,G3,G4,G5,G6,S3,S4,S5,S6,static:start,F7,F8,F3,F4,F5,F6,A7,A8,A3,A4,A5,A6,static:end,c3,c4,c5,c6,after,ctor:start,m3,m4,m5,m6,g3,g4,g5,g6,s3,s4,s5,s6,f7,f8,f3,f4,f5,f6,a7,a8,a3,a4,a5,a6,ctor:end,end"
   Observed: "start,extends,M1,M2,G1,G2,S1,S2,A1,A2,F1,F2,m1,m2,g1,g2,s1,s2,a1,a2,f1,f2,c1,c2,M3,M4,M5,M6,G3,G4,G5,G6,S3,S4,S5,S6,A3,A4,A5,A6,F3,F4,F5,F6,static:start,F8,F7,A8,A7,static:end,c3,c4,c5,c6,after,ctor:start,f8,f7,m3,m4,m5,m6,g3,g4,g5,g6,s3,s4,s5,s6,a3,a4,a5,a6,f3,f4,f5,f6,a8,a7,ctor:end,end"
 
-❌ 234 checks failed
+❌ 238 checks failed
 ```
 
 </details>

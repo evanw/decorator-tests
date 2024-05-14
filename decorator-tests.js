@@ -1,4 +1,8 @@
 // Note: Edit "decorator-tests.ts" instead of this file
+// Polyfill this in case it's missing
+if (!('metadata' in Symbol)) {
+    Symbol.metadata = Symbol('Symbol.metadata');
+}
 const tests = {
     // Class decorators
     'Class decorators: Basic statement': () => {
@@ -3117,6 +3121,140 @@ const tests = {
         for (const fn of fns) {
             assertEq(() => fn(), originalFoo);
         }
+    },
+    // Decorator metadata
+    'Decorator metadata: class statement': () => {
+        let counter = 0;
+        const dec = (_, ctx) => {
+            ctx.metadata[ctx.name] = counter++;
+        };
+        @dec
+        class Foo {
+            @dec
+            instanceField;
+            @dec
+            accessor instanceAccessor;
+            @dec
+            instanceMethod() { }
+            @dec
+            get instanceGetter() { return; }
+            @dec
+            set instanceSetter(_) { }
+            @dec
+            static staticField;
+            @dec
+            static accessor staticAccessor;
+            @dec
+            static staticMethod() { }
+            @dec
+            static get staticGetter() { return; }
+            @dec
+            static set staticSetter(_) { }
+        }
+        @dec
+        class Bar extends Foo {
+            @dec
+            #instanceField;
+            @dec
+            accessor #instanceAccessor;
+            @dec
+            #instanceMethod() { }
+            @dec
+            get #instanceGetter() { return; }
+            @dec
+            set #instanceSetter(_) { }
+            @dec
+            static #staticField;
+            @dec
+            static accessor #staticAccessor;
+            @dec
+            static #staticMethod() { }
+            @dec
+            static get #staticGetter() { return; }
+            @dec
+            static set #staticSetter(_) { }
+        }
+        const order = (meta) => '' + [
+            meta['staticAccessor'], meta['staticMethod'], meta['staticGetter'], meta['staticSetter'],
+            meta['#staticAccessor'], meta['#staticMethod'], meta['#staticGetter'], meta['#staticSetter'],
+            meta['instanceAccessor'], meta['instanceMethod'], meta['instanceGetter'], meta['instanceSetter'],
+            meta['#instanceAccessor'], meta['#instanceMethod'], meta['#instanceGetter'], meta['#instanceSetter'],
+            meta['staticField'], meta['#staticField'],
+            meta['instanceField'], meta['#instanceField'],
+            meta['Foo'], meta['Bar'],
+        ];
+        const foo = Foo[Symbol.metadata];
+        const bar = Bar[Symbol.metadata];
+        assertEq(() => order(foo), '0,1,2,3,,,,,4,5,6,7,,,,,8,,9,,10,');
+        assertEq(() => order(bar), '0,1,2,3,11,12,13,14,4,5,6,7,15,16,17,18,8,19,9,20,10,21');
+        assertEq(() => Object.getPrototypeOf(bar), foo);
+    },
+    'Decorator metadata: class expression': () => {
+        let counter = 0;
+        const dec = (_, ctx) => {
+            ctx.metadata[ctx.name] = counter++;
+        };
+        const Foo = 
+        @dec
+        class {
+            @dec
+            instanceField;
+            @dec
+            accessor instanceAccessor;
+            @dec
+            instanceMethod() { }
+            @dec
+            get instanceGetter() { return; }
+            @dec
+            set instanceSetter(_) { }
+            @dec
+            static staticField;
+            @dec
+            static accessor staticAccessor;
+            @dec
+            static staticMethod() { }
+            @dec
+            static get staticGetter() { return; }
+            @dec
+            static set staticSetter(_) { }
+        }, Bar = 
+        @dec
+        class extends Foo {
+            @dec
+            #instanceField;
+            @dec
+            accessor #instanceAccessor;
+            @dec
+            #instanceMethod() { }
+            @dec
+            get #instanceGetter() { return; }
+            @dec
+            set #instanceSetter(_) { }
+            @dec
+            static #staticField;
+            @dec
+            static accessor #staticAccessor;
+            @dec
+            static #staticMethod() { }
+            @dec
+            static get #staticGetter() { return; }
+            @dec
+            static set #staticSetter(_) { }
+        };
+        const order = (meta) => '' + [
+            meta['staticAccessor'], meta['staticMethod'], meta['staticGetter'], meta['staticSetter'],
+            meta['#staticAccessor'], meta['#staticMethod'], meta['#staticGetter'], meta['#staticSetter'],
+            meta['instanceAccessor'], meta['instanceMethod'], meta['instanceGetter'], meta['instanceSetter'],
+            meta['#instanceAccessor'], meta['#instanceMethod'], meta['#instanceGetter'], meta['#instanceSetter'],
+            meta['staticField'], meta['#staticField'],
+            meta['instanceField'], meta['#instanceField'],
+            meta['Foo'], meta['Bar'],
+        ];
+        const foo = Foo[Symbol.metadata];
+        const bar = Bar[Symbol.metadata];
+        assertEq(() => order(foo), '0,1,2,3,,,,,4,5,6,7,,,,,8,,9,,10,');
+        assertEq(() => order(bar), '0,1,2,3,11,12,13,14,4,5,6,7,15,16,17,18,8,19,9,20,10,21');
+        assertEq(() => Object.getPrototypeOf(bar), foo);
     },
     // Initializer order
     'Initializer order (public members, class statement)': () => {

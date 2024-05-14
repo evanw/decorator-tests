@@ -17,6 +17,7 @@ fs.writeFileSync('./decorator-tests.js', `// Note: Edit "decorator-tests.ts" ins
 // Check esbuild
 await checkBehavior('esbuild', `esbuild@${require('esbuild/package.json').version}`,
   () => esbuild.transformSync(js, { target: 'es2022' }).code, [
+  '* Doesn\'t support the [decorator metadata](https://github.com/tc39/proposal-decorator-metadata) proposal yet.',
 ])
 
 // Check Babel
