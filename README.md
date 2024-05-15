@@ -17,19 +17,130 @@ You can use `node run.mjs` after `npm install` to run and update the tests below
 
 Known issues:
 
+* Named class expressions in "NamedEvaluation" position use the incorrect name.
 * Doesn't support the [decorator metadata](https://github.com/tc39/proposal-decorator-metadata) proposal yet.
 
 <details>
-<summary>❌ 2 checks failed (click for details)</summary>
+<summary>❌ 24 checks failed (click for details)</summary>
 
 ```
+❌ Class decorators: Basic expression: Property value
+  Code: cls.name
+  Expected: "Baz"
+  Observed: "Bar"
+
+❌ Class decorators: Basic expression: Property value
+  Code: ctx.name
+  Expected: "Baz"
+  Observed: "Bar"
+
+❌ Class decorators: Basic expression: Variable initializer
+  Code: cls.name
+  Expected: "Baz"
+  Observed: "Bar"
+
+❌ Class decorators: Basic expression: Variable initializer
+  Code: ctx.name
+  Expected: "Baz"
+  Observed: "Bar"
+
+❌ Class decorators: Basic expression: Array binding
+  Code: cls.name
+  Expected: "Baz"
+  Observed: "Bar"
+
+❌ Class decorators: Basic expression: Array binding
+  Code: ctx.name
+  Expected: "Baz"
+  Observed: "Bar"
+
+❌ Class decorators: Basic expression: Object binding
+  Code: cls.name
+  Expected: "Baz"
+  Observed: "Bar"
+
+❌ Class decorators: Basic expression: Object binding
+  Code: ctx.name
+  Expected: "Baz"
+  Observed: "Bar"
+
+❌ Class decorators: Basic expression: Assignment initializer
+  Code: cls.name
+  Expected: "Baz"
+  Observed: "Bar"
+
+❌ Class decorators: Basic expression: Assignment initializer
+  Code: ctx.name
+  Expected: "Baz"
+  Observed: "Bar"
+
+❌ Class decorators: Basic expression: Assignment array binding
+  Code: cls.name
+  Expected: "Baz"
+  Observed: "Bar"
+
+❌ Class decorators: Basic expression: Assignment array binding
+  Code: ctx.name
+  Expected: "Baz"
+  Observed: "Bar"
+
+❌ Class decorators: Basic expression: Assignment object binding
+  Code: cls.name
+  Expected: "Baz"
+  Observed: "Bar"
+
+❌ Class decorators: Basic expression: Assignment object binding
+  Code: ctx.name
+  Expected: "Baz"
+  Observed: "Bar"
+
+❌ Class decorators: Basic expression: Instance field initializer
+  Code: cls.name
+  Expected: "Baz"
+  Observed: "Bar"
+
+❌ Class decorators: Basic expression: Instance field initializer
+  Code: ctx.name
+  Expected: "Baz"
+  Observed: "Bar"
+
+❌ Class decorators: Basic expression: Static field initializer
+  Code: cls.name
+  Expected: "Baz"
+  Observed: "Bar"
+
+❌ Class decorators: Basic expression: Static field initializer
+  Code: ctx.name
+  Expected: "Baz"
+  Observed: "Bar"
+
+❌ Class decorators: Basic expression: Instance auto-accessor initializer
+  Code: cls.name
+  Expected: "Baz"
+  Observed: "Bar"
+
+❌ Class decorators: Basic expression: Instance auto-accessor initializer
+  Code: ctx.name
+  Expected: "Baz"
+  Observed: "Bar"
+
+❌ Class decorators: Basic expression: Static auto-accessor initializer
+  Code: cls.name
+  Expected: "Baz"
+  Observed: "Bar"
+
+❌ Class decorators: Basic expression: Static auto-accessor initializer
+  Code: ctx.name
+  Expected: "Baz"
+  Observed: "Bar"
+
 ❌ Decorator metadata: class statement
   Throws: TypeError: Cannot set properties of undefined (setting 'staticAccessor')
 
 ❌ Decorator metadata: class expression
   Throws: TypeError: Cannot set properties of undefined (setting 'staticAccessor')
 
-❌ 2 checks failed
+❌ 24 checks failed
 ```
 
 </details>

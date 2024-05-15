@@ -17,6 +17,7 @@ fs.writeFileSync('./decorator-tests.js', `// Note: Edit "decorator-tests.ts" ins
 // Check esbuild
 await checkBehavior('esbuild', `esbuild@${require('esbuild/package.json').version}`,
   () => esbuild.transformSync(js, { target: 'es2022' }).code, [
+  '* Named class expressions in "NamedEvaluation" position use the incorrect name.',
   '* Doesn\'t support the [decorator metadata](https://github.com/tc39/proposal-decorator-metadata) proposal yet.',
 ])
 
@@ -132,7 +133,7 @@ function hackToFixInvalidCode(code) {
 
       // SWC has a bug where it sometimes doesn't transform certain decorators
       if (err instanceof SyntaxError) {
-        const decorator = /@\w+/.exec(code)
+        const decorator = /@\w+(?:\([^)]*\))?/.exec(code)
         if (decorator) {
           code = code.slice(0, decorator.index) +
             `[(() => { throw new SyntaxError(${JSON.stringify(err.message)}) })()]._ =` +

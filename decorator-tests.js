@@ -7,46 +7,51 @@ const tests = {
     // Class decorators
     'Class decorators: Basic statement': () => {
         let old;
-        const dec = (cls, ctx) => {
+        const dec = (name) => (cls, ctx) => {
             assertEq(() => typeof cls, 'function');
-            assertEq(() => cls.name, 'Foo');
+            assertEq(() => cls.name, name);
             assertEq(() => ctx.kind, 'class');
-            assertEq(() => ctx.name, 'Foo');
+            assertEq(() => ctx.name, name);
             assertEq(() => 'static' in ctx, false);
             assertEq(() => 'private' in ctx, false);
             assertEq(() => 'access' in ctx, false);
             old = cls;
         };
-        @dec
+        @dec('Foo')
         class Foo {
         }
         assertEq(() => Foo, old);
     },
     'Class decorators: Basic expression: Anonymous': () => {
         let old;
-        const dec = (cls, ctx) => {
+        const dec = (name) => (cls, ctx) => {
             assertEq(() => typeof cls, 'function');
-            assertEq(() => cls.name, '');
+            assertEq(() => cls.name, name);
             assertEq(() => ctx.kind, 'class');
-            assertEq(() => ctx.name, '');
+            assertEq(() => ctx.name, name);
             assertEq(() => 'static' in ctx, false);
             assertEq(() => 'private' in ctx, false);
             assertEq(() => 'access' in ctx, false);
             old = cls;
         };
         const Foo = (x => x)(
-        @dec
+        @dec('')
         class {
         });
         assertEq(() => Foo, old);
+        const Bar = (x => x)(
+        @dec('Baz')
+        class Baz {
+        });
+        assertEq(() => Bar, old);
     },
     'Class decorators: Basic expression: Property value': () => {
         let old;
-        const dec = (cls, ctx) => {
+        const dec = (name) => (cls, ctx) => {
             assertEq(() => typeof cls, 'function');
-            assertEq(() => cls.name, 'Foo');
+            assertEq(() => cls.name, name);
             assertEq(() => ctx.kind, 'class');
-            assertEq(() => ctx.name, 'Foo');
+            assertEq(() => ctx.name, name);
             assertEq(() => 'static' in ctx, false);
             assertEq(() => 'private' in ctx, false);
             assertEq(() => 'access' in ctx, false);
@@ -54,73 +59,95 @@ const tests = {
         };
         const obj = {
             Foo: 
-            @dec
+            @dec('Foo')
             class {
             },
         };
         assertEq(() => obj.Foo, old);
+        const obj2 = {
+            Bar: 
+            @dec('Baz')
+            class Baz {
+            },
+        };
+        assertEq(() => obj2.Bar, old);
     },
     'Class decorators: Basic expression: Variable initializer': () => {
         let old;
-        const dec = (cls, ctx) => {
+        const dec = (name) => (cls, ctx) => {
             assertEq(() => typeof cls, 'function');
-            assertEq(() => cls.name, 'Foo');
+            assertEq(() => cls.name, name);
             assertEq(() => ctx.kind, 'class');
-            assertEq(() => ctx.name, 'Foo');
+            assertEq(() => ctx.name, name);
             assertEq(() => 'static' in ctx, false);
             assertEq(() => 'private' in ctx, false);
             assertEq(() => 'access' in ctx, false);
             old = cls;
         };
         const Foo = 
-        @dec
+        @dec('Foo')
         class {
         };
         assertEq(() => Foo, old);
+        const Bar = 
+        @dec('Baz')
+        class Baz {
+        };
+        assertEq(() => Bar, old);
     },
     'Class decorators: Basic expression: Array binding': () => {
         let old;
-        const dec = (cls, ctx) => {
+        const dec = (name) => (cls, ctx) => {
             assertEq(() => typeof cls, 'function');
-            assertEq(() => cls.name, 'Foo');
+            assertEq(() => cls.name, name);
             assertEq(() => ctx.kind, 'class');
-            assertEq(() => ctx.name, 'Foo');
+            assertEq(() => ctx.name, name);
             assertEq(() => 'static' in ctx, false);
             assertEq(() => 'private' in ctx, false);
             assertEq(() => 'access' in ctx, false);
             old = cls;
         };
         const [Foo = 
-        @dec
+        @dec('Foo')
         class {
         }] = [];
         assertEq(() => Foo, old);
+        const [Bar = 
+        @dec('Baz')
+        class Baz {
+        }] = [];
+        assertEq(() => Bar, old);
     },
     'Class decorators: Basic expression: Object binding': () => {
         let old;
-        const dec = (cls, ctx) => {
+        const dec = (name) => (cls, ctx) => {
             assertEq(() => typeof cls, 'function');
-            assertEq(() => cls.name, 'Foo');
+            assertEq(() => cls.name, name);
             assertEq(() => ctx.kind, 'class');
-            assertEq(() => ctx.name, 'Foo');
+            assertEq(() => ctx.name, name);
             assertEq(() => 'static' in ctx, false);
             assertEq(() => 'private' in ctx, false);
             assertEq(() => 'access' in ctx, false);
             old = cls;
         };
         const { Foo = 
-        @dec
+        @dec('Foo')
         class {
         } } = {};
         assertEq(() => Foo, old);
+        const { Bar = 
+        @dec('Baz')
+        class Baz {
+        } } = {};
+        assertEq(() => Bar, old);
     },
     'Class decorators: Basic expression: Assignment initializer': () => {
         let old;
-        const dec = (cls, ctx) => {
+        const dec = (name) => (cls, ctx) => {
             assertEq(() => typeof cls, 'function');
-            assertEq(() => cls.name, 'Foo');
+            assertEq(() => cls.name, name);
             assertEq(() => ctx.kind, 'class');
-            assertEq(() => ctx.name, 'Foo');
+            assertEq(() => ctx.name, name);
             assertEq(() => 'static' in ctx, false);
             assertEq(() => 'private' in ctx, false);
             assertEq(() => 'access' in ctx, false);
@@ -128,18 +155,24 @@ const tests = {
         };
         let Foo;
         Foo = 
-        @dec
+        @dec('Foo')
         class {
         };
         assertEq(() => Foo, old);
+        let Bar;
+        Bar = 
+        @dec('Baz')
+        class Baz {
+        };
+        assertEq(() => Bar, old);
     },
     'Class decorators: Basic expression: Assignment array binding': () => {
         let old;
-        const dec = (cls, ctx) => {
+        const dec = (name) => (cls, ctx) => {
             assertEq(() => typeof cls, 'function');
-            assertEq(() => cls.name, 'Foo');
+            assertEq(() => cls.name, name);
             assertEq(() => ctx.kind, 'class');
-            assertEq(() => ctx.name, 'Foo');
+            assertEq(() => ctx.name, name);
             assertEq(() => 'static' in ctx, false);
             assertEq(() => 'private' in ctx, false);
             assertEq(() => 'access' in ctx, false);
@@ -147,18 +180,24 @@ const tests = {
         };
         let Foo;
         [Foo = 
-            @dec
+            @dec('Foo')
             class {
             }] = [];
         assertEq(() => Foo, old);
+        let Bar;
+        [Bar = 
+            @dec('Baz')
+            class Baz {
+            }] = [];
+        assertEq(() => Bar, old);
     },
     'Class decorators: Basic expression: Assignment object binding': () => {
         let old;
-        const dec = (cls, ctx) => {
+        const dec = (name) => (cls, ctx) => {
             assertEq(() => typeof cls, 'function');
-            assertEq(() => cls.name, 'Foo');
+            assertEq(() => cls.name, name);
             assertEq(() => ctx.kind, 'class');
-            assertEq(() => ctx.name, 'Foo');
+            assertEq(() => ctx.name, name);
             assertEq(() => 'static' in ctx, false);
             assertEq(() => 'private' in ctx, false);
             assertEq(() => 'access' in ctx, false);
@@ -166,18 +205,24 @@ const tests = {
         };
         let Foo;
         ({ Foo = 
-            @dec
+            @dec('Foo')
             class {
             } } = {});
         assertEq(() => Foo, old);
+        let Bar;
+        ({ Bar = 
+            @dec('Baz')
+            class Baz {
+            } } = {});
+        assertEq(() => Bar, old);
     },
     'Class decorators: Basic expression: Instance field initializer': () => {
         let old;
-        const dec = (cls, ctx) => {
+        const dec = (name) => (cls, ctx) => {
             assertEq(() => typeof cls, 'function');
-            assertEq(() => cls.name, 'Foo');
+            assertEq(() => cls.name, name);
             assertEq(() => ctx.kind, 'class');
-            assertEq(() => ctx.name, 'Foo');
+            assertEq(() => ctx.name, name);
             assertEq(() => 'static' in ctx, false);
             assertEq(() => 'private' in ctx, false);
             assertEq(() => 'access' in ctx, false);
@@ -185,20 +230,28 @@ const tests = {
         };
         class Class {
             Foo = 
-            @dec
+            @dec('Foo')
             class {
             };
         }
         const Foo = new Class().Foo;
         assertEq(() => Foo, old);
+        class Class2 {
+            Bar = 
+            @dec('Baz')
+            class Baz {
+            };
+        }
+        const Bar = new Class2().Bar;
+        assertEq(() => Bar, old);
     },
     'Class decorators: Basic expression: Static field initializer': () => {
         let old;
-        const dec = (cls, ctx) => {
+        const dec = (name) => (cls, ctx) => {
             assertEq(() => typeof cls, 'function');
-            assertEq(() => cls.name, 'Foo');
+            assertEq(() => cls.name, name);
             assertEq(() => ctx.kind, 'class');
-            assertEq(() => ctx.name, 'Foo');
+            assertEq(() => ctx.name, name);
             assertEq(() => 'static' in ctx, false);
             assertEq(() => 'private' in ctx, false);
             assertEq(() => 'access' in ctx, false);
@@ -206,19 +259,26 @@ const tests = {
         };
         class Class {
             static Foo = 
-            @dec
+            @dec('Foo')
             class {
             };
         }
         assertEq(() => Class.Foo, old);
+        class Class2 {
+            static Bar = 
+            @dec('Baz')
+            class Baz {
+            };
+        }
+        assertEq(() => Class2.Bar, old);
     },
     'Class decorators: Basic expression: Instance auto-accessor initializer': () => {
         let old;
-        const dec = (cls, ctx) => {
+        const dec = (name) => (cls, ctx) => {
             assertEq(() => typeof cls, 'function');
-            assertEq(() => cls.name, 'Foo');
+            assertEq(() => cls.name, name);
             assertEq(() => ctx.kind, 'class');
-            assertEq(() => ctx.name, 'Foo');
+            assertEq(() => ctx.name, name);
             assertEq(() => 'static' in ctx, false);
             assertEq(() => 'private' in ctx, false);
             assertEq(() => 'access' in ctx, false);
@@ -226,20 +286,28 @@ const tests = {
         };
         class Class {
             accessor Foo = 
-            @dec
+            @dec('Foo')
             class {
             };
         }
         const Foo = new Class().Foo;
         assertEq(() => Foo, old);
+        class Class2 {
+            accessor Bar = 
+            @dec('Baz')
+            class Baz {
+            };
+        }
+        const Bar = new Class2().Bar;
+        assertEq(() => Bar, old);
     },
     'Class decorators: Basic expression: Static auto-accessor initializer': () => {
         let old;
-        const dec = (cls, ctx) => {
+        const dec = (name) => (cls, ctx) => {
             assertEq(() => typeof cls, 'function');
-            assertEq(() => cls.name, 'Foo');
+            assertEq(() => cls.name, name);
             assertEq(() => ctx.kind, 'class');
-            assertEq(() => ctx.name, 'Foo');
+            assertEq(() => ctx.name, name);
             assertEq(() => 'static' in ctx, false);
             assertEq(() => 'private' in ctx, false);
             assertEq(() => 'access' in ctx, false);
@@ -247,11 +315,18 @@ const tests = {
         };
         class Class {
             static accessor Foo = 
-            @dec
+            @dec('Foo')
             class {
             };
         }
         assertEq(() => Class.Foo, old);
+        class Class2 {
+            static accessor Bar = 
+            @dec('Baz')
+            class Baz {
+            };
+        }
+        assertEq(() => Class2.Bar, old);
     },
     'Class decorators: Order': () => {
         const log = [];
