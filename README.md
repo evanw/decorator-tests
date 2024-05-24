@@ -17,135 +17,16 @@ You can use `node run.mjs` after `npm install` to run and update the tests below
 
 ✅ All checks passed
 
-### Babel (`@babel/plugin-proposal-decorators@7.24.1`)
+### Babel (`@babel/plugin-proposal-decorators@7.24.6`)
 
 Known issues:
 
-* Decorators on anonymous classes can cause Babel to crash due to [a compiler bug](https://github.com/babel/babel/issues/16473).
 * References to the uninitialized class name within a decorator return `undefined` instead of throwing a `ReferenceError`.
-* Babel throws `Error` instead of `TypeError` when `addInitializer` is used after `decorationState.[[Finished]]` is true.
 
 <details>
-<summary>❌ 36 checks failed (click for details)</summary>
+<summary>❌ 11 checks failed (click for details)</summary>
 
 ```
-❌ Class decorators: Extra initializer
-  Code: oldAddInitializer(() => {})
-  Expected: throws instanceof TypeError
-  Observed: throws Error: attempted to call addInitializer after decoration was finished
-
-❌ Method decorators: Extra initializer (instance method)
-  Code: oldAddInitializer(() => {})
-  Expected: throws instanceof TypeError
-  Observed: throws Error: attempted to call addInitializer after decoration was finished
-
-❌ Method decorators: Extra initializer (static method)
-  Code: oldAddInitializer(() => {})
-  Expected: throws instanceof TypeError
-  Observed: throws Error: attempted to call addInitializer after decoration was finished
-
-❌ Method decorators: Extra initializer (private instance method)
-  Code: oldAddInitializer(() => {})
-  Expected: throws instanceof TypeError
-  Observed: throws Error: attempted to call addInitializer after decoration was finished
-
-❌ Method decorators: Extra initializer (private static method)
-  Code: oldAddInitializer(() => {})
-  Expected: throws instanceof TypeError
-  Observed: throws Error: attempted to call addInitializer after decoration was finished
-
-❌ Field decorators: Extra initializer (instance field)
-  Code: oldAddInitializer(() => {})
-  Expected: throws instanceof TypeError
-  Observed: throws Error: attempted to call addInitializer after decoration was finished
-
-❌ Field decorators: Extra initializer (static field)
-  Code: oldAddInitializer(() => {})
-  Expected: throws instanceof TypeError
-  Observed: throws Error: attempted to call addInitializer after decoration was finished
-
-❌ Field decorators: Extra initializer (private instance field)
-  Code: oldAddInitializer(() => {})
-  Expected: throws instanceof TypeError
-  Observed: throws Error: attempted to call addInitializer after decoration was finished
-
-❌ Field decorators: Extra initializer (private static field)
-  Code: oldAddInitializer(() => {})
-  Expected: throws instanceof TypeError
-  Observed: throws Error: attempted to call addInitializer after decoration was finished
-
-❌ Getter decorators: Extra initializer (instance getter)
-  Code: oldAddInitializer(() => {})
-  Expected: throws instanceof TypeError
-  Observed: throws Error: attempted to call addInitializer after decoration was finished
-
-❌ Getter decorators: Extra initializer (static getter)
-  Code: oldAddInitializer(() => {})
-  Expected: throws instanceof TypeError
-  Observed: throws Error: attempted to call addInitializer after decoration was finished
-
-❌ Getter decorators: Extra initializer (private instance getter)
-  Code: oldAddInitializer(() => {})
-  Expected: throws instanceof TypeError
-  Observed: throws Error: attempted to call addInitializer after decoration was finished
-
-❌ Getter decorators: Extra initializer (private static getter)
-  Code: oldAddInitializer(() => {})
-  Expected: throws instanceof TypeError
-  Observed: throws Error: attempted to call addInitializer after decoration was finished
-
-❌ Setter decorators: Extra initializer (instance setter)
-  Code: oldAddInitializer(() => {})
-  Expected: throws instanceof TypeError
-  Observed: throws Error: attempted to call addInitializer after decoration was finished
-
-❌ Setter decorators: Extra initializer (static setter)
-  Code: oldAddInitializer(() => {})
-  Expected: throws instanceof TypeError
-  Observed: throws Error: attempted to call addInitializer after decoration was finished
-
-❌ Setter decorators: Extra initializer (private instance setter)
-  Code: oldAddInitializer(() => {})
-  Expected: throws instanceof TypeError
-  Observed: throws Error: attempted to call addInitializer after decoration was finished
-
-❌ Setter decorators: Extra initializer (private static setter)
-  Code: oldAddInitializer(() => {})
-  Expected: throws instanceof TypeError
-  Observed: throws Error: attempted to call addInitializer after decoration was finished
-
-❌ Auto-accessor decorators: Extra initializer (instance auto-accessor)
-  Code: oldAddInitializer(() => {})
-  Expected: throws instanceof TypeError
-  Observed: throws Error: attempted to call addInitializer after decoration was finished
-
-❌ Auto-accessor decorators: Extra initializer (static auto-accessor)
-  Code: oldAddInitializer(() => {})
-  Expected: throws instanceof TypeError
-  Observed: throws Error: attempted to call addInitializer after decoration was finished
-
-❌ Auto-accessor decorators: Extra initializer (private instance auto-accessor)
-  Code: oldAddInitializer(() => {})
-  Expected: throws instanceof TypeError
-  Observed: throws Error: attempted to call addInitializer after decoration was finished
-
-❌ Auto-accessor decorators: Extra initializer (private static auto-accessor)
-  Code: oldAddInitializer(() => {})
-  Expected: throws instanceof TypeError
-  Observed: throws Error: attempted to call addInitializer after decoration was finished
-
-❌ Decorator list evaluation: Computed names (class expression)
-  Throws: unknown file: Property object of MemberExpression expected node to be of a type ["Expression","Super"] but instead got undefined
-
-❌ Decorator list evaluation: "this" (class expression)
-  Throws: unknown file: Property object of MemberExpression expected node to be of a type ["Expression","Super"] but instead got undefined
-
-❌ Decorator list evaluation: "await" (class expression)
-  Throws: unknown file: Property object of MemberExpression expected node to be of a type ["Expression","Super"] but instead got undefined
-
-❌ Decorator list evaluation: Outer private name (class expression)
-  Throws: unknown file: Property object of MemberExpression expected node to be of a type ["Expression","Super"] but instead got undefined
-
 ❌ Decorator list evaluation: Class binding (class statement)
   Code: fn()
   Expected: throws instanceof ReferenceError
@@ -201,7 +82,7 @@ Known issues:
   Expected: throws instanceof ReferenceError
   Observed: returns class
 
-❌ 36 checks failed
+❌ 11 checks failed
 ```
 
 </details>
@@ -437,7 +318,7 @@ Known issues:
 
 </details>
 
-### SWC (`@swc/core@1.4.17`)
+### SWC (`@swc/core@1.5.7`)
 
 Known issues:
 
