@@ -15,7 +15,78 @@ You can use `node run.mjs` after `npm install` to run and update the tests below
 
 ### esbuild (`esbuild@0.21.3`)
 
-✅ All checks passed
+Known issues:
+
+* Decorator metadata is only applied to classes with a class-level decorator due to [this bug](https://github.com/evanw/esbuild/issues/3781).
+
+<details>
+<summary>❌ 14 checks failed (click for details)</summary>
+
+```
+❌ Decorator metadata: class statement
+  Code: order(foo)
+  Throws: TypeError: Cannot read properties of null (reading 'staticAccessor')
+
+❌ Decorator metadata: class statement
+  Code: Object.getPrototypeOf(foo)
+  Throws: TypeError: Cannot convert undefined or null to object
+
+❌ Decorator metadata: class statement
+  Code: order(bar)
+  Throws: TypeError: Cannot read properties of null (reading 'staticAccessor')
+
+❌ Decorator metadata: class statement
+  Code: Object.getPrototypeOf(bar)
+  Throws: TypeError: Cannot convert undefined or null to object
+
+❌ Decorator metadata: class statement
+  Code: JSON.stringify(FooOneDec[Symbol.metadata])
+  Expected: "{\"x\":22}"
+  Observed: "null"
+
+❌ Decorator metadata: class statement
+  Code: JSON.stringify(BarOneDec[Symbol.metadata])
+  Expected: "{\"y\":23}"
+  Observed: "null"
+
+❌ Decorator metadata: class statement
+  Code: Object.getPrototypeOf(BarOneDec[Symbol.metadata])
+  Throws: TypeError: Cannot convert undefined or null to object
+
+❌ Decorator metadata: class expression
+  Code: order(foo)
+  Throws: TypeError: Cannot read properties of null (reading 'staticAccessor')
+
+❌ Decorator metadata: class expression
+  Code: Object.getPrototypeOf(foo)
+  Throws: TypeError: Cannot convert undefined or null to object
+
+❌ Decorator metadata: class expression
+  Code: order(bar)
+  Throws: TypeError: Cannot read properties of null (reading 'staticAccessor')
+
+❌ Decorator metadata: class expression
+  Code: Object.getPrototypeOf(bar)
+  Throws: TypeError: Cannot convert undefined or null to object
+
+❌ Decorator metadata: class expression
+  Code: JSON.stringify(FooOneDec[Symbol.metadata])
+  Expected: "{\"x\":22}"
+  Observed: "null"
+
+❌ Decorator metadata: class expression
+  Code: JSON.stringify(BarOneDec[Symbol.metadata])
+  Expected: "{\"y\":23}"
+  Observed: "null"
+
+❌ Decorator metadata: class expression
+  Code: Object.getPrototypeOf(BarOneDec[Symbol.metadata])
+  Throws: TypeError: Cannot convert undefined or null to object
+
+❌ 14 checks failed
+```
+
+</details>
 
 ### Babel (`@babel/plugin-proposal-decorators@7.24.6`)
 
@@ -327,7 +398,7 @@ Known issues:
 * Generated code sometimes has syntax errors caused by duplicate private names in the same class.
 
 <details>
-<summary>❌ 238 checks failed (click for details)</summary>
+<summary>❌ 240 checks failed (click for details)</summary>
 
 ```
 ❌ Class decorators: Basic expression: Property value
@@ -1359,6 +1430,10 @@ Known issues:
   Expected: "0,1,2,3,11,12,13,14,4,5,6,7,15,16,17,18,8,19,9,20,10,21"
   Observed: "0,1,2,3,11,12,13,14,5,6,7,8,16,17,18,19,4,15,9,20,10,21"
 
+❌ Decorator metadata: class statement
+  Code: ()=>Object.getPrototypeOf(BarOneDec[Symbol.metadata])
+  Throws: TypeError: Cannot convert object to primitive value
+
 ❌ Decorator metadata: class expression
   Code: ()=>order(foo)
   Expected: "0,1,2,3,,,,,4,5,6,7,,,,,8,,9,,10,"
@@ -1368,6 +1443,10 @@ Known issues:
   Code: ()=>order(bar)
   Expected: "0,1,2,3,11,12,13,14,4,5,6,7,15,16,17,18,8,19,9,20,10,21"
   Observed: "0,1,2,3,11,12,13,14,5,6,7,8,16,17,18,19,4,15,9,20,,"
+
+❌ Decorator metadata: class expression
+  Code: ()=>Object.getPrototypeOf(BarOneDec[Symbol.metadata])
+  Throws: TypeError: Cannot convert object to primitive value
 
 ❌ Initializer order (public members, class statement)
   Code: ()=>log + ''
@@ -1387,7 +1466,7 @@ Known issues:
   Expected: "start,extends,M1,M2,G1,G2,S1,S2,A1,A2,m1,m2,g1,g2,s1,s2,a1,a2,F1,F2,f1,f2,c1,c2,M3,M4,M5,M6,G3,G4,G5,G6,S3,S4,S5,S6,static:start,F7,F8,F3,F4,F5,F6,A7,A8,A3,A4,A5,A6,static:end,c3,c4,c5,c6,after,ctor:start,m3,m4,m5,m6,g3,g4,g5,g6,s3,s4,s5,s6,f7,f8,f3,f4,f5,f6,a7,a8,a3,a4,a5,a6,ctor:end,end"
   Observed: "start,extends,M1,M2,G1,G2,S1,S2,A1,A2,F1,F2,m1,m2,g1,g2,s1,s2,a1,a2,f1,f2,c1,c2,M3,M4,M5,M6,G3,G4,G5,G6,S3,S4,S5,S6,A3,A4,A5,A6,F3,F4,F5,F6,static:start,F8,F7,A8,A7,static:end,c3,c4,c5,c6,after,ctor:start,f8,f7,m3,m4,m5,m6,g3,g4,g5,g6,s3,s4,s5,s6,a3,a4,a5,a6,f3,f4,f5,f6,a8,a7,ctor:end,end"
 
-❌ 238 checks failed
+❌ 240 checks failed
 ```
 
 </details>
