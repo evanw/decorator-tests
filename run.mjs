@@ -17,8 +17,7 @@ fs.writeFileSync('./decorator-tests.js', `// Note: Edit "decorator-tests.ts" ins
 // Check esbuild
 await checkBehavior('esbuild', `esbuild@${require('esbuild/package.json').version}`,
   () => esbuild.transformSync(js, { target: 'es2022' }).code, [
-  '* Decorator metadata is only applied to classes with a class-level decorator ([bug #3781](https://github.com/evanw/esbuild/issues/3781)).',
-  '* Class binding references are incorrect if a decorator changes them ([bug #3787](https://github.com/evanw/esbuild/issues/3787)).',
+  '* Class binding references are incorrect if a decorator changes them. ([Bug #3787](https://github.com/evanw/esbuild/issues/3787))',
 ])
 
 // Check Babel

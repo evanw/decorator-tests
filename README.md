@@ -13,15 +13,14 @@ You can use `node run.mjs` after `npm install` to run and update the tests below
 
 ## Test Results
 
-### esbuild (`esbuild@0.21.3`)
+### esbuild (`esbuild@0.21.5`)
 
 Known issues:
 
-* Decorator metadata is only applied to classes with a class-level decorator ([bug #3781](https://github.com/evanw/esbuild/issues/3781)).
-* Class binding references are incorrect if a decorator changes them ([bug #3787](https://github.com/evanw/esbuild/issues/3787)).
+* Class binding references are incorrect if a decorator changes them. ([Bug #3787](https://github.com/evanw/esbuild/issues/3787))
 
 <details>
-<summary>❌ 23 checks failed (click for details)</summary>
+<summary>❌ 9 checks failed (click for details)</summary>
 
 ```
 ❌ Class decorators: Binding initialization (class statement)
@@ -69,67 +68,7 @@ Known issues:
   Expected: class
   Observed: undefined
 
-❌ Decorator metadata: class statement
-  Code: order(foo)
-  Throws: TypeError: Cannot read properties of null (reading 'staticAccessor')
-
-❌ Decorator metadata: class statement
-  Code: Object.getPrototypeOf(foo)
-  Throws: TypeError: Cannot convert undefined or null to object
-
-❌ Decorator metadata: class statement
-  Code: order(bar)
-  Throws: TypeError: Cannot read properties of null (reading 'staticAccessor')
-
-❌ Decorator metadata: class statement
-  Code: Object.getPrototypeOf(bar)
-  Throws: TypeError: Cannot convert undefined or null to object
-
-❌ Decorator metadata: class statement
-  Code: JSON.stringify(FooOneDec[Symbol.metadata])
-  Expected: "{\"x\":22}"
-  Observed: "null"
-
-❌ Decorator metadata: class statement
-  Code: JSON.stringify(BarOneDec[Symbol.metadata])
-  Expected: "{\"y\":23}"
-  Observed: "null"
-
-❌ Decorator metadata: class statement
-  Code: Object.getPrototypeOf(BarOneDec[Symbol.metadata])
-  Throws: TypeError: Cannot convert undefined or null to object
-
-❌ Decorator metadata: class expression
-  Code: order(foo)
-  Throws: TypeError: Cannot read properties of null (reading 'staticAccessor')
-
-❌ Decorator metadata: class expression
-  Code: Object.getPrototypeOf(foo)
-  Throws: TypeError: Cannot convert undefined or null to object
-
-❌ Decorator metadata: class expression
-  Code: order(bar)
-  Throws: TypeError: Cannot read properties of null (reading 'staticAccessor')
-
-❌ Decorator metadata: class expression
-  Code: Object.getPrototypeOf(bar)
-  Throws: TypeError: Cannot convert undefined or null to object
-
-❌ Decorator metadata: class expression
-  Code: JSON.stringify(FooOneDec[Symbol.metadata])
-  Expected: "{\"x\":22}"
-  Observed: "null"
-
-❌ Decorator metadata: class expression
-  Code: JSON.stringify(BarOneDec[Symbol.metadata])
-  Expected: "{\"y\":23}"
-  Observed: "null"
-
-❌ Decorator metadata: class expression
-  Code: Object.getPrototypeOf(BarOneDec[Symbol.metadata])
-  Throws: TypeError: Cannot convert undefined or null to object
-
-❌ 23 checks failed
+❌ 9 checks failed
 ```
 
 </details>
