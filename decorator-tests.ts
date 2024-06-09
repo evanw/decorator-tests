@@ -318,6 +318,100 @@ const tests: Record<string, () => Promise<void> | void> = {
     assertEq(() => got.this, Foo)
     assertEq(() => got.args.length, 0)
   },
+  'Class decorators: Binding initialization (class statement)': () => {
+    let old: typeof Foo
+    let block: typeof Foo
+    class Bar { }
+    const dec = (cls: typeof Foo, ctx: ClassDecoratorContext): any => {
+      old = cls
+      return Bar
+    }
+    @dec class Foo {
+      static { block = Foo }
+
+      method() { return Foo }
+      static method() { return Foo }
+
+      field = Foo
+      static field = Foo
+
+      get getter() { return Foo }
+      static get getter() { return Foo }
+
+      set setter(x: { foo: typeof Foo | null }) { x.foo = Foo }
+      static set setter(x: { foo: typeof Foo | null }) { x.foo = Foo }
+
+      accessor accessor = Foo
+      static accessor accessor = Foo
+    }
+
+    const foo = new old!
+    let obj: { foo: typeof Foo | null }
+
+    assertEq(() => Foo !== old, true)
+    assertEq(() => Foo, Bar)
+    assertEq(() => block, Bar)
+
+    assertEq(() => Foo.field, Bar)
+    assertEq(() => foo.field, Bar)
+
+    assertEq(() => old.getter, Bar)
+    assertEq(() => foo.getter, Bar)
+
+    assertEq(() => (obj = { foo: null }, old.setter = obj, obj.foo), Bar)
+    assertEq(() => (obj = { foo: null }, foo.setter = obj, obj.foo), Bar)
+
+    // The specification for accessors is potentially wrong at the moment: https://github.com/tc39/proposal-decorators/issues/529
+    // assertEq(() => old.accessor, Bar)
+    // assertEq(() => foo.accessor, Bar)
+  },
+  'Class decorators: Binding initialization (class expression)': () => {
+    let old: typeof Foo
+    let block: typeof Foo
+    class Bar { }
+    const dec = (cls: any, ctx: ClassDecoratorContext): any => {
+      old = cls
+      return Bar
+    }
+    const Foo = @dec class Foo {
+      static { block = Foo }
+
+      method() { return Foo }
+      static method() { return Foo }
+
+      field = Foo
+      static field = Foo
+
+      get getter() { return Foo }
+      static get getter() { return Foo }
+
+      set setter(x: { foo: typeof Foo | null }) { x.foo = Foo }
+      static set setter(x: { foo: typeof Foo | null }) { x.foo = Foo }
+
+      accessor accessor = Foo
+      static accessor accessor = Foo
+    }
+
+    const foo = new old!
+    let obj: { foo: typeof Foo | null }
+
+    assertEq(() => Foo !== old, true)
+    assertEq(() => Foo, Bar)
+    assertEq(() => block, Bar)
+
+    assertEq(() => Foo.field, Bar)
+    assertEq(() => foo.field, Bar)
+
+    assertEq(() => old.getter, Bar)
+    assertEq(() => foo.getter, Bar)
+
+    assertEq(() => (obj = { foo: null }, old.setter = obj, obj.foo), Bar)
+    assertEq(() => (obj = { foo: null }, foo.setter = obj, obj.foo), Bar)
+
+    // The specification for accessors is potentially wrong at the moment: https://github.com/tc39/proposal-decorators/issues/529
+    // assertEq(() => old.accessor, Bar)
+    // assertEq(() => foo.accessor, Bar)
+  },
 
   // Method decorators
   'Method decorators: Basic (instance method)': () => {

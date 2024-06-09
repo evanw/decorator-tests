@@ -17,12 +17,58 @@ You can use `node run.mjs` after `npm install` to run and update the tests below
 
 Known issues:
 
-* Decorator metadata is only applied to classes with a class-level decorator due to [this bug](https://github.com/evanw/esbuild/issues/3781).
+* Decorator metadata is only applied to classes with a class-level decorator ([bug #3781](https://github.com/evanw/esbuild/issues/3781)).
+* Class binding references are incorrect if a decorator changes them ([bug #3787](https://github.com/evanw/esbuild/issues/3787)).
 
 <details>
-<summary>❌ 14 checks failed (click for details)</summary>
+<summary>❌ 23 checks failed (click for details)</summary>
 
 ```
+❌ Class decorators: Binding initialization (class statement)
+  Code: block
+  Expected: class
+  Observed: class
+
+❌ Class decorators: Binding initialization (class statement)
+  Code: Foo2.field
+  Expected: class
+  Observed: undefined
+
+❌ Class decorators: Binding initialization (class statement)
+  Code: foo.field
+  Expected: class
+  Observed: class
+
+❌ Class decorators: Binding initialization (class statement)
+  Code: old.getter
+  Expected: class
+  Observed: class
+
+❌ Class decorators: Binding initialization (class statement)
+  Code: foo.getter
+  Expected: class
+  Observed: class
+
+❌ Class decorators: Binding initialization (class statement)
+  Code: (obj = { foo: null }, old.setter = obj, obj.foo)
+  Expected: class
+  Observed: class
+
+❌ Class decorators: Binding initialization (class statement)
+  Code: (obj = { foo: null }, foo.setter = obj, obj.foo)
+  Expected: class
+  Observed: class
+
+❌ Class decorators: Binding initialization (class expression)
+  Code: block
+  Expected: class
+  Observed: undefined
+
+❌ Class decorators: Binding initialization (class expression)
+  Code: Foo2.field
+  Expected: class
+  Observed: undefined
+
 ❌ Decorator metadata: class statement
   Code: order(foo)
   Throws: TypeError: Cannot read properties of null (reading 'staticAccessor')
@@ -83,7 +129,7 @@ Known issues:
   Code: Object.getPrototypeOf(BarOneDec[Symbol.metadata])
   Throws: TypeError: Cannot convert undefined or null to object
 
-❌ 14 checks failed
+❌ 23 checks failed
 ```
 
 </details>
@@ -169,13 +215,53 @@ Known issues:
 * TypeScript doesn't prevent `addInitializer` from adding more initializers after `decorationState.[[Finished]]` is true.
 
 <details>
-<summary>❌ 44 checks failed (click for details)</summary>
+<summary>❌ 52 checks failed (click for details)</summary>
 
 ```
 ❌ Class decorators: Extra initializer
   Code: oldAddInitializer(() => { })
   Expected: throws instanceof TypeError
   Observed: returns undefined
+
+❌ Class decorators: Binding initialization (class statement)
+  Code: Foo.field
+  Expected: class
+  Observed: undefined
+
+❌ Class decorators: Binding initialization (class expression)
+  Code: block
+  Expected: class
+  Observed: undefined
+
+❌ Class decorators: Binding initialization (class expression)
+  Code: Foo.field
+  Expected: class
+  Observed: undefined
+
+❌ Class decorators: Binding initialization (class expression)
+  Code: foo.field
+  Expected: class
+  Observed: class
+
+❌ Class decorators: Binding initialization (class expression)
+  Code: old.getter
+  Expected: class
+  Observed: class
+
+❌ Class decorators: Binding initialization (class expression)
+  Code: foo.getter
+  Expected: class
+  Observed: class
+
+❌ Class decorators: Binding initialization (class expression)
+  Code: (obj = { foo: null }, old.setter = obj, obj.foo)
+  Expected: class
+  Observed: class
+
+❌ Class decorators: Binding initialization (class expression)
+  Code: (obj = { foo: null }, foo.setter = obj, obj.foo)
+  Expected: class
+  Observed: class
 
 ❌ Method decorators: Extra initializer (instance method)
   Code: oldAddInitializer(() => { })
@@ -384,7 +470,7 @@ Known issues:
   Expected: "start,extends,M1,M2,G1,G2,S1,S2,A1,A2,m1,m2,g1,g2,s1,s2,a1,a2,F1,F2,f1,f2,c1,c2,M3,M4,M5,M6,G3,G4,G5,G6,S3,S4,S5,S6,static:start,F7,F8,F3,F4,F5,F6,A7,A8,A3,A4,A5,A6,static:end,c3,c4,c5,c6,after,ctor:start,m3,m4,m5,m6,g3,g4,g5,g6,s3,s4,s5,s6,f7,f8,f3,f4,f5,f6,a7,a8,a3,a4,a5,a6,ctor:end,end"
   Observed: "start,extends,M1,M2,G1,G2,S1,S2,A1,A2,m1,m2,g1,g2,s1,s2,a1,a2,F1,F2,f1,f2,c1,c2,M3,M4,M5,M6,G3,G4,G5,G6,S3,S4,S5,S6,static:start,F7,F8,F3,F4,F5,F6,A7,A8,A3,A4,A5,A6,static:end,c3,c4,c5,c6,F7,F8,F3,F4,F5,F6,A7,A8,after,ctor:start,m3,m4,m5,m6,g3,g4,g5,g6,s3,s4,s5,s6,f7,f8,f3,f4,f5,f6,a7,a8,a3,a4,a5,a6,ctor:end,end"
 
-❌ 44 checks failed
+❌ 52 checks failed
 ```
 
 </details>
@@ -398,7 +484,7 @@ Known issues:
 * Generated code sometimes has syntax errors caused by duplicate private names in the same class.
 
 <details>
-<summary>❌ 240 checks failed (click for details)</summary>
+<summary>❌ 242 checks failed (click for details)</summary>
 
 ```
 ❌ Class decorators: Basic expression: Property value
@@ -501,6 +587,12 @@ Known issues:
   Code: ()=>oldAddInitializer(()=>{})
   Expected: throws instanceof TypeError
   Observed: throws Error: attempted to call addInitializer after decoration was finished
+
+❌ Class decorators: Binding initialization (class statement)
+  Throws: ReferenceError: Foo is not defined
+
+❌ Class decorators: Binding initialization (class expression)
+  Throws: SyntaxError: The symbol "#___private_accessor" has already been declared
 
 ❌ Method decorators: Basic (instance method)
   Code: ()=>ctx.access.has({ [key]: false })
@@ -1466,7 +1558,7 @@ Known issues:
   Expected: "start,extends,M1,M2,G1,G2,S1,S2,A1,A2,m1,m2,g1,g2,s1,s2,a1,a2,F1,F2,f1,f2,c1,c2,M3,M4,M5,M6,G3,G4,G5,G6,S3,S4,S5,S6,static:start,F7,F8,F3,F4,F5,F6,A7,A8,A3,A4,A5,A6,static:end,c3,c4,c5,c6,after,ctor:start,m3,m4,m5,m6,g3,g4,g5,g6,s3,s4,s5,s6,f7,f8,f3,f4,f5,f6,a7,a8,a3,a4,a5,a6,ctor:end,end"
   Observed: "start,extends,M1,M2,G1,G2,S1,S2,A1,A2,F1,F2,m1,m2,g1,g2,s1,s2,a1,a2,f1,f2,c1,c2,M3,M4,M5,M6,G3,G4,G5,G6,S3,S4,S5,S6,A3,A4,A5,A6,F3,F4,F5,F6,static:start,F8,F7,A8,A7,static:end,c3,c4,c5,c6,after,ctor:start,f8,f7,m3,m4,m5,m6,g3,g4,g5,g6,s3,s4,s5,s6,a3,a4,a5,a6,f3,f4,f5,f6,a8,a7,ctor:end,end"
 
-❌ 240 checks failed
+❌ 242 checks failed
 ```
 
 </details>
