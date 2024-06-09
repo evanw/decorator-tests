@@ -3943,7 +3943,11 @@ const tests: Record<string, () => Promise<void> | void> = {
 function prettyPrint(x: any): any {
   if (x && x.prototype && x.prototype.constructor === x) return 'class'
   if (typeof x === 'string') return JSON.stringify(x)
-  return x
+  try {
+    return x + ''
+  } catch {
+    return 'typeof ' + typeof x // Handle values that don't implement "toString"
+  }
 }
 
 function assertEq<T>(callback: () => T, expected: T): boolean {

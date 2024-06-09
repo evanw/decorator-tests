@@ -4400,7 +4400,12 @@ function prettyPrint(x) {
         return 'class';
     if (typeof x === 'string')
         return JSON.stringify(x);
-    return x;
+    try {
+        return x + '';
+    }
+    catch {
+        return 'typeof ' + typeof x; // Handle values that don't implement "toString"
+    }
 }
 function assertEq(callback, expected) {
     let details;

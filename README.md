@@ -1483,7 +1483,8 @@ Known issues:
 
 ❌ Decorator metadata: class statement
   Code: ()=>Object.getPrototypeOf(BarOneDec[Symbol.metadata])
-  Throws: TypeError: Cannot convert object to primitive value
+  Expected: typeof object
+  Observed: null
 
 ❌ Decorator metadata: class expression
   Code: ()=>order(foo)
@@ -1497,7 +1498,8 @@ Known issues:
 
 ❌ Decorator metadata: class expression
   Code: ()=>Object.getPrototypeOf(BarOneDec[Symbol.metadata])
-  Throws: TypeError: Cannot convert object to primitive value
+  Expected: typeof object
+  Observed: typeof object
 
 ❌ Initializer order (public members, class statement)
   Code: ()=>log + ''
