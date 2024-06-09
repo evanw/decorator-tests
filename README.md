@@ -204,18 +204,17 @@ Known issues:
 
 </details>
 
-### TypeScript (`typescript@5.4.5`)
+### TypeScript (`typescript@5.5.1-rc`)
 
 Known issues:
 
 * In decorators of static fields and static accessors, the value of `this` appears to be incorrect.
 * Using `await` within a decorator can cause TypeScript to emit invalid code containing a syntax error.
 * References to the uninitialized class name within a decorator return `undefined` instead of throwing a `ReferenceError`.
-* Class expressions incorrectly run some initializers multiple times due to [a compiler bug](https://github.com/microsoft/TypeScript/issues/58436).
 * TypeScript doesn't prevent `addInitializer` from adding more initializers after `decorationState.[[Finished]]` is true.
 
 <details>
-<summary>❌ 52 checks failed (click for details)</summary>
+<summary>❌ 44 checks failed (click for details)</summary>
 
 ```
 ❌ Class decorators: Extra initializer
@@ -229,39 +228,9 @@ Known issues:
   Observed: undefined
 
 ❌ Class decorators: Binding initialization (class expression)
-  Code: block
-  Expected: class
-  Observed: undefined
-
-❌ Class decorators: Binding initialization (class expression)
   Code: Foo.field
   Expected: class
   Observed: undefined
-
-❌ Class decorators: Binding initialization (class expression)
-  Code: foo.field
-  Expected: class
-  Observed: class
-
-❌ Class decorators: Binding initialization (class expression)
-  Code: old.getter
-  Expected: class
-  Observed: class
-
-❌ Class decorators: Binding initialization (class expression)
-  Code: foo.getter
-  Expected: class
-  Observed: class
-
-❌ Class decorators: Binding initialization (class expression)
-  Code: (obj = { foo: null }, old.setter = obj, obj.foo)
-  Expected: class
-  Observed: class
-
-❌ Class decorators: Binding initialization (class expression)
-  Code: (obj = { foo: null }, foo.setter = obj, obj.foo)
-  Expected: class
-  Observed: class
 
 ❌ Method decorators: Extra initializer (instance method)
   Code: oldAddInitializer(() => { })
@@ -460,17 +429,7 @@ Known issues:
   Expected: throws instanceof ReferenceError
   Observed: returns class
 
-❌ Initializer order (public members, class expression)
-  Code: log + ''
-  Expected: "start,extends,M1,M2,G1,G2,S1,S2,A1,A2,m1,m2,g1,g2,s1,s2,a1,a2,F1,F2,f1,f2,c1,c2,M3,M4,M5,M6,G3,G4,G5,G6,S3,S4,S5,S6,static:start,F7,F8,F3,F4,F5,F6,A7,A8,A3,A4,A5,A6,static:end,c3,c4,c5,c6,after,ctor:start,m3,m4,m5,m6,g3,g4,g5,g6,s3,s4,s5,s6,f7,f8,f3,f4,f5,f6,a7,a8,a3,a4,a5,a6,ctor:end,end"
-  Observed: "start,extends,M1,M2,G1,G2,S1,S2,A1,A2,m1,m2,g1,g2,s1,s2,a1,a2,F1,F2,f1,f2,c1,c2,M3,M4,M5,M6,G3,G4,G5,G6,S3,S4,S5,S6,static:start,F7,F8,F3,F4,F5,F6,A7,A8,A3,A4,A5,A6,static:end,c3,c4,c5,c6,F7,F8,F3,F4,F5,F6,A7,A8,after,ctor:start,m3,m4,m5,m6,g3,g4,g5,g6,s3,s4,s5,s6,f7,f8,f3,f4,f5,f6,a7,a8,a3,a4,a5,a6,ctor:end,end"
-
-❌ Initializer order (private members, class expression)
-  Code: log + ''
-  Expected: "start,extends,M1,M2,G1,G2,S1,S2,A1,A2,m1,m2,g1,g2,s1,s2,a1,a2,F1,F2,f1,f2,c1,c2,M3,M4,M5,M6,G3,G4,G5,G6,S3,S4,S5,S6,static:start,F7,F8,F3,F4,F5,F6,A7,A8,A3,A4,A5,A6,static:end,c3,c4,c5,c6,after,ctor:start,m3,m4,m5,m6,g3,g4,g5,g6,s3,s4,s5,s6,f7,f8,f3,f4,f5,f6,a7,a8,a3,a4,a5,a6,ctor:end,end"
-  Observed: "start,extends,M1,M2,G1,G2,S1,S2,A1,A2,m1,m2,g1,g2,s1,s2,a1,a2,F1,F2,f1,f2,c1,c2,M3,M4,M5,M6,G3,G4,G5,G6,S3,S4,S5,S6,static:start,F7,F8,F3,F4,F5,F6,A7,A8,A3,A4,A5,A6,static:end,c3,c4,c5,c6,F7,F8,F3,F4,F5,F6,A7,A8,after,ctor:start,m3,m4,m5,m6,g3,g4,g5,g6,s3,s4,s5,s6,f7,f8,f3,f4,f5,f6,a7,a8,a3,a4,a5,a6,ctor:end,end"
-
-❌ 52 checks failed
+❌ 44 checks failed
 ```
 
 </details>

@@ -33,7 +33,6 @@ await checkBehavior('TypeScript', `typescript@${require('typescript/package.json
   '* In decorators of static fields and static accessors, the value of `this` appears to be incorrect.',
   '* Using `await` within a decorator can cause TypeScript to emit invalid code containing a syntax error.',
   '* References to the uninitialized class name within a decorator return `undefined` instead of throwing a `ReferenceError`.',
-  '* Class expressions incorrectly run some initializers multiple times due to [a compiler bug](https://github.com/microsoft/TypeScript/issues/58436).',
   `* TypeScript doesn't prevent \`addInitializer\` from adding more initializers after \`decorationState.[[Finished]]\` is true.`,
 ])
 
