@@ -13,7 +13,7 @@ You can use `node run.mjs` after `npm install` to run and update the tests below
 
 ## Test Results
 
-### esbuild (`esbuild@0.21.5`)
+### esbuild (`esbuild@0.24.0`)
 
 Known issues:
 
@@ -73,7 +73,7 @@ Known issues:
 
 </details>
 
-### Babel (`@babel/plugin-proposal-decorators@7.24.6`)
+### Babel (`@babel/plugin-proposal-decorators@7.24.7`)
 
 Known issues:
 
@@ -143,7 +143,7 @@ Known issues:
 
 </details>
 
-### TypeScript (`typescript@5.5.1-rc`)
+### TypeScript (`typescript@5.6.2`)
 
 Known issues:
 
@@ -373,16 +373,15 @@ Known issues:
 
 </details>
 
-### SWC (`@swc/core@1.5.7`)
+### SWC (`@swc/core@1.7.26`)
 
 Known issues:
 
 * SWC implements an older version of the specification from 2022 with outdated behavior.
 * Generated code sometimes has syntax errors because SWC fails to transform certain decorators.
-* Generated code sometimes has syntax errors caused by duplicate private names in the same class.
 
 <details>
-<summary>❌ 242 checks failed (click for details)</summary>
+<summary>❌ 247 checks failed (click for details)</summary>
 
 ```
 ❌ Class decorators: Basic expression: Property value
@@ -476,10 +475,24 @@ Known issues:
   Observed: ""
 
 ❌ Class decorators: Basic expression: Instance auto-accessor initializer
-  Throws: SyntaxError: Invalid or unexpected token
+  Code: ()=>cls.name
+  Expected: "Foo"
+  Observed: ""
+
+❌ Class decorators: Basic expression: Instance auto-accessor initializer
+  Code: ()=>ctx.name
+  Expected: "Foo"
+  Observed: ""
 
 ❌ Class decorators: Basic expression: Static auto-accessor initializer
-  Throws: SyntaxError: Invalid or unexpected token
+  Code: ()=>cls.name
+  Expected: "Foo"
+  Observed: ""
+
+❌ Class decorators: Basic expression: Static auto-accessor initializer
+  Code: ()=>ctx.name
+  Expected: "Foo"
+  Observed: ""
 
 ❌ Class decorators: Extra initializer
   Code: ()=>oldAddInitializer(()=>{})
@@ -487,10 +500,34 @@ Known issues:
   Observed: throws Error: attempted to call addInitializer after decoration was finished
 
 ❌ Class decorators: Binding initialization (class statement)
-  Throws: ReferenceError: Foo is not defined
+  Code: ()=>_Foo.field
+  Expected: class
+  Observed: undefined
+
+❌ Class decorators: Binding initialization (class statement)
+  Code: ()=>old.getter
+  Expected: class
+  Observed: class
+
+❌ Class decorators: Binding initialization (class statement)
+  Code: ()=>foo.getter
+  Expected: class
+  Observed: class
+
+❌ Class decorators: Binding initialization (class statement)
+  Code: ()=>(obj = { foo: null }, old.setter = obj, obj.foo)
+  Expected: class
+  Observed: class
+
+❌ Class decorators: Binding initialization (class statement)
+  Code: ()=>(obj = { foo: null }, foo.setter = obj, obj.foo)
+  Expected: class
+  Observed: class
 
 ❌ Class decorators: Binding initialization (class expression)
-  Throws: SyntaxError: The symbol "#___private_accessor" has already been declared
+  Code: ()=>Foo.field
+  Expected: class
+  Observed: undefined
 
 ❌ Method decorators: Basic (instance method)
   Code: ()=>ctx.access.has({ [key]: false })
@@ -1104,11 +1141,11 @@ Known issues:
 
 ❌ Auto-accessor decorators: Basic (instance auto-accessor)
   Code: ()=>ctx.access.get({ [key]: 123 })
-  Throws: TypeError: Cannot read private member #___private_foo from an object whose class did not declare it
+  Throws: TypeError: Cannot read private member #___private_foo_1 from an object whose class did not declare it
 
 ❌ Auto-accessor decorators: Basic (instance auto-accessor)
   Code: ()=>{ const obj = {}; ctx.access.set(obj, 123); return obj[key]; }
-  Throws: TypeError: Cannot write private member #___private_foo to an object whose class did not declare it
+  Throws: TypeError: Cannot write private member #___private_foo_1 to an object whose class did not declare it
 
 ❌ Auto-accessor decorators: Basic (instance auto-accessor)
   Code: ()=>ctx.access.has({ [key]: false })
@@ -1120,11 +1157,11 @@ Known issues:
 
 ❌ Auto-accessor decorators: Basic (instance auto-accessor)
   Code: ()=>ctx.access.get({ [key]: 123 })
-  Throws: TypeError: Cannot read private member #___private_bar from an object whose class did not declare it
+  Throws: TypeError: Cannot read private member #___private_bar_2 from an object whose class did not declare it
 
 ❌ Auto-accessor decorators: Basic (instance auto-accessor)
   Code: ()=>{ const obj = {}; ctx.access.set(obj, 123); return obj[key]; }
-  Throws: TypeError: Cannot write private member #___private_bar to an object whose class did not declare it
+  Throws: TypeError: Cannot write private member #___private_bar_2 to an object whose class did not declare it
 
 ❌ Auto-accessor decorators: Basic (instance auto-accessor)
   Code: ()=>ctx.access.has({ [key]: false })
@@ -1136,11 +1173,11 @@ Known issues:
 
 ❌ Auto-accessor decorators: Basic (instance auto-accessor)
   Code: ()=>ctx.access.get({ [key]: 123 })
-  Throws: TypeError: Cannot read private member #___private_baz from an object whose class did not declare it
+  Throws: TypeError: Cannot read private member #___private_baz_3 from an object whose class did not declare it
 
 ❌ Auto-accessor decorators: Basic (instance auto-accessor)
   Code: ()=>{ const obj = {}; ctx.access.set(obj, 123); return obj[key]; }
-  Throws: TypeError: Cannot write private member #___private_baz to an object whose class did not declare it
+  Throws: TypeError: Cannot write private member #___private_baz_3 to an object whose class did not declare it
 
 ❌ Auto-accessor decorators: Basic (static auto-accessor)
   Code: ()=>ctx.access.has({ [key]: false })
@@ -1152,11 +1189,11 @@ Known issues:
 
 ❌ Auto-accessor decorators: Basic (static auto-accessor)
   Code: ()=>ctx.access.get({ [key]: 123 })
-  Throws: TypeError: Cannot read private member #___private_foo from an object whose class did not declare it
+  Throws: TypeError: Cannot read private member #___private_foo_1 from an object whose class did not declare it
 
 ❌ Auto-accessor decorators: Basic (static auto-accessor)
   Code: ()=>{ const obj = {}; ctx.access.set(obj, 123); return obj[key]; }
-  Throws: TypeError: Cannot write private member #___private_foo to an object whose class did not declare it
+  Throws: TypeError: Cannot write private member #___private_foo_1 to an object whose class did not declare it
 
 ❌ Auto-accessor decorators: Basic (static auto-accessor)
   Code: ()=>ctx.access.has({ [key]: false })
@@ -1168,11 +1205,11 @@ Known issues:
 
 ❌ Auto-accessor decorators: Basic (static auto-accessor)
   Code: ()=>ctx.access.get({ [key]: 123 })
-  Throws: TypeError: Cannot read private member #___private_bar from an object whose class did not declare it
+  Throws: TypeError: Cannot read private member #___private_bar_2 from an object whose class did not declare it
 
 ❌ Auto-accessor decorators: Basic (static auto-accessor)
   Code: ()=>{ const obj = {}; ctx.access.set(obj, 123); return obj[key]; }
-  Throws: TypeError: Cannot write private member #___private_bar to an object whose class did not declare it
+  Throws: TypeError: Cannot write private member #___private_bar_2 to an object whose class did not declare it
 
 ❌ Auto-accessor decorators: Basic (static auto-accessor)
   Code: ()=>ctx.access.has({ [key]: false })
@@ -1184,11 +1221,11 @@ Known issues:
 
 ❌ Auto-accessor decorators: Basic (static auto-accessor)
   Code: ()=>ctx.access.get({ [key]: 123 })
-  Throws: TypeError: Cannot read private member #___private_baz from an object whose class did not declare it
+  Throws: TypeError: Cannot read private member #___private_baz_3 from an object whose class did not declare it
 
 ❌ Auto-accessor decorators: Basic (static auto-accessor)
   Code: ()=>{ const obj = {}; ctx.access.set(obj, 123); return obj[key]; }
-  Throws: TypeError: Cannot write private member #___private_baz to an object whose class did not declare it
+  Throws: TypeError: Cannot write private member #___private_baz_3 to an object whose class did not declare it
 
 ❌ Auto-accessor decorators: Basic (private instance auto-accessor)
   Code: ()=>target.get.name
@@ -1210,11 +1247,11 @@ Known issues:
 
 ❌ Auto-accessor decorators: Basic (private instance auto-accessor)
   Code: ()=>ctx.access.get(new Foo)
-  Throws: TypeError: Cannot read private member #__foo from an object whose class did not declare it
+  Throws: TypeError: Cannot read private member #__foo_1 from an object whose class did not declare it
 
 ❌ Auto-accessor decorators: Basic (private instance auto-accessor)
   Code: ()=>{ const obj = new Foo; ctx.access.set(obj, 123); return get$foo(obj); }
-  Throws: TypeError: Cannot write private member #__foo to an object whose class did not declare it
+  Throws: TypeError: Cannot write private member #__foo_1 to an object whose class did not declare it
 
 ❌ Auto-accessor decorators: Basic (private static auto-accessor)
   Code: ()=>target.get.name
@@ -1236,11 +1273,11 @@ Known issues:
 
 ❌ Auto-accessor decorators: Basic (private static auto-accessor)
   Code: ()=>ctx.access.get(Foo)
-  Throws: TypeError: Cannot read private member #__foo from an object whose class did not declare it
+  Throws: TypeError: Cannot read private member #__foo_1 from an object whose class did not declare it
 
 ❌ Auto-accessor decorators: Basic (private static auto-accessor)
   Code: ()=>{ ctx.access.set(Foo, 123); return get$foo(Foo); }
-  Throws: TypeError: Cannot write private member #__foo to an object whose class did not declare it
+  Throws: TypeError: Cannot write private member #__foo_1 to an object whose class did not declare it
 
 ❌ Auto-accessor decorators: Extra initializer (instance auto-accessor)
   Code: ()=>oldAddInitializer(()=>{})
@@ -1268,7 +1305,9 @@ Known issues:
   Observed: "0,2,2,4,4,6,6,8,8,10,10,12,12,14,14,16,16,18,20,19,20,1"
 
 ❌ Decorator list evaluation: Computed names (class expression)
-  Throws: SyntaxError: The symbol "#___private_computedKey" has already been declared
+  Code: ()=>'' + log
+  Expected: "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21"
+  Observed: "0,2,2,4,4,6,6,8,8,10,10,12,12,14,14,16,16,18,20,19,20,1"
 
 ❌ Decorator list evaluation: "this" (class statement)
   Code: ()=>this.foo(1)
@@ -1280,13 +1319,17 @@ Known issues:
   Observed: "0,2,3,4,5,6,7,8,9,10,11"
 
 ❌ Decorator list evaluation: "this" (class expression)
-  Throws: SyntaxError: The symbol "#___private_accessor" has already been declared
+  Code: ()=>'' + log
+  Expected: "0,1,2,3,4,5,6,7,8,9,10,11"
+  Observed: "0,2,3,4,5,6,7,8,9,10,11,1"
 
 ❌ Decorator list evaluation: "await" (class statement)
   Throws: SyntaxError: The keyword "await" cannot be used here:
 
 ❌ Decorator list evaluation: "await" (class expression)
-  Throws: SyntaxError: The symbol "#___private_accessor" has already been declared
+  Code: ()=>'' + log
+  Expected: "0,1,2,3,4,5,6,7,8,9,10,11"
+  Observed: "0,2,3,4,5,6,7,8,9,10,11,1"
 
 ❌ Decorator list evaluation: Outer private name (class statement)
   Code: ()=>'' + log
@@ -1294,13 +1337,15 @@ Known issues:
   Observed: "0,2,3,4,5,6,7,8,9,10,11,1"
 
 ❌ Decorator list evaluation: Outer private name (class expression)
-  Throws: SyntaxError: The symbol "#___private_accessor" has already been declared
+  Code: ()=>'' + log
+  Expected: "0,1,2,3,4,5,6,7,8,9,10,11"
+  Observed: "0,2,3,4,5,6,7,8,9,10,11,1"
 
 ❌ Decorator list evaluation: Inner private name (class statement)
   Throws: TypeError: Cannot read private member #foo from an object whose class did not declare it
 
 ❌ Decorator list evaluation: Inner private name (class expression)
-  Throws: SyntaxError: The symbol "#___private_accessor" has already been declared
+  Throws: TypeError: Cannot read private member #foo from an object whose class did not declare it
 
 ❌ Decorator list evaluation: Class binding (class statement)
   Code: ()=>fn()
@@ -1406,9 +1451,6 @@ Known issues:
   Code: ()=>fn()
   Expected: class
   Observed: null
-
-❌ Decorator list evaluation: Class binding (class expression)
-  Throws: SyntaxError: The symbol "#___private_accessor" has already been declared
 
 ❌ Decorator metadata: class statement
   Code: ()=>order(foo)
@@ -1446,7 +1488,9 @@ Known issues:
   Observed: "start,extends,M1,M2,G1,G2,S1,S2,A1,A2,F1,F2,m1,m2,g1,g2,s1,s2,a1,a2,f1,f2,c1,c2,M3,M4,M5,M6,G3,G4,G5,G6,S3,S4,S5,S6,A3,A4,A5,A6,F3,F4,F5,F6,F8,F7,A8,A7,static:start,static:end,c3,c4,c5,c6,after,ctor:start,f8,f7,m3,m4,m5,m6,g3,g4,g5,g6,s3,s4,s5,s6,a3,a4,a5,a6,f3,f4,f5,f6,a8,a7,ctor:end,end"
 
 ❌ Initializer order (public members, class expression)
-  Throws: SyntaxError: The symbol "#___private_accessor" has already been declared
+  Code: ()=>log + ''
+  Expected: "start,extends,M1,M2,G1,G2,S1,S2,A1,A2,m1,m2,g1,g2,s1,s2,a1,a2,F1,F2,f1,f2,c1,c2,M3,M4,M5,M6,G3,G4,G5,G6,S3,S4,S5,S6,static:start,F7,F8,F3,F4,F5,F6,A7,A8,A3,A4,A5,A6,static:end,c3,c4,c5,c6,after,ctor:start,m3,m4,m5,m6,g3,g4,g5,g6,s3,s4,s5,s6,f7,f8,f3,f4,f5,f6,a7,a8,a3,a4,a5,a6,ctor:end,end"
+  Observed: "start,extends,M1,M2,G1,G2,S1,S2,A1,A2,F1,F2,m1,m2,g1,g2,s1,s2,a1,a2,f1,f2,c1,c2,M3,M4,M5,M6,G3,G4,G5,G6,S3,S4,S5,S6,A3,A4,A5,A6,F3,F4,F5,F6,static:start,F8,F7,A8,A7,static:end,c3,c4,c5,c6,after,ctor:start,f8,f7,m3,m4,m5,m6,g3,g4,g5,g6,s3,s4,s5,s6,a3,a4,a5,a6,f3,f4,f5,f6,a8,a7,ctor:end,end"
 
 ❌ Initializer order (private members, class statement)
   Code: ()=>log + ''
@@ -1458,7 +1502,7 @@ Known issues:
   Expected: "start,extends,M1,M2,G1,G2,S1,S2,A1,A2,m1,m2,g1,g2,s1,s2,a1,a2,F1,F2,f1,f2,c1,c2,M3,M4,M5,M6,G3,G4,G5,G6,S3,S4,S5,S6,static:start,F7,F8,F3,F4,F5,F6,A7,A8,A3,A4,A5,A6,static:end,c3,c4,c5,c6,after,ctor:start,m3,m4,m5,m6,g3,g4,g5,g6,s3,s4,s5,s6,f7,f8,f3,f4,f5,f6,a7,a8,a3,a4,a5,a6,ctor:end,end"
   Observed: "start,extends,M1,M2,G1,G2,S1,S2,A1,A2,F1,F2,m1,m2,g1,g2,s1,s2,a1,a2,f1,f2,c1,c2,M3,M4,M5,M6,G3,G4,G5,G6,S3,S4,S5,S6,A3,A4,A5,A6,F3,F4,F5,F6,static:start,F8,F7,A8,A7,static:end,c3,c4,c5,c6,after,ctor:start,f8,f7,m3,m4,m5,m6,g3,g4,g5,g6,s3,s4,s5,s6,a3,a4,a5,a6,f3,f4,f5,f6,a8,a7,ctor:end,end"
 
-❌ 242 checks failed
+❌ 247 checks failed
 ```
 
 </details>

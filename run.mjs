@@ -46,7 +46,6 @@ await checkBehavior('SWC', `@swc/core@${require('@swc/core/package.json').versio
   }).code, [
   '* SWC implements an older version of the specification from 2022 with outdated behavior.',
   '* Generated code sometimes has syntax errors because SWC fails to transform certain decorators.',
-  '* Generated code sometimes has syntax errors caused by duplicate private names in the same class.',
 ])
 
 // Update README.md
